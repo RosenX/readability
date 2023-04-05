@@ -1,5 +1,4 @@
 import 'package:readability/readability.dart';
-import 'package:html/parser.dart' as parser;
 import 'dart:io';
 
 void main() async {
