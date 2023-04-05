@@ -8,6 +8,6 @@ void main() async {
 
   var doc = HtmlDocument(input: content);
   doc.parse();
-  doc.html.querySelectorAll('div').first.attributes.remove('id');
-  print(doc.html.outerHtml);
+
+  print(doc.sumary);
 }

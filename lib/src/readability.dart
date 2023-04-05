@@ -1,7 +1,12 @@
+import 'dart:collection';
 import 'dart:core';
+import 'dart:math';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
+
+import 'config.dart';
+import 'cleaner.dart';
 
 class HtmlDocument {
   String input;
@@ -17,33 +22,8 @@ class HtmlDocument {
   late Document _html;
 
   // TODO add more unUsefulTag
-  final unUsefulTag = ['script', 'style', 'noscript', 'iframe', 'form'];
 
-  // TODO add more unUsefulAttr
-  final unUsefulAttrRegExp = [
-    'width',
-    'height',
-    'style',
-    'color*',
-  ];
-
-  final regexes = {
-    "unlikelyCandidatesRe": RegExp(
-        r"combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter",
-        caseSensitive: false),
-    "okMaybeItsACandidateRe":
-        RegExp(r"and|article|body|column|main|shadow", caseSensitive: false),
-    "positiveRe": RegExp(
-        r"article|body|content|entry|hentry|main|page|pagination|post|text|blog|story",
-        caseSensitive: false),
-    "negativeRe": RegExp(
-        r"combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
-        caseSensitive: false),
-    "divToPElementsRe": RegExp(r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)",
-        caseSensitive: false),
-    "videoRe": RegExp(r"https?:\/\/(www\.)?(youtube|vimeo)\.com",
-        caseSensitive: false),
-  };
+  late String sumary;
 
   HtmlDocument({
     required this.input,
@@ -69,7 +49,7 @@ class HtmlDocument {
     _html.querySelectorAll('*').forEach((e) {
       for (var attr in unUsefulAttrRegExp) {
         e.attributes
-            .removeWhere((key, value) => RegExp(attr).hasMatch(key as String));
+            .removeWhere((key, value) => RegExp(attr).hasMatch(key.toString()));
       }
     });
   }
@@ -84,23 +64,111 @@ class HtmlDocument {
   Document get html => _html;
 
   /// score nodes in html
-  void _score() {}
+  Map<Element, double> _scoreParagraphs() {
+    Map<Element, double> candidates = HashMap();
+    // all element of in textTag
+    var allTextTag = _html.querySelectorAll(textTag.join(','));
+    for (var tag in allTextTag) {
+      var parentTag = tag.parent;
+      if (parentTag == null) {
+        continue;
+      }
+      var grandParentTag = parentTag.parent;
+      //TODO put it into beginning
+      String innerText = cleanText(tag.text);
+      int innerTextLen = innerText.length;
 
-  /// replace <div> to <p> if <div> is misused
-  void _replaceDiv() {}
+      // If this paragraph is less than 25 characters, don't even count it.
+      if (innerTextLen < minTextLength) {
+        continue;
+      }
 
-  /// turn input into html document
-  void _buildDoc() {}
+      if (!candidates.containsKey(parentTag)) {
+        candidates[parentTag] = _scoreNode(parentTag);
+      }
+
+      if (grandParentTag != null && !candidates.containsKey(grandParentTag)) {
+        candidates[grandParentTag] = _scoreNode(grandParentTag);
+      }
+
+      double score = 1;
+      // TODO use config
+      score += min(innerTextLen / 100, 3);
+      // TODO turn chinese comma into english comma
+      score += innerText.split(',').length;
+
+      candidates[parentTag] = candidates[parentTag]! + score;
+      if (grandParentTag != null) {
+        candidates[grandParentTag] = candidates[grandParentTag]! + score / 2;
+      }
+
+      // iterate the candiate, caculate link density
+      for (var candidate in candidates.keys) {
+        var links = candidate.querySelectorAll('a');
+        var text = candidate.text;
+        var linkLength = 0;
+        for (var link in links) {
+          linkLength += link.text.length;
+        }
+        var linkDensity = linkLength / text.length;
+        candidates[candidate] = candidates[candidate]! * (1 - linkDensity);
+      }
+    }
+    return candidates;
+  }
+
+  /// score elem
+  double _scoreNode(Element elem) {
+    double score = 0;
+    score += tagScore[elem.localName] ?? 0;
+    return score;
+  }
+
+  /// replace <div> to <p> if there is no block tag in <div>
+  /// traversal the dom tree recursively, if the tag is <div> and all son node dont have block tag, replace it with <p>
+  void _replaceDiv() {
+    var allDiv = _html.querySelectorAll('div');
+    for (var div in allDiv) {
+      var isBlock = false;
+      for (var tag in blockTag) {
+        if (div.querySelector(tag) != null) {
+          isBlock = true;
+          break;
+        }
+      }
+      if (!isBlock) {
+        // TODO check if need to reserve the attribute of div
+        div.replaceWith(parser.parse('<p>${div.innerHtml}</p>'));
+      }
+    }
+  }
 
   /// main process of the article extraction
   void parse() {
     _html = parser.parse(input);
+
+    if (_html.body == null) {
+      throw Exception('No body tag found in the html document');
+    }
     _cleanTagRaw();
     _cleanAttrRaw();
     _replaceDiv();
-    _score();
-    _replaceDiv();
-    _buildDoc();
+
+    Map<Element, double> candidates = _scoreParagraphs();
+
+    Element? topCandidate = selectBestCandidate(candidates);
+
+    if (topCandidate != null) {
+      sumary = topCandidate.outerHtml;
+    }
+  }
+
+  // choose best candidate
+  Element? selectBestCandidate(Map<Element, double> candidates) {
+    return candidates.entries
+        .reduce(
+            (entry1, entry2) => entry1.value > entry2.value ? entry1 : entry2)
+        .key;
   }
 
   /// Returns the content extract from the html document.
@@ -121,6 +189,6 @@ class HtmlDocument {
 
   /// Return pure html of the article, include title, author and body extracted from the html document.
   String? summary() {
-    return null;
+    return sumary;
   }
 }

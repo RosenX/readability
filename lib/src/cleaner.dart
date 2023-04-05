@@ -8,6 +8,7 @@ final badAttrs = [
   "background[-a-z]*",
   "on*"
 ];
+
 final singleQuoted = "'[^']+'";
 final doubleQuoted = '"[^"]+"';
 final nonSpace = '[^ "\'>]+';
@@ -21,6 +22,7 @@ final htmlStripRegExp = RegExp(
   caseSensitive: false,
 );
 
+// TODO check whether it is right
 String cleanAttributes(String html) {
   while (htmlStripRegExp.hasMatch(html)) {
     html = html.replaceAllMapped(htmlStripRegExp, (match) {
@@ -28,4 +30,12 @@ String cleanAttributes(String html) {
     });
   }
   return html;
+}
+
+String cleanText(String text) {
+  // Many spaces make the following regexes run forever
+  text = text.replaceAll(RegExp(r"\s{255,}"), ' ' * 255);
+  text = text.replaceAll(RegExp(r"\s*\n\s*"), '\n');
+  text = text.replaceAll(RegExp(r"\t|[ \t]{2,}"), ' ');
+  return text.trim();
 }
