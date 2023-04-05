@@ -1,4 +1,5 @@
 import 'package:readability/readability.dart';
+import 'package:html/parser.dart' as parser;
 import 'dart:io';
 
 void main() async {
@@ -7,7 +8,8 @@ void main() async {
   final content = await htmlFile.readAsString();
 
   var doc = HtmlDocument(input: content);
+
   doc.parse();
 
-  print(doc.sumary);
+  print(doc.pureHtml);
 }

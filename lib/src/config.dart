@@ -1,12 +1,5 @@
-final unUsefulTag = ['script', 'style', 'noscript', 'iframe', 'form'];
-
-// TODO add more unUsefulAttr
-final unUsefulAttrRegExp = [
-  'width',
-  'height',
-  'style',
-  'color*',
-];
+// TODO add more unUsefulTag
+final unUsefulTag = ['script', 'style', 'noscript', 'iframe', 'form', 'meta'];
 
 final blockTag = [
   'a',
@@ -62,3 +55,5 @@ final tagScore = {
 };
 
 final textTag = ['p', 'pre', 'td'];
+
+final keepAttr = ['href', 'src'];

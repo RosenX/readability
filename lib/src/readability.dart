@@ -10,20 +10,22 @@ import 'cleaner.dart';
 
 class HtmlDocument {
   String input;
-  String? encoding;
   Pattern? positiveKeywords;
   Pattern? negativeKeywords;
   String? url;
   int minTextLength;
   int retryLength;
-  bool xpath;
-  String handleFailures;
-
   late Document _html;
 
-  // TODO add more unUsefulTag
+  late String _content;
+  late String _title;
+  late String _pureHeml;
+  late String _author;
 
-  late String sumary;
+  String get title => _title;
+  String get content => _content;
+  String get author => _author;
+  String get pureHtml => _pureHeml;
 
   HtmlDocument({
     required this.input,
@@ -32,36 +34,30 @@ class HtmlDocument {
     this.url,
     this.minTextLength = 25,
     this.retryLength = 250,
-    this.xpath = false,
-    this.handleFailures = 'discard',
   });
 
   /// clean html document, remove script, style, etc.
-  void _cleanTagRaw() {
+  void _cleanUnUsefulTag() {
     for (var tag in unUsefulTag) {
       _html.querySelectorAll(tag).forEach((e) => e.remove());
     }
   }
 
-  /// clean useless attribute of html document, remove width, height, etc.
-  void _cleanAttrRaw() {
-    // Traverse all the nodes in the document, remove attribute match the regex in unUsefulAttrRegExp
-    _html.querySelectorAll('*').forEach((e) {
-      for (var attr in unUsefulAttrRegExp) {
-        e.attributes
-            .removeWhere((key, value) => RegExp(attr).hasMatch(key.toString()));
-      }
-    });
-  }
-
-  /// replase sequence of whitespace with single space
-  String _replaceWhitespace(String s) {
+  /// clean raw text
+  String _cleanRaw(String s) {
+    // replace all the whitespace with single space
     s.replaceAll(RegExp(r'\s+'), ' ');
+    // remove svg parts
+    s = s.replaceAll(RegExp(r'<svg.*?svg>'), '');
     return s;
   }
 
-  /// XXX get html
-  Document get html => _html;
+  /// turn Chinese Punctuation marks into English Punctuation marks
+  String _turnChinesePunctuationMarks(String s) {
+    s = s.replaceAll(RegExp(r'，'), ',');
+    s = s.replaceAll(RegExp(r'。'), '.');
+    return s;
+  }
 
   /// score nodes in html
   Map<Element, double> _scoreParagraphs() {
@@ -94,7 +90,7 @@ class HtmlDocument {
       double score = 1;
       // TODO use config
       score += min(innerTextLen / 100, 3);
-      // TODO turn chinese comma into english comma
+
       score += innerText.split(',').length;
 
       candidates[parentTag] = candidates[parentTag]! + score;
@@ -138,57 +134,91 @@ class HtmlDocument {
       }
       if (!isBlock) {
         // TODO check if need to reserve the attribute of div
-        div.replaceWith(parser.parse('<p>${div.innerHtml}</p>'));
+        Element p = Element.tag('p');
+        p.children.addAll(div.children);
+        div.replaceWith(p);
       }
     }
   }
 
+  void _getTitle() {
+    _title = _html.querySelector('title')?.text ?? "[No Title]";
+  }
+
+  void _getAuthor() {
+    _author =
+        _html.querySelector('meta[name="author"]')?.attributes['content'] ??
+            "[No Author]";
+  }
+
+  /// produce pure html with title, author, content
+  void _producePureHtml() {
+    _pureHeml = '''
+    <html>
+      <head>
+        <title>$_title</title>
+      </head>
+      <body>
+        <h1>$_title</h1>
+        $_content
+      </body>
+    </html>
+    ''';
+  }
+
   /// main process of the article extraction
   void parse() {
+    input = _cleanRaw(input);
+    input = _turnChinesePunctuationMarks(input);
+
     _html = parser.parse(input);
 
-    if (_html.body == null) {
-      throw Exception('No body tag found in the html document');
-    }
-    _cleanTagRaw();
-    _cleanAttrRaw();
+    _getTitle();
+    _getAuthor();
+
+    _cleanUnUsefulTag();
+
     _replaceDiv();
 
     Map<Element, double> candidates = _scoreParagraphs();
 
-    Element? topCandidate = selectBestCandidate(candidates);
+    Element? topCandidate = _selectBestCandidate(candidates);
 
     if (topCandidate != null) {
-      sumary = topCandidate.outerHtml;
+      _removeUnUsefulAttribue(topCandidate);
+      _removeEmptyTag(topCandidate);
+      _content = topCandidate.outerHtml;
+    } else {
+      _content = "[No Content]";
+    }
+
+    _producePureHtml();
+  }
+
+  /// remove all attribute of element except for the attribute in keepAttr
+  void _removeUnUsefulAttribue(Element elem) {
+    elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
+    for (var child in elem.children) {
+      _removeUnUsefulAttribue(child);
+    }
+  }
+
+  /// remove empty text tag
+  void _removeEmptyTag(Element elem) {
+    for (var child in elem.children) {
+      if (textTag.contains(child.localName) && child.text.isEmpty) {
+        child.remove();
+      } else {
+        _removeEmptyTag(child);
+      }
     }
   }
 
   // choose best candidate
-  Element? selectBestCandidate(Map<Element, double> candidates) {
+  Element? _selectBestCandidate(Map<Element, double> candidates) {
     return candidates.entries
         .reduce(
             (entry1, entry2) => entry1.value > entry2.value ? entry1 : entry2)
         .key;
-  }
-
-  /// Returns the content extract from the html document.
-  String? body() {
-    return null;
-  }
-
-  /// Returns the title of the article.
-  String? title() {
-    return null;
-  }
-
-  /// Returns the author of the article.
-  /// If the author is not found, returns null.
-  String? author() {
-    return null;
-  }
-
-  /// Return pure html of the article, include title, author and body extracted from the html document.
-  String? summary() {
-    return sumary;
   }
 }
