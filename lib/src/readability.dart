@@ -47,9 +47,13 @@ class HtmlDocument {
   String _cleanRaw(String s) {
     // replace all the whitespace with single space
     s = s.replaceAll(RegExp(r'\s+'), ' ');
-    // replace all '&lt;' with '<' and '&gt;' with '>'
-    // s = s.replaceAll(RegExp(r'&lt;'), '<');
-    // s = s.replaceAll(RegExp(r'&gt;'), '>');
+    return s;
+  }
+
+  /// repalce '&lt;' with '<' and '&gt;' with '>'
+  String _replaceLtGt(String s) {
+    s = s.replaceAll(RegExp(r'&lt;'), '<');
+    s = s.replaceAll(RegExp(r'&gt;'), '>');
     return s;
   }
 
@@ -197,8 +201,6 @@ class HtmlDocument {
     }
 
     _producePureHtml();
-
-    print(_pureHeml);
   }
 
   /// remove all attribute of element except for the attribute in keepAttr
@@ -230,7 +232,7 @@ class HtmlDocument {
       if (noscript != null) {
         // create a new figure Element, and put the img in noscript to it
         Element newFigure = Element.tag('figure');
-        newFigure.innerHtml = noscript.innerHtml;
+        newFigure.innerHtml = _replaceLtGt(noscript.innerHtml);
         figure.replaceWith(newFigure);
       }
     }

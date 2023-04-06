@@ -9,4 +9,6 @@ void main() async {
   var doc = HtmlDocument(input: content);
 
   doc.parse();
+
+  print(doc.pureHtml);
 }
