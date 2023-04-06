@@ -222,6 +222,7 @@ class HtmlDocument {
 
   /// query all figure tag
   /// if there is <noscript> in figure, remove img in figure, and put the img in noscript to figure
+  /// this is for the case that the img in figure is from rendered by javascript
   void _figurePretty(Element elem) {
     var figures = elem.querySelectorAll('figure');
     for (var figure in figures) {
