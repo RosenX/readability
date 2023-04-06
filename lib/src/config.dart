@@ -1,5 +1,5 @@
 // TODO add more unUsefulTag
-final unUsefulTag = ['script', 'style', 'noscript', 'iframe', 'form', 'meta'];
+final unUsefulTag = ['script', 'style', 'iframe', 'form', 'meta'];
 
 final blockTag = [
   'a',

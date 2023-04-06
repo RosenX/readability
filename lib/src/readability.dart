@@ -47,8 +47,9 @@ class HtmlDocument {
   String _cleanRaw(String s) {
     // replace all the whitespace with single space
     s.replaceAll(RegExp(r'\s+'), ' ');
-    // remove svg parts
-    s = s.replaceAll(RegExp(r'<svg.*?svg>'), '');
+    // replace all '&lt;' with '<' and '&gt;' with '>'
+    s = s.replaceAll(RegExp(r'&lt;'), '<');
+    s = s.replaceAll(RegExp(r'&gt;'), '>');
     return s;
   }
 
@@ -193,6 +194,8 @@ class HtmlDocument {
     }
 
     _producePureHtml();
+
+    print(_pureHeml);
   }
 
   /// remove all attribute of element except for the attribute in keepAttr
