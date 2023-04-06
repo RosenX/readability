@@ -46,10 +46,10 @@ class HtmlDocument {
   /// clean raw text
   String _cleanRaw(String s) {
     // replace all the whitespace with single space
-    s.replaceAll(RegExp(r'\s+'), ' ');
+    s = s.replaceAll(RegExp(r'\s+'), ' ');
     // replace all '&lt;' with '<' and '&gt;' with '>'
-    s = s.replaceAll(RegExp(r'&lt;'), '<');
-    s = s.replaceAll(RegExp(r'&gt;'), '>');
+    // s = s.replaceAll(RegExp(r'&lt;'), '<');
+    // s = s.replaceAll(RegExp(r'&gt;'), '>');
     return s;
   }
 
@@ -172,6 +172,8 @@ class HtmlDocument {
     input = _cleanRaw(input);
     input = _turnChinesePunctuationMarks(input);
 
+    // print(input);
+
     _html = parser.parse(input);
 
     _getTitle();
@@ -186,6 +188,7 @@ class HtmlDocument {
     Element? topCandidate = _selectBestCandidate(candidates);
 
     if (topCandidate != null) {
+      _figurePretty(topCandidate);
       _removeUnUsefulAttribue(topCandidate);
       _removeEmptyTag(topCandidate);
       _content = topCandidate.outerHtml;
@@ -213,6 +216,21 @@ class HtmlDocument {
         child.remove();
       } else {
         _removeEmptyTag(child);
+      }
+    }
+  }
+
+  /// query all figure tag
+  /// if there is <noscript> in figure, remove img in figure, and put the img in noscript to figure
+  void _figurePretty(Element elem) {
+    var figures = elem.querySelectorAll('figure');
+    for (var figure in figures) {
+      var noscript = figure.querySelector('noscript');
+      if (noscript != null) {
+        // create a new figure Element, and put the img in noscript to it
+        Element newFigure = Element.tag('figure');
+        newFigure.innerHtml = noscript.innerHtml;
+        figure.replaceWith(newFigure);
       }
     }
   }
