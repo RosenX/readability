@@ -128,7 +128,8 @@ class HtmlDocument {
   /// replace <div> to <p> if there is no block tag in <div>
   /// traversal the dom tree recursively, if the tag is <div> and all son node dont have block tag, replace it with <p>
   void _replaceDiv() {
-    var allDiv = _html.querySelectorAll('div');
+    // querySelectorAll return a pre-order traversal of dom tree
+    var allDiv = _html.querySelectorAll('div').reversed;
     for (var div in allDiv) {
       var isBlock = false;
       for (var tag in blockTag) {
@@ -138,7 +139,6 @@ class HtmlDocument {
         }
       }
       if (!isBlock) {
-        // TODO check if need to reserve the attribute of div
         Element p = Element.tag('p');
         p.children.addAll(div.children);
         div.replaceWith(p);
@@ -176,15 +176,11 @@ class HtmlDocument {
     input = _cleanRaw(input);
     input = _turnChinesePunctuationMarks(input);
 
-    // print(input);
-
     _html = parser.parse(input);
 
     _getTitle();
     _getAuthor();
-
     _cleanUnUsefulTag();
-
     _replaceDiv();
 
     Map<Element, double> candidates = _scoreParagraphs();
@@ -194,31 +190,32 @@ class HtmlDocument {
     if (topCandidate != null) {
       _figurePretty(topCandidate);
       _removeUnUsefulAttribue(topCandidate);
-      _removeEmptyTag(topCandidate);
+      _mergeSpanTag(topCandidate);
       _content = topCandidate.outerHtml;
     } else {
       _content = "[No Content]";
     }
-
     _producePureHtml();
+  }
+
+  /// merge span tag
+  void _mergeSpanTag(Element elem) {
+    var spans = elem.querySelectorAll('span').reversed;
+    for (var span in spans) {
+      if (span.children.isEmpty) {
+        span.replaceWith(Text(span.text));
+      }
+    }
   }
 
   /// remove all attribute of element except for the attribute in keepAttr
   void _removeUnUsefulAttribue(Element elem) {
+    if (attrKeepTag.contains(elem.localName)) {
+      return;
+    }
     elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
     for (var child in elem.children) {
       _removeUnUsefulAttribue(child);
-    }
-  }
-
-  /// remove empty text tag
-  void _removeEmptyTag(Element elem) {
-    for (var child in elem.children) {
-      if (textTag.contains(child.localName) && child.text.isEmpty) {
-        child.remove();
-      } else {
-        _removeEmptyTag(child);
-      }
     }
   }
 

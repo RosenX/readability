@@ -1,5 +1,12 @@
-// TODO add more unUsefulTag
-final unUsefulTag = ['script', 'style', 'iframe', 'form', 'meta'];
+final unUsefulTag = [
+  'script',
+  'iframe',
+  'form',
+  'meta',
+  'link',
+  'nav',
+  'style'
+];
 
 final blockTag = [
   'a',
@@ -54,6 +61,8 @@ final tagScore = {
   'h6': -5,
 };
 
-final textTag = ['p', 'pre', 'td'];
+final textTag = ['p', 'pre', 'td', 'img'];
 
 final keepAttr = ['href', 'src'];
+
+final attrKeepTag = [];
