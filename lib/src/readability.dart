@@ -43,13 +43,6 @@ class HtmlDocument {
     }
   }
 
-  /// clean raw text
-  String _cleanRaw(String s) {
-    // replace all the whitespace with single space
-    s = s.replaceAll(RegExp(r'\s+'), ' ');
-    return s;
-  }
-
   /// repalce '&lt;' with '<' and '&gt;' with '>'
   String _replaceLtGt(String s) {
     s = s.replaceAll(RegExp(r'&lt;'), '<');
@@ -173,7 +166,6 @@ class HtmlDocument {
 
   /// main process of the article extraction
   void parse() {
-    input = _cleanRaw(input);
     input = _turnChinesePunctuationMarks(input);
 
     _html = parser.parse(input);
@@ -190,22 +182,11 @@ class HtmlDocument {
     if (topCandidate != null) {
       _figurePretty(topCandidate);
       _removeUnUsefulAttribue(topCandidate);
-      _mergeSpanTag(topCandidate);
       _content = topCandidate.outerHtml;
     } else {
       _content = "[No Content]";
     }
     _producePureHtml();
-  }
-
-  /// merge span tag
-  void _mergeSpanTag(Element elem) {
-    var spans = elem.querySelectorAll('span').reversed;
-    for (var span in spans) {
-      if (span.children.isEmpty) {
-        span.replaceWith(Text(span.text));
-      }
-    }
   }
 
   /// remove all attribute of element except for the attribute in keepAttr
