@@ -1,6 +1,6 @@
 name: readability
 description: readability dart implement, Referencing https://github.com/buriy/python-readability
-version: 0.1.1
+version: 0.1.2
 repository: https://github.com/RosenX/readability
 
 environment:

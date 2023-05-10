@@ -61,7 +61,9 @@ final tagScore = {
   'h6': -5,
 };
 
-final textTag = ['p', 'pre', 'td', 'img'];
+final scoreTag = ['p', 'pre', 'td', 'img'];
+
+final textTag = ['p', 'pre', 'td'];
 
 final keepAttr = ['href', 'src'];
 

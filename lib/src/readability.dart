@@ -61,7 +61,7 @@ class HtmlDocument {
   Map<Element, double> _scoreParagraphs() {
     Map<Element, double> candidates = HashMap();
     // all element of in textTag
-    var allTextTag = _html.querySelectorAll(textTag.join(','));
+    var allTextTag = _html.querySelectorAll(scoreTag.join(','));
     for (var tag in allTextTag) {
       var parentTag = tag.parent;
       if (parentTag == null) {
@@ -181,6 +181,7 @@ class HtmlDocument {
 
     if (topCandidate != null) {
       _figurePretty(topCandidate);
+      _removeEmptyTag(topCandidate);
       _removeUnUsefulAttribue(topCandidate);
       _content = topCandidate.outerHtml;
     } else {
@@ -197,6 +198,17 @@ class HtmlDocument {
     elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
     for (var child in elem.children) {
       _removeUnUsefulAttribue(child);
+    }
+  }
+
+  /// if tag in textTag and its text is empty, remove it
+  void _removeEmptyTag(Element elem) {
+    if (textTag.contains(elem.localName) && elem.text.trim().isEmpty) {
+      elem.remove();
+      return;
+    }
+    for (var child in elem.children) {
+      _removeEmptyTag(child);
     }
   }
 
