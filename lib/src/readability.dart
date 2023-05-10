@@ -165,10 +165,15 @@ class HtmlDocument {
   }
 
   /// main process of the article extraction
-  void parse() {
+  bool parse() {
     input = _turnChinesePunctuationMarks(input);
 
     _html = parser.parse(input);
+
+    // if _html contains not parse tag, return false
+    if (_html.querySelector(notParseTag.join(',')) != null) {
+      return false;
+    }
 
     _getTitle();
     _getAuthor();
@@ -188,6 +193,7 @@ class HtmlDocument {
       _content = "[No Content]";
     }
     _producePureHtml();
+    return true;
   }
 
   /// remove all attribute of element except for the attribute in keepAttr

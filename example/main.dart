@@ -8,7 +8,10 @@ void main() async {
 
   var doc = HtmlDocument(input: content);
 
-  doc.parse();
-
-  print(doc.pureHtml);
+  var result = doc.parse();
+  if (result) {
+    print(doc.pureHtml);
+  } else {
+    print('not support page');
+  }
 }

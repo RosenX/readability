@@ -61,10 +61,12 @@ final tagScore = {
   'h6': -5,
 };
 
-final scoreTag = ['p', 'pre', 'td', 'img'];
+final scoreTag = ['p', 'pre', 'td', 'img', 'video'];
 
 final textTag = ['p', 'pre', 'td'];
 
 final keepAttr = ['href', 'src'];
 
 final attrKeepTag = [];
+
+final notParseTag = ['video'];
