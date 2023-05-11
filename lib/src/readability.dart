@@ -51,11 +51,11 @@ class HtmlDocument {
   }
 
   /// turn Chinese Punctuation marks into English Punctuation marks
-  String _turnChinesePunctuationMarks(String s) {
-    s = s.replaceAll(RegExp(r'，'), ',');
-    s = s.replaceAll(RegExp(r'。'), '.');
-    return s;
-  }
+  // String _turnChinesePunctuationMarks(String s) {
+  //   s = s.replaceAll(RegExp(r'，'), ',');
+  //   s = s.replaceAll(RegExp(r'。'), '.');
+  //   return s;
+  // }
 
   /// score nodes in html
   Map<Element, double> _scoreParagraphs() {
@@ -89,7 +89,7 @@ class HtmlDocument {
       // TODO use config
       score += min(innerTextLen / 100, 3);
 
-      score += innerText.split(',').length;
+      score += innerText.split(RegExp(r'[，,]')).length;
 
       candidates[parentTag] = candidates[parentTag]! + score;
       if (grandParentTag != null) {
@@ -166,7 +166,7 @@ class HtmlDocument {
 
   /// main process of the article extraction
   bool parse() {
-    input = _turnChinesePunctuationMarks(input);
+    // input = _turnChinesePunctuationMarks(input);
 
     _html = parser.parse(input);
 
