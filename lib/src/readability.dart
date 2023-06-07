@@ -157,7 +157,6 @@ class HtmlDocument {
         <title>$_title</title>
       </head>
       <body>
-        <h1>$_title</h1>
         $_content
       </body>
     </html>
