@@ -68,7 +68,7 @@ class HtmlDocument {
         continue;
       }
       var grandParentTag = parentTag.parent;
-      //TODO put it into beginning
+
       String innerText = cleanText(tag.text);
       int innerTextLen = innerText.length;
 
@@ -97,16 +97,16 @@ class HtmlDocument {
       }
 
       // iterate the candiate, caculate link density
-      for (var candidate in candidates.keys) {
-        var links = candidate.querySelectorAll('a');
-        var text = candidate.text;
-        var linkLength = 0;
-        for (var link in links) {
-          linkLength += link.text.length;
-        }
-        var linkDensity = linkLength / text.length;
-        candidates[candidate] = candidates[candidate]! * (1 - linkDensity);
-      }
+      // for (var candidate in candidates.keys) {
+      //   var links = candidate.querySelectorAll('a');
+      //   var text = candidate.text;
+      //   var linkLength = 0;
+      //   for (var link in links) {
+      //     linkLength += link.text.length;
+      //   }
+      //   var linkDensity = linkLength / text.length;
+      //   candidates[candidate] = candidates[candidate]! * (1 - linkDensity);
+      // }
     }
     return candidates;
   }
@@ -176,6 +176,16 @@ class HtmlDocument {
     ''';
   }
 
+  void _transformA() {
+    // if <a> has no child, but text is empty, try to find 'data-text' in attr
+    // case for zhihu article
+    _html.querySelectorAll('a').forEach((e) {
+      if (e.text.isEmpty) {
+        e.text = e.attributes['data-text'] ?? '';
+      }
+    });
+  }
+
   /// main process of the article extraction
   bool parse() {
     // input = _turnChinesePunctuationMarks(input);
@@ -191,6 +201,7 @@ class HtmlDocument {
     _getAuthor();
     _cleanUnUsefulTag();
     _replaceDiv();
+    _transformA();
 
     Map<Element, double> candidates = _scoreParagraphs();
 
