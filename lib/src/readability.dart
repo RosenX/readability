@@ -163,11 +163,12 @@ class HtmlDocument {
 
   /// produce pure html with title, author, content
   void _producePureHtml() {
+    // if _content not contain h1, add title to _content
+    if (!_content.contains('<h1')) {
+      _content = '<h1>$_title</h1>$_content';
+    }
     _pureHeml = '''
     <html>
-      <head>
-        <title>$_title</title>
-      </head>
       <body>
         $_content
       </body>
