@@ -63,10 +63,10 @@ final tagScore = {
 
 final scoreTag = ['p', 'pre', 'td', 'img', 'video'];
 
-final textTag = ['p', 'pre', 'td'];
+final textTag = ['pre', 'td'];
 
 final keepAttr = ['href', 'src'];
 
-final attrKeepTag = [];
+final attrKeepTag = ['audio'];
 
 final notParseTag = ['video'];
