@@ -164,7 +164,7 @@ class HtmlDocument {
   /// produce pure html with title, author, content
   void _producePureHtml() {
     // if _content not contain h1, add title to _content
-    if (!_content.contains('<h1')) {
+    if (!_content.contains('<h1') && _title.isNotEmpty) {
       _content = '<h1>$_title</h1>$_content';
     }
     _pureHeml = '''
@@ -198,14 +198,24 @@ class HtmlDocument {
 
     if (topCandidate != null) {
       _figurePretty(topCandidate);
-      _removeEmptyTag(topCandidate);
       _removeUnUsefulAttribue(topCandidate);
+      _removeUnnecessary(topCandidate);
+      _removeEmptyTag(topCandidate);
       _content = topCandidate.outerHtml;
     } else {
       _content = "[No Content]";
     }
     _producePureHtml();
     return true;
+  }
+
+  /// remove unnecessary element to make the html more pretty
+  void _removeUnnecessary(Element elem) {
+    // query h1 tag, if there is a <a> tag in h1, remove the <a> tag
+    var h1 = elem.querySelector('h1');
+    if (h1 != null) {
+      h1.querySelector('a')?.remove();
+    }
   }
 
   /// remove all attribute of element except for the attribute in keepAttr
