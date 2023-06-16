@@ -1,17 +1,29 @@
-import 'package:readability/readability.dart';
 import 'dart:io';
 
+import 'package:readability/readability.dart';
+
 void main() async {
-  final htmlFile = File('test.html');
+  final caseDir = Directory('../test_cases');
+  final outputDir = '../test_cases_output';
 
-  final content = await htmlFile.readAsString();
+  final List<FileSystemEntity> entities = await caseDir.list().toList();
 
-  var doc = HtmlDocument(input: content);
+  final Iterable<File> files = entities.whereType<File>();
 
-  var result = doc.parse();
-  if (result) {
-    print(doc.pureHtml);
-  } else {
-    print('not support page');
+  for (final file in files) {
+    final outputName = '$outputDir/${file.path.split('/').last}';
+    final htmlFile = File(file.path);
+
+    final content = await htmlFile.readAsString();
+
+    var doc = HtmlDocument(input: content);
+    File outputFile = File(outputName);
+
+    try {
+      var result = doc.parse();
+      outputFile.writeAsString(result ? doc.pureHtml : "not support page");
+    } catch (e) {
+      outputFile.writeAsString(e.toString());
+    }
   }
 }

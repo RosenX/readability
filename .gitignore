@@ -7,3 +7,4 @@
 pubspec.lock
 *.html
 *.json
+.DS_Store

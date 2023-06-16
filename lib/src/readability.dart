@@ -140,7 +140,19 @@ class HtmlDocument {
   }
 
   void _getTitle() {
-    _title = _html.querySelector('title')?.text ?? "[No Title]";
+    // first get title from meta
+    _title = _html
+            .querySelector('meta[property="og:title"]')
+            ?.attributes['content'] ??
+        '';
+    // if title is empty, get title from <title>
+    if (_title.isEmpty) {
+      _title = _html.querySelector('title')?.text ?? '';
+    }
+    // if title is empty, get title from <h1>
+    if (_title.isEmpty) {
+      _title = _html.querySelector('h1')?.text ?? '';
+    }
   }
 
   void _getAuthor() {
