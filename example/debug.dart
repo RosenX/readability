@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:readability/readability.dart';
+import 'package:readability/html_extractor.dart';
 
 void main(List<String> args) async {
   var inputFile = args[0];
@@ -8,13 +8,9 @@ void main(List<String> args) async {
   final htmlFile = File(inputFile);
   final content = await htmlFile.readAsString();
 
-  var doc = HtmlDocument(input: content);
+  var extractor = HtmlExtractor(rawHtml: content, method: Method.readability);
+  var result = extractor.parse();
 
   var outputFile = File('clean.html');
-  try {
-    var result = doc.parse();
-    outputFile.writeAsString(result ? doc.pureHtml : "not support page");
-  } catch (e) {
-    outputFile.writeAsString(e.toString());
-  }
+  outputFile.writeAsString(result);
 }
