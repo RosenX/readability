@@ -1,508 +1,379 @@
-    <html>
-      <body>
-        <div><h1>ChatGPT plugins</h1><!--[-->
-            <div>
-                          <p>In line with our <a href="https://production.openai.com/research/language-model-safety-and-misuse">iterative deployment</a> philosophy, we are gradually rolling
-                            out plugins in ChatGPT so we can study their real-world use, impact, and <a href="https://openai.com/blog/our-approach-to-alignment-research">safety and alignment</a> challenges—all of which
-                            we’ll have to get right in order to achieve <a href="https://openai.com/blog/planning-for-agi-and-beyond">our mission</a>.</p>
-                          <p>Users have been asking for plugins since we launched ChatGPT (and many developers are <a href="https://arxiv.org/abs/2302.07842">experimenting</a> <a href="https://arxiv.org/abs/2302.04761">with</a> <a href="https://www.adept.ai/act">similar</a> <a href="https://langchain.readthedocs.io/">ideas</a>) because they unlock a vast range of possible use cases. We’re
-                            starting with a small set of users and are planning to gradually roll out larger-scale
-                            access as we learn more (for plugin developers, ChatGPT users, and after an alpha period,
-                            API users who would like to integrate plugins into their products). We’re excited to build a
-                            community shaping the future of the human–AI interaction paradigm.</p>
-                          <p>Plugin developers who have been invited off our waitlist can use our <a href="http://platform.openai.com/docs/plugins/introduction">documentation</a> to build a plugin for ChatGPT, which then lists the
-                            enabled plugins in the prompt shown to the language model as well as documentation to
-                            instruct the model how to use each. The first plugins have been created by <a href="https://www.expedia.com/">Expedia</a>, <a href="https://fiscalnote.com/">FiscalNote</a>,
-                            <a href="https://www.instacart.com/">Instacart</a>, <a href="https://www.kayak.com/">KAYAK</a>, <a href="https://www.klarna.com/">Klarna</a>, <a href="https://www.joinmilo.com/">Milo</a>, <a href="https://www.opentable.com/">OpenTable</a>, <a href="https://www.shopify.com/">Shopify</a>, <a href="https://slack.com/">Slack</a>, <a href="https://www.speak.com/">Speak</a>, <a href="http://wolfram.com/">Wolfram</a>, and <a href="https://zapier.com/">Zapier</a>.
-                          </p>
-                        </div>
-            <div>
-                          <!--[-->
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/expedia.svg">
-                              </div><span>Expedia</span><span>Bring your trip plans to
-                                life—get there, stay there, find things to see and do.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/fiscal-note.jpg">
-                              </div><span>FiscalNote</span><span>Provides and enables access to
-                                select market-leading, real-time data sets for legal, political, and regulatory data and
-                                information.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/instacart.jpg">
-                              </div><span>Instacart</span><span>Order from your favorite local
-                                grocery stores.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/kayak.jpg">
-                              </div><span>KAYAK</span><span>Search for flights, stays and
-                                rental cars. Get recommendations for all the places you can go within your
-                                budget.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/klarna.jpg">
-                              </div><span>Klarna
-                                Shopping</span><span>Search and
-                                compare prices from
-                                thousands of online shops.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/milo-family-ai.jpg">
-                              </div><span>Milo Family
-                                AI</span><span>Giving parents
-                                superpowers to
-                                turn the manic to magic, 20 minutes each day. Ask: Hey Milo, what’s magic today?</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/open-table.jpg">
-                              </div><span>OpenTable</span><span>Provides restaurant
-                                recommendations, with a direct link to book.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/shop.jpg">
-                              </div><span>Shop</span><span>Search for millions of products
-                                from the world’s greatest brands.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/speak.jpg">
-                              </div><span>Speak</span><span>Learn how to say anything in
-                                another language with Speak, your AI-powered language tutor.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/wolfram-alpha.jpg">
-                              </div><span>Wolfram</span><span>Access computation, math,
-                                curated knowledge &amp; real-time data through Wolfram|Alpha and Wolfram
-                                Language.</span>
-                            </div>
-                          <div>
-                              <div>
-                                <img src="https://cdn.openai.com/chat-plugins/plugin-icons/zapier.jpg">
-                              </div><span>Zapier</span><span>Interact with over 5,000+ apps
-                                like Google Sheets, Trello, Gmail, HubSpot, Salesforce, and more.</span>
-                            </div><!--]-->
-                        </div>
-            <div>
-                          <p>We’re also hosting two plugins ourselves, a  and . We’ve also open-sourced the code for a
-                            knowledge base <a href="https://github.com/openai/chatgpt-retrieval-plugin">retrieval plugin</a>, to be self-hosted by any
-                            developer with information with which they’d like to augment ChatGPT.</p>
-                          <p>Today, we will begin extending plugin alpha access to users and developers from our <a href="http://openai.com/waitlist/plugins">waitlist</a>. While we will initially prioritize a small number of
-                            developers and ChatGPT Plus users, we plan to roll out larger-scale access over time.<br></p>
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/10634e3c-0c4c-4cee-84ef-e8ee30dfaf3f/example-of-how-to-use-chatgpt-plugins-16x9-poster.png"></div>
-                          
-                        </div>
-            <p><h2>Overview</h2></p>
-            <div>
-                          <p>Language models today, while useful for a variety of tasks, are still limited. The only
-                            information they can learn from is their training data. This information can be out-of-date
-                            and is one-size fits all across applications. Furthermore, the only thing language models
-                            can do out-of-the-box is emit text. This text can contain useful instructions, but to
-                            actually follow these instructions you need another process.</p>
-                          <p>Though not a perfect analogy, plugins can be “eyes and ears” for language models, giving
-                            them access to information that is too recent, too personal, or too specific to be included
-                            in the training data. In response to a user’s explicit request, plugins can also enable
-                            language models to perform safe, constrained actions on their behalf, increasing the
-                            usefulness of the system overall.</p>
-                          <p>We expect that open standards will emerge to unify the ways in which applications expose an
-                            AI-facing interface. We are working on an early attempt at what such a standard might look
-                            like, and we’re looking for feedback from developers interested in building with us.</p>
-                          <p>Today, we’re beginning to gradually enable existing plugins from our early collaborators
-                            for ChatGPT users, beginning with ChatGPT Plus subscribers. We’re also beginning to roll out
-                            the ability for developers to create their own plugins for ChatGPT.</p>
-                          <p>In the coming months, as we learn from deployment and continue to improve our safety
-                            systems, we’ll iterate on this protocol, and we plan to enable developers using OpenAI
-                            models to integrate plugins into their own applications beyond ChatGPT.<br></p>
-                        </div>
-            <p><h2>Safety and broader implications</h2></p>
-            <div>
-                          <p>Connecting language models to external tools introduces new opportunities as well as
-                            significant <a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">new risks</a>.</p>
-                          <p>Plugins offer the potential to tackle various challenges associated with large language
-                            models, including “hallucinations,” keeping up with recent events, and accessing (with
-                            permission) proprietary information sources. By integrating explicit access to external
-                            data—such as up-to-date information&nbsp;online, code-based calculations, or custom
-                            plugin-retrieved information—language models can strengthen their responses with
-                            evidence-based references.</p>
-                          <p>These references not only enhance the model’s utility but also enable users to assess the
-                            trustworthiness of the model’s output and double-check its accuracy, potentially mitigating
-                            risks related to overreliance as discussed in our recent GPT-4 <a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">system card</a>. Lastly, the value of plugins may go well beyond
-                            addressing existing limitations by helping users with a variety of new use cases, ranging
-                            from browsing product catalogs to booking flights or ordering food.</p>
-                          <p>At the same time, there’s a risk that plugins could increase safety challenges by taking
-                            harmful or unintended actions, increasing the capabilities of bad actors who would defraud,
-                            mislead, or abuse others. By increasing the range of possible applications, plugins may
-                            raise the risk of negative consequences from mistaken or misaligned actions taken by the
-                            model in new domains. From day one, these factors have guided the development of our plugin
-                            platform, and we have implemented several safeguards.</p>
-                        </div>
-            <div>
-                      <figure>
-                        <blockquote>
-                          <p><span>From day one,
-                              these factors have guided the development of our plugin platform, and we have implemented
-                              several safeguards.</span></p>
-                        </blockquote><!---->
-                      </figure>
-                    </div>
-            <div>
-                          <p>We’ve performed red-teaming exercises, both internally and with external collaborators,
-                            that have revealed a number of possible concerning scenarios. For example, our red teamers
-                            discovered ways for plugins—if released without safeguards—to perform sophisticated prompt
-                            injection, send fraudulent and spam emails, bypass safety restrictions, or misuse
-                            information sent to the plugin. We’re using these findings to inform safety-by-design
-                            mitigations that restrict risky plugin behaviors and improve transparency of how and when
-                            they're operating as part of the user experience. We're also using these findings to inform
-                            our decision to gradually deploy access to plugins.</p>
-                          <p>If you’re a researcher interested in studying safety risks or mitigations in this area, we
-                            encourage you to make use of our <a href="https://openai.com/form/researcher-access-program">Researcher Access Program</a>. We also invite
-                            developers and researchers to submit plugin-related safety and capability evaluations as
-                            part of our recently open-sourced <a href="https://github.com/openai/evals">Evals framework</a>.</p>
-                          <p>Plugins will likely have wide-ranging societal implications. For example, we recently
-                            released a <a href="https://arxiv.org/abs/2303.10130">working paper</a> which found that language models with access to tools
-                            will likely have much greater economic impacts than those without, and more generally, in
-                            line with <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4350925">other</a> <a href="https://arxiv.org/abs/2302.06590">researchers’</a> findings, we expect the current wave of AI technologies
-                            to have a big effect on the pace of job transformation, displacement, and creation. We are
-                            eager to collaborate with external <a href="https://share.hsforms.com/1NeBQeLgkS2SZPE3lQ6oNRQ4sk30">researchers</a> and our <a href="https://share.hsforms.com/1dxauGUqlTsKdqFriJjriDA4sk30">customers</a> to study these impacts.<br></p>
-                        </div>
-            <div>
-                      <p><h2>Browsing</h2><span>Alpha</span></p>
-                      
-                    </div>
-            <div>
-                          <p>Motivated by past work (our own <a href="https://openai.com/research/webgpt">WebGPT</a>, as well as <a href="https://arxiv.org/abs/2203.11147">GopherCite</a>, <a href="https://parl.ai/projects/blenderbot2/">BlenderBot2</a>, <a href="https://ai.googleblog.com/2022/01/lamda-towards-safe-grounded-and-high.html">LaMDA2</a> and <a href="https://arxiv.org/pdf/2209.14375.pdf">others</a>), allowing language models to read information from the
-                            internet strictly expands the amount of content they can discuss, going beyond the training
-                            corpus to fresh information from the present day.</p>
-                          <p>Here’s an example of the kind of experience that browsing opens up to ChatGPT users, that
-                            previously would have had the model politely point out that its training data didn’t include
-                            enough information to let it answer. This example, in which ChatGPT retrieves recent
-                            information about the latest Oscars, and then performs now-familiar ChatGPT poetry feats, is
-                            one way that browsing can be an additive experience.<br></p>
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/91bc37ec-355d-4af3-9436-ac9cfbe92a07/browsing-poster.jpg"></div>
-                          
-                        </div>
-            <p>In addition to providing obvious utility to end-users, we think enabling language and chat
-                            models to do thorough and interpretable research has exciting prospects for <a href="https://openai.com/blog/our-approach-to-alignment-research">scalable alignment</a>.<br>
-                          </p>
-            <div>
-                    <figure>
-                      <div>
-                          <div>
-                            <p><span>TD</span></p>
-                            <div><!--[-->
-                              <p> Can you tell me what person/movie won the oscar for these categories? </p>
-                              <ul>
-                                <li>- Best Actor</li>
-                                <li>- Best soundtrack</li>
-                                <li>- Best picture</li>
-                                <li>- Best supporting actor</li>
-                              </ul>
-                              <p>And then come up with a poem linking them together</p><!--]-->
-                            </div>
-                          </div>
-                          <div>
-                            <div>
-                              <!--[--><span>OAI</span>
-                              <!--]-->
-                            </div>
-                            <div><!--[-->
-                              <div>
-                                  
-                                  <ul><!--[-->
-                                    <li>
-                                      <div>
-                                        <span>Searched: <span>"Oscar winners Best Actor
-                                            Best Soundtrack Best Picture Best Supporting Actor"</span></span>
-                                      </div><!---->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Clicked on:</span>
-                                      </div><!--[--><span>&nbsp;</span><a href="https://www.cnn.com/2023/03/12/entertainment/oscar-winners-2023/index.html"><img src="https://cdn.openai.com/chat-plugins/browsing-demo/cnn.jpg">
-                                        <div><span>Oscar winners 2023: See
-                                            the full list | CNN</span>
-                                          
-                                        </div>
-                                        
-                                      </a><!--]-->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Going back to last page</span>
-                                      </div><!---->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Clicked on:</span>
-                                      </div><!--[--><span>&nbsp;</span><a href="https://www.cnn.com/2023/03/12/entertainment/oscar-winners-2023/index.html"><img src="https://cdn.openai.com/chat-plugins/browsing-demo/cnn.jpg">
-                                        <div><span>Oscar winners 2023: See
-                                            the full list | CNN</span>
-                                          
-                                        </div>
-                                        
-                                      </a><!--]-->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Going back to last page</span>
-                                      </div><!---->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Clicked on:</span>
-                                      </div><!--[--><span>&nbsp;</span><a href="https://abcnews.go.com/US/wireStory/list-2023-oscar-winners-97811220"><img src="https://cdn.openai.com/chat-plugins/browsing-demo/abc.jpg">
-                                        <div><span>List of 2023 Oscar Winners
-                                            - ABC News</span>
-                                          
-                                        </div>
-                                        
-                                      </a><!--]-->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Reading content</span>
-                                      </div><!---->
-                                    </li>
-                                    <li>
-                                      <div>
-                                        <span>Finished browsing</span>
-                                      </div><!---->
-                                    </li><!--]-->
-                                  </ul>
-                                </div>
-                              <p>Here are the Oscar winners for the categories you requested:</p>
-                              <ul>
-                                <li>• Best Actor: Brendan Fraser, "The Whale"</li>
-                                <li>• Best Soundtrack (Original Song): "Naatu Naatu" from "RRR"</li>
-                                <li>• Best Picture: "Everything Everywhere All at Once"</li>
-                                <li> • Best Supporting Actor: Ke Huy Quan, "Everything Everywhere All at Once" <div><sup>1</sup><a href="https://abcnews.go.com/US/wireStory/list-2023-oscar-winners-97811220"><img src="https://cdn.openai.com/chat-plugins/browsing-demo/abc.jpg"><span>List of 2023 Oscar Winners -
-                                        ABC News</span>
-                                      
-                                    </a></div>
-                                </li>
-                              </ul>
-                              <p>Here is a poem linking them together:</p>
-                              <p> In the depths of the ocean, "The Whale" did roam, With Brendan
-                                Fraser's performance, a light was shone, While "Naatu Naatu" played with rhythm and
-                                beat, From "RRR", a soundtrack that's truly a treat. </p>
-                              <div>
-                                <p> "Everything Everywhere All at Once" took the stage, Winning
-                                  Best Picture, a triumph for this age, With Ke Huy Quan in a supporting role, His
-                                  performance captured our hearts, our very soul. </p>
-                                <p> So here's to the winners, to the stories they've spun, To the
-                                  music, the acting, the battles they've won, For in the world of cinema, they've made
-                                  their mark, Leaving an imprint, a flame, a lasting spark. </p>
-                                
-                              </div><!--]-->
-                            </div>
-                          </div>
-                        </div>
-                      <figcaption> Browsing up-to-date information </figcaption>
-                    </figure>
-                  </div>
-            <p><h3>Safety considerations</h3></p>
-            <div>
-                          <p>We’ve created a web browsing plugin which gives a language model access to a web browser,
-                            with its design prioritizing both safety and operating as a good citizen of the web. The
-                            plugin’s text-based web browser is limited to making GET requests, which reduces (but does
-                            not eliminate) certain classes of safety risks. This scopes the browsing plugin to be useful
-                            for retrieving information, but excludes “transactional” operations such as form submission
-                            which have more surface area for security and safety issues.</p>
-                          <p>Browsing retrieves content from the web using the Bing search API.&nbsp;As a result, we
-                            inherit substantial work from Microsoft on (1) source reliability and truthfulness of
-                            information and (2) “safe-mode” to prevent the retrieval of problematic content. The plugin
-                            operates within an isolated service, so ChatGPT’s browsing activities are separated from the
-                            rest of our infrastructure.</p>
-                          <p>To respect content creators and adhere to the web’s norms, our browser plugin’s user-agent
-                            token is <a href="https://openai.com/bot">ChatGPT-User</a> and is configured to honor websites' robots.txt files.
-                            This may occasionally result in a “click failed” message, which indicates that the plugin is
-                            honoring the website's instruction to avoid crawling it. This user-agent will only be used
-                            to take direct actions on behalf of ChatGPT users and is not used for crawling the web in
-                            any automatic fashion. We have also published our <a href="https://platform.openai.com/docs/plugins/production/ip-egress-ranges">IP egress ranges</a>. Additionally,
-                            rate-limiting measures have been implemented to avoid sending excessive traffic to
-                            websites.<br></p>
-                        </div>
-            <div>
-                      <p><span>Click failed</span></p><span>You can block ChatGPT crawling your site
-                        using the
-                        robots.txt file, ChatGPT will show this error message when this happens.</span>
-                    </div>
-            <p>Our browsing plugin shows websites visited and cites its sources in ChatGPT’s responses.
-                            This added layer of transparency helps users verify the accuracy of the model’s responses
-                            and also gives credit back to content creators. We appreciate that this is a new method of
-                            interacting with the web, and welcome feedback on additional ways to drive traffic back to
-                            sources and add to the overall health of the ecosystem.<br></p>
-            <div>
-                      <p><h2>Code interpreter</h2><span>Alpha</span></p>
-                      
-                    </div>
-            <p>We provide our models with a working Python interpreter in<strong> </strong>a sandboxed,
-                            firewalled execution environment, along with some ephemeral disk space. Code run by our
-                            interpreter plugin is evaluated in a persistent session that is alive for the duration of a
-                            chat conversation (with an upper-bound timeout) and subsequent calls can build on top of
-                            each other. We support uploading files to the current conversation workspace and downloading
-                            the results of your work.<br></p>
-            <div>
-                    <figure>
-                      <div>
-                          <div>
-                            <p><span>JW</span></p>
-                            <p> a brick weighs 30% of a brick plus five GPUs there are 100
-                                bricks and 200 GPUs in a metric ton how much does a brick weigh? </p>
-                          </div>
-                          <div>
-                            <div>
-                              <!--[--><span>OAI</span>
-                              <!--]-->
-                            </div>
-                            <div><!--[-->
-                              <p> Let's call the weight of a brick "B" and the weight of a GPU
-                                "G". We can set up an equation based on the information given: </p>
-                              <p>B = 0.3 * B + 5 * G</p>
-                              <p> We can also set up another equation based on the total weight of
-                                100 bricks and 200 GPUs being equal to 1 metric ton (1000 kilograms): </p>
-                              <p>100 * B + 200 * G = 1000</p>
-                              <p> We can solve this system of equations to find the weight of a
-                                brick (B) and the weight of a GPU (G). </p>
-                              <div>
-                                  
-                                  <div><!--[-->
-                                    <pre><code>from sympy import symbols, Eq, solve
+<html>
 
-B, G = symbols('B G')
-eq1 = Eq(B, 0.3 * B + 5 * G)
-eq2 = Eq(100 * B + 200 * G, 1000)
-solution = solve((eq1, eq2), (B, G))
-solution[B]</code></pre>
-                                    <pre><code># Result
-7.81250000000000</code></pre><!--]-->
-                                  </div>
-                                </div>
-                              <p>The weight of a brick is 7.8125 kg.</p><!--]-->
-                            </div>
-                          </div>
-                        </div>
-                      <figcaption> Code interpreter plugin performing logic
-                        calculations </figcaption>
-                    </figure>
-                  </div>
-            <div>
-                          <p>We would like our models to be able to use their <a href="https://arxiv.org/abs/2107.03374">programming</a> <a href="https://arxiv.org/abs/2303.08774">skills</a> to provide a much more natural interface to most fundamental
-                            capabilities of our computers. Having access to a very eager junior programmer working at
-                            the speed of your fingertips can make completely new workflows effortless and efficient, as
-                            well as open the benefits of programming to new audiences.</p>
-                          <p>From our initial user studies, we’ve identified use cases where using code interpreter is
-                            especially useful:</p>
-                          <ul>
-                            <li>Solving mathematical problems, both quantitative and qualitative</li>
-                            <li>Doing data analysis and visualization</li>
-                            <li>Converting files between formats</li>
-                          </ul>
-                          <p>We invite users to try the code interpreter integration and discover other useful tasks.<br></p>
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/5388d90c-ddc8-46f0-a49e-9ba8257ee2f2/interpreter-plug-in-poster.jpeg"></div>
-                          
-                        </div>
-            <p><h3>Safety considerations</h3></p>
-            <p>The primary consideration for connecting our models to a programming language interpreter
-                            is properly sandboxing<strong> </strong>the execution so that AI-generated code does not
-                            have unintended side-effects in the real world. We execute code in a secured environment and
-                            use strict network controls to prevent external internet access from executed code.
-                            Additionally, we have set resource limits on each session. Disabling internet access limits
-                            the functionality of our code sandbox, but we believe it’s the right initial tradeoff.  were
-                            designed as a safety-first method of connecting our models to the outside world.<br></p>
-            <p><h2>Retrieval</h2></p>
-            <div>
-                          <p>The open-source retrieval plugin enables ChatGPT to access personal or organizational
-                            information sources (with permission). It allows users to obtain the most relevant document
-                            snippets from their data sources, such as files, notes, emails or public documentation, by
-                            asking questions or expressing needs in natural language.</p>
-                          <p>As an open-source and self-hosted solution, developers can deploy their own version of the
-                            plugin and register it with ChatGPT. The plugin leverages <a href="https://platform.openai.com/docs/guides/embeddings">OpenAI embeddings</a> and allows developers to choose a vector database
-                            (<a href="https://milvus.io/">Milvus</a>, <a href="https://www.pinecone.io/">Pinecone</a>, <a href="https://qdrant.tech/">Qdrant</a>, <a href="https://redis.io/docs/stack/search/reference/vectors/">Redis</a>, <a href="https://weaviate.io/">Weaviate</a> or <a href="https://zilliz.com/">Zilliz</a>) for indexing and searching documents. Information sources can
-                            be synchronized with the database using webhooks.</p>
-                          <p>To begin, visit the <a href="https://github.com/openai/chatgpt-retrieval-plugin">retrieval plugin repository</a>.<br></p>
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/8ca32622-1615-4af6-84ca-6838a73a11fa/retrieval-poster.jpg"></div>
-                          
-                        </div>
-            <p><h3>Security considerations</h3></p>
-            <p>The retrieval plugin allows ChatGPT to search a vector database of content, and add the
-                            best results into the ChatGPT session. This means it doesn’t have any external effects, and
-                            the main risk is data authorization and privacy. Developers should only add content into
-                            their retrieval plugin that they are authorized to use and can share in users’ ChatGPT
-                            sessions.<br></p>
-            <div>
-                      <p><h2>Third-party plugins</h2><span>Alpha</span></p>
-                      
-                    </div>
-            <div>
-                    <figure>
-                      <div>
-                        <div>
-                            <span>Model</span>
-                            <p><span>Plugins</span><span>Alpha</span></p><!---->
-                          </div>
-                        <div>
-                          <span>Choose plugins</span>
-                          <div><!--[-->
-                            <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/open-table.jpg"></div>
-                            <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/wolfram-alpha.jpg"></div>
-                            <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/instacart.jpg"></div><!--]-->
-                          </div>
-                        </div>
-                        <div>
-                            
-                            <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/open-table.jpg"></div><span>OpenTable</span><span>Make
-                              and manage reservations at your favorite restaurants</span>
-                          </div>
-                        <div>
-                            <!--[-->
-                            <div>
-                                <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/open-table.jpg"></div><span>OpenTable</span>
-                                
-                              </div>
-                            <div>
-                                <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/wolfram-alpha.jpg"></div><span>Wolfram</span>
-                                
-                              </div>
-                            <div>
-                                <div><img src="https://cdn.openai.com/chat-plugins/plugin-icons/instacart.jpg"></div><span>Instacart</span>
-                                
-                              </div><!--]-->
-                            <div>
-                              <span><span>Plugin store</span></span>
-                              
-                            </div>
-                          </div>
-                      </div>
-                      <figcaption> Third-party plugins in ChatGPT </figcaption>
-                    </figure>
-                  </div>
-            <p>Third-party plugins are described by a <a href="https://platform.openai.com/docs/plugins/getting-started/">manifest file</a>, which includes a machine-readable description of the
-                            plugin’s capabilities and how to invoke them, as well as user-facing documentation.<br></p>
-            <div><!----><!----><!---->
-                      <div>
-                          <pre><code>{
+<body>
+  <div>
+    <h1>ChatGPT plugins</h1><!--[-->
+    <div>
+      <p>In line with our <a href="https://production.openai.com/research/language-model-safety-and-misuse">iterative
+          deployment</a> philosophy, we are gradually rolling
+        out plugins in ChatGPT so we can study their real-world use, impact, and <a
+          href="https://openai.com/blog/our-approach-to-alignment-research">safety and alignment</a> challenges—all of
+        which
+        we’ll have to get right in order to achieve <a href="https://openai.com/blog/planning-for-agi-and-beyond">our
+          mission</a>.</p>
+      <p>Users have been asking for plugins since we launched ChatGPT (and many developers are <a
+          href="https://arxiv.org/abs/2302.07842">experimenting</a> <a href="https://arxiv.org/abs/2302.04761">with</a>
+        <a href="https://www.adept.ai/act">similar</a> <a href="https://langchain.readthedocs.io/">ideas</a>) because
+        they unlock a vast range of possible use cases. We’re
+        starting with a small set of users and are planning to gradually roll out larger-scale
+        access as we learn more (for plugin developers, ChatGPT users, and after an alpha period,
+        API users who would like to integrate plugins into their products). We’re excited to build a
+        community shaping the future of the human–AI interaction paradigm.
+      </p>
+      <p>Plugin developers who have been invited off our waitlist can use our <a
+          href="http://platform.openai.com/docs/plugins/introduction">documentation</a> to build a plugin for ChatGPT,
+        which then lists the
+        enabled plugins in the prompt shown to the language model as well as documentation to
+        instruct the model how to use each. The first plugins have been created by <a
+          href="https://www.expedia.com/">Expedia</a>, <a href="https://fiscalnote.com/">FiscalNote</a>,
+        <a href="https://www.instacart.com/">Instacart</a>, <a href="https://www.kayak.com/">KAYAK</a>, <a
+          href="https://www.klarna.com/">Klarna</a>, <a href="https://www.joinmilo.com/">Milo</a>, <a
+          href="https://www.opentable.com/">OpenTable</a>, <a href="https://www.shopify.com/">Shopify</a>, <a
+          href="https://slack.com/">Slack</a>, <a href="https://www.speak.com/">Speak</a>, <a
+          href="http://wolfram.com/">Wolfram</a>, and <a href="https://zapier.com/">Zapier</a>.
+      </p>
+    </div>
+    <div>
+      <!--[-->
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/expedia.svg">
+        </div><span>Expedia</span><span>Bring your trip plans to
+          life—get there, stay there, find things to see and do.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/fiscal-note.jpg">
+        </div><span>FiscalNote</span><span>Provides and enables access to
+          select market-leading, real-time data sets for legal, political, and regulatory data and
+          information.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/instacart.jpg">
+        </div><span>Instacart</span><span>Order from your favorite local
+          grocery stores.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/kayak.jpg">
+        </div><span>KAYAK</span><span>Search for flights, stays and
+          rental cars. Get recommendations for all the places you can go within your
+          budget.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/klarna.jpg">
+        </div><span>Klarna
+          Shopping</span><span>Search and
+          compare prices from
+          thousands of online shops.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/milo-family-ai.jpg">
+        </div><span>Milo Family
+          AI</span><span>Giving parents
+          superpowers to
+          turn the manic to magic, 20 minutes each day. Ask: Hey Milo, what’s magic today?</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/open-table.jpg">
+        </div><span>OpenTable</span><span>Provides restaurant
+          recommendations, with a direct link to book.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/shop.jpg">
+        </div><span>Shop</span><span>Search for millions of products
+          from the world’s greatest brands.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/speak.jpg">
+        </div><span>Speak</span><span>Learn how to say anything in
+          another language with Speak, your AI-powered language tutor.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/wolfram-alpha.jpg">
+        </div><span>Wolfram</span><span>Access computation, math,
+          curated knowledge &amp; real-time data through Wolfram|Alpha and Wolfram
+          Language.</span>
+      </div>
+      <div>
+        <div>
+          <img src="https://cdn.openai.com/chat-plugins/plugin-icons/zapier.jpg">
+        </div><span>Zapier</span><span>Interact with over 5,000+ apps
+          like Google Sheets, Trello, Gmail, HubSpot, Salesforce, and more.</span>
+      </div><!--]-->
+    </div>
+    <div>
+      <p>We’re also hosting two plugins ourselves, a and . We’ve also open-sourced the code for a
+        knowledge base <a href="https://github.com/openai/chatgpt-retrieval-plugin">retrieval plugin</a>, to be
+        self-hosted by any
+        developer with information with which they’d like to augment ChatGPT.</p>
+      <p>Today, we will begin extending plugin alpha access to users and developers from our <a
+          href="http://openai.com/waitlist/plugins">waitlist</a>. While we will initially prioritize a small number of
+        developers and ChatGPT Plus users, we plan to roll out larger-scale access over time.<br></p>
+    </div>
+    <div>
+
+      <div><img
+          src="https://images.openai.com/blob/10634e3c-0c4c-4cee-84ef-e8ee30dfaf3f/example-of-how-to-use-chatgpt-plugins-16x9-poster.png">
+      </div>
+
+    </div>
+    <p>
+    <h2>Overview</h2>
+    </p>
+    <div>
+      <p>Language models today, while useful for a variety of tasks, are still limited. The only
+        information they can learn from is their training data. This information can be out-of-date
+        and is one-size fits all across applications. Furthermore, the only thing language models
+        can do out-of-the-box is emit text. This text can contain useful instructions, but to
+        actually follow these instructions you need another process.</p>
+      <p>Though not a perfect analogy, plugins can be “eyes and ears” for language models, giving
+        them access to information that is too recent, too personal, or too specific to be included
+        in the training data. In response to a user’s explicit request, plugins can also enable
+        language models to perform safe, constrained actions on their behalf, increasing the
+        usefulness of the system overall.</p>
+      <p>We expect that open standards will emerge to unify the ways in which applications expose an
+        AI-facing interface. We are working on an early attempt at what such a standard might look
+        like, and we’re looking for feedback from developers interested in building with us.</p>
+      <p>Today, we’re beginning to gradually enable existing plugins from our early collaborators
+        for ChatGPT users, beginning with ChatGPT Plus subscribers. We’re also beginning to roll out
+        the ability for developers to create their own plugins for ChatGPT.</p>
+      <p>In the coming months, as we learn from deployment and continue to improve our safety
+        systems, we’ll iterate on this protocol, and we plan to enable developers using OpenAI
+        models to integrate plugins into their own applications beyond ChatGPT.<br></p>
+    </div>
+    <p>
+    <h2>Safety and broader implications</h2>
+    </p>
+    <div>
+      <p>Connecting language models to external tools introduces new opportunities as well as
+        significant <a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">new risks</a>.</p>
+      <p>Plugins offer the potential to tackle various challenges associated with large language
+        models, including “hallucinations,” keeping up with recent events, and accessing (with
+        permission) proprietary information sources. By integrating explicit access to external
+        data—such as up-to-date information&nbsp;online, code-based calculations, or custom
+        plugin-retrieved information—language models can strengthen their responses with
+        evidence-based references.</p>
+      <p>These references not only enhance the model’s utility but also enable users to assess the
+        trustworthiness of the model’s output and double-check its accuracy, potentially mitigating
+        risks related to overreliance as discussed in our recent GPT-4 <a
+          href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">system card</a>. Lastly, the value of plugins may
+        go well beyond
+        addressing existing limitations by helping users with a variety of new use cases, ranging
+        from browsing product catalogs to booking flights or ordering food.</p>
+      <p>At the same time, there’s a risk that plugins could increase safety challenges by taking
+        harmful or unintended actions, increasing the capabilities of bad actors who would defraud,
+        mislead, or abuse others. By increasing the range of possible applications, plugins may
+        raise the risk of negative consequences from mistaken or misaligned actions taken by the
+        model in new domains. From day one, these factors have guided the development of our plugin
+        platform, and we have implemented several safeguards.</p>
+    </div>
+    <div>
+      <figure>
+        <blockquote>
+          <p><span>From day one,
+              these factors have guided the development of our plugin platform, and we have implemented
+              several safeguards.</span></p>
+        </blockquote><!---->
+      </figure>
+    </div>
+    <div>
+      <p>We’ve performed red-teaming exercises, both internally and with external collaborators,
+        that have revealed a number of possible concerning scenarios. For example, our red teamers
+        discovered ways for plugins—if released without safeguards—to perform sophisticated prompt
+        injection, send fraudulent and spam emails, bypass safety restrictions, or misuse
+        information sent to the plugin. We’re using these findings to inform safety-by-design
+        mitigations that restrict risky plugin behaviors and improve transparency of how and when
+        they're operating as part of the user experience. We're also using these findings to inform
+        our decision to gradually deploy access to plugins.</p>
+      <p>If you’re a researcher interested in studying safety risks or mitigations in this area, we
+        encourage you to make use of our <a href="https://openai.com/form/researcher-access-program">Researcher Access
+          Program</a>. We also invite
+        developers and researchers to submit plugin-related safety and capability evaluations as
+        part of our recently open-sourced <a href="https://github.com/openai/evals">Evals framework</a>.</p>
+      <p>Plugins will likely have wide-ranging societal implications. For example, we recently
+        released a <a href="https://arxiv.org/abs/2303.10130">working paper</a> which found that language models with
+        access to tools
+        will likely have much greater economic impacts than those without, and more generally, in
+        line with <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4350925">other</a> <a
+          href="https://arxiv.org/abs/2302.06590">researchers’</a> findings, we expect the current wave of AI
+        technologies
+        to have a big effect on the pace of job transformation, displacement, and creation. We are
+        eager to collaborate with external <a
+          href="https://share.hsforms.com/1NeBQeLgkS2SZPE3lQ6oNRQ4sk30">researchers</a> and our <a
+          href="https://share.hsforms.com/1dxauGUqlTsKdqFriJjriDA4sk30">customers</a> to study these impacts.<br></p>
+    </div>
+    <div>
+      <p>
+      <h2>Browsing</h2><span>Alpha</span></p>
+
+    </div>
+    <div>
+      <p>Motivated by past work (our own <a href="https://openai.com/research/webgpt">WebGPT</a>, as well as <a
+          href="https://arxiv.org/abs/2203.11147">GopherCite</a>, <a
+          href="https://parl.ai/projects/blenderbot2/">BlenderBot2</a>, <a
+          href="https://ai.googleblog.com/2022/01/lamda-towards-safe-grounded-and-high.html">LaMDA2</a> and <a
+          href="https://arxiv.org/pdf/2209.14375.pdf">others</a>), allowing language models to read information from the
+        internet strictly expands the amount of content they can discuss, going beyond the training
+        corpus to fresh information from the present day.</p>
+      <p>Here’s an example of the kind of experience that browsing opens up to ChatGPT users, that
+        previously would have had the model politely point out that its training data didn’t include
+        enough information to let it answer. This example, in which ChatGPT retrieves recent
+        information about the latest Oscars, and then performs now-familiar ChatGPT poetry feats, is
+        one way that browsing can be an additive experience.<br></p>
+    </div>
+    <div>
+
+      <div><img src="https://images.openai.com/blob/91bc37ec-355d-4af3-9436-ac9cfbe92a07/browsing-poster.jpg"></div>
+
+    </div>
+    <p>In addition to providing obvious utility to end-users, we think enabling language and chat
+      models to do thorough and interpretable research has exciting prospects for <a
+        href="https://openai.com/blog/our-approach-to-alignment-research">scalable alignment</a>.<br>
+    </p>
+    <div>
+
+    </div>
+    <p>
+    <h3>Safety considerations</h3>
+    </p>
+    <div>
+      <p>We’ve created a web browsing plugin which gives a language model access to a web browser,
+        with its design prioritizing both safety and operating as a good citizen of the web. The
+        plugin’s text-based web browser is limited to making GET requests, which reduces (but does
+        not eliminate) certain classes of safety risks. This scopes the browsing plugin to be useful
+        for retrieving information, but excludes “transactional” operations such as form submission
+        which have more surface area for security and safety issues.</p>
+      <p>Browsing retrieves content from the web using the Bing search API.&nbsp;As a result, we
+        inherit substantial work from Microsoft on (1) source reliability and truthfulness of
+        information and (2) “safe-mode” to prevent the retrieval of problematic content. The plugin
+        operates within an isolated service, so ChatGPT’s browsing activities are separated from the
+        rest of our infrastructure.</p>
+      <p>To respect content creators and adhere to the web’s norms, our browser plugin’s user-agent
+        token is <a href="https://openai.com/bot">ChatGPT-User</a> and is configured to honor websites' robots.txt
+        files.
+        This may occasionally result in a “click failed” message, which indicates that the plugin is
+        honoring the website's instruction to avoid crawling it. This user-agent will only be used
+        to take direct actions on behalf of ChatGPT users and is not used for crawling the web in
+        any automatic fashion. We have also published our <a
+          href="https://platform.openai.com/docs/plugins/production/ip-egress-ranges">IP egress ranges</a>.
+        Additionally,
+        rate-limiting measures have been implemented to avoid sending excessive traffic to
+        websites.<br></p>
+    </div>
+    <div>
+      <p><span>Click failed</span></p><span>You can block ChatGPT crawling your site
+        using the
+        robots.txt file, ChatGPT will show this error message when this happens.</span>
+    </div>
+    <p>Our browsing plugin shows websites visited and cites its sources in ChatGPT’s responses.
+      This added layer of transparency helps users verify the accuracy of the model’s responses
+      and also gives credit back to content creators. We appreciate that this is a new method of
+      interacting with the web, and welcome feedback on additional ways to drive traffic back to
+      sources and add to the overall health of the ecosystem.<br></p>
+    <div>
+      <p>
+      <h2>Code interpreter</h2><span>Alpha</span></p>
+
+    </div>
+    <p>We provide our models with a working Python interpreter in<strong> </strong>a sandboxed,
+      firewalled execution environment, along with some ephemeral disk space. Code run by our
+      interpreter plugin is evaluated in a persistent session that is alive for the duration of a
+      chat conversation (with an upper-bound timeout) and subsequent calls can build on top of
+      each other. We support uploading files to the current conversation workspace and downloading
+      the results of your work.<br></p>
+    <div>
+
+    </div>
+    <div>
+      <p>We would like our models to be able to use their <a href="https://arxiv.org/abs/2107.03374">programming</a> <a
+          href="https://arxiv.org/abs/2303.08774">skills</a> to provide a much more natural interface to most
+        fundamental
+        capabilities of our computers. Having access to a very eager junior programmer working at
+        the speed of your fingertips can make completely new workflows effortless and efficient, as
+        well as open the benefits of programming to new audiences.</p>
+      <p>From our initial user studies, we’ve identified use cases where using code interpreter is
+        especially useful:</p>
+      <ul>
+        <li>Solving mathematical problems, both quantitative and qualitative</li>
+        <li>Doing data analysis and visualization</li>
+        <li>Converting files between formats</li>
+      </ul>
+      <p>We invite users to try the code interpreter integration and discover other useful tasks.<br></p>
+    </div>
+    <div>
+
+      <div><img
+          src="https://images.openai.com/blob/5388d90c-ddc8-46f0-a49e-9ba8257ee2f2/interpreter-plug-in-poster.jpeg">
+      </div>
+
+    </div>
+    <p>
+    <h3>Safety considerations</h3>
+    </p>
+    <p>The primary consideration for connecting our models to a programming language interpreter
+      is properly sandboxing<strong> </strong>the execution so that AI-generated code does not
+      have unintended side-effects in the real world. We execute code in a secured environment and
+      use strict network controls to prevent external internet access from executed code.
+      Additionally, we have set resource limits on each session. Disabling internet access limits
+      the functionality of our code sandbox, but we believe it’s the right initial tradeoff. were
+      designed as a safety-first method of connecting our models to the outside world.<br></p>
+    <p>
+    <h2>Retrieval</h2>
+    </p>
+    <div>
+      <p>The open-source retrieval plugin enables ChatGPT to access personal or organizational
+        information sources (with permission). It allows users to obtain the most relevant document
+        snippets from their data sources, such as files, notes, emails or public documentation, by
+        asking questions or expressing needs in natural language.</p>
+      <p>As an open-source and self-hosted solution, developers can deploy their own version of the
+        plugin and register it with ChatGPT. The plugin leverages <a
+          href="https://platform.openai.com/docs/guides/embeddings">OpenAI embeddings</a> and allows developers to
+        choose a vector database
+        (<a href="https://milvus.io/">Milvus</a>, <a href="https://www.pinecone.io/">Pinecone</a>, <a
+          href="https://qdrant.tech/">Qdrant</a>, <a
+          href="https://redis.io/docs/stack/search/reference/vectors/">Redis</a>, <a
+          href="https://weaviate.io/">Weaviate</a> or <a href="https://zilliz.com/">Zilliz</a>) for indexing and
+        searching documents. Information sources can
+        be synchronized with the database using webhooks.</p>
+      <p>To begin, visit the <a href="https://github.com/openai/chatgpt-retrieval-plugin">retrieval plugin
+          repository</a>.<br></p>
+    </div>
+    <div>
+
+      <div><img src="https://images.openai.com/blob/8ca32622-1615-4af6-84ca-6838a73a11fa/retrieval-poster.jpg"></div>
+
+    </div>
+    <p>
+    <h3>Security considerations</h3>
+    </p>
+    <p>The retrieval plugin allows ChatGPT to search a vector database of content, and add the
+      best results into the ChatGPT session. This means it doesn’t have any external effects, and
+      the main risk is data authorization and privacy. Developers should only add content into
+      their retrieval plugin that they are authorized to use and can share in users’ ChatGPT
+      sessions.<br></p>
+    <div>
+      <p>
+      <h2>Third-party plugins</h2><span>Alpha</span></p>
+
+    </div>
+    <div>
+
+    </div>
+    <p>Third-party plugins are described by a <a
+        href="https://platform.openai.com/docs/plugins/getting-started/">manifest file</a>, which includes a
+      machine-readable description of the
+      plugin’s capabilities and how to invoke them, as well as user-facing documentation.<br></p>
+    <div><!----><!----><!---->
+      <div>
+        <pre><code>{
   "schema_version": "v1",
   "name_for_human": "TODO Manager",
   "name_for_model": "todo_manager",
@@ -514,40 +385,45 @@ solution[B]</code></pre>
   "legal_info_url": "http://example.com",
   "contact_email": "hello@example.com"
 }</code></pre>
-                        </div>
-                      <p>An example manifest file for a plugin for managing to-dos<br></p>
-                    </div>
-            <div>
-                          <p>The steps for creating a plugin are:</p>
-                          <ol>
-                            <li>Build an API with endpoints you’d like a language model to call (this can be a new API,
-                              an existing API, or a wrapper around an existing API specifically designed for LLMs).</li>
-                            <li>Create an OpenAPI specification documenting your API, and a manifest file that links to
-                              the OpenAPI spec and includes some plugin-specific metadata.</li>
-                          </ol>
-                          <p>When starting a conversation on <a href="https://chat.openai.com">chat.openai.com</a>, users can choose which third-party plugins they’d
-                            like to be enabled. Documentation about the enabled plugins is shown to the language model
-                            as part of the conversation context, enabling the model to invoke appropriate plugin APIs as
-                            needed to fulfill user intent. For now, plugins are designed for calling backend APIs, but
-                            we are exploring plugins that can call client-side APIs as well.<br></p>
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/3a6f663f-c4dc-4dd2-bb24-f2cf9afb33da/combined-poster.jpg"></div>
-                          
-                        </div>
-            <div>
-                          
-                          <div><img src="https://images.openai.com/blob/94ac231f-7348-431b-941c-05cce7d11d8d/dev-experience-poster.jpg"></div>
-                          
-                        </div>
-            <p><h2>Looking forward</h2></p>
-            <p>We’re working to develop plugins and bring them to a broader audience. We have a lot to
-                            learn, and with the help of everyone, we hope to build something that is both useful and
-                            safe.<br></p>
-            <div><!--[--><!--[--><!--]--><!--[--><a href="https://platform.openai.com/docs/plugins/"><span><!--[--><!----><span>Read
-                              documentation</span><!--]--></span></a><!--]--><!--]--></div><!--]-->
-          </div>
-      </body>
-    </html>
-    
+      </div>
+      <p>An example manifest file for a plugin for managing to-dos<br></p>
+    </div>
+    <div>
+      <p>The steps for creating a plugin are:</p>
+      <ol>
+        <li>Build an API with endpoints you’d like a language model to call (this can be a new API,
+          an existing API, or a wrapper around an existing API specifically designed for LLMs).</li>
+        <li>Create an OpenAPI specification documenting your API, and a manifest file that links to
+          the OpenAPI spec and includes some plugin-specific metadata.</li>
+      </ol>
+      <p>When starting a conversation on <a href="https://chat.openai.com">chat.openai.com</a>, users can choose which
+        third-party plugins they’d
+        like to be enabled. Documentation about the enabled plugins is shown to the language model
+        as part of the conversation context, enabling the model to invoke appropriate plugin APIs as
+        needed to fulfill user intent. For now, plugins are designed for calling backend APIs, but
+        we are exploring plugins that can call client-side APIs as well.<br></p>
+    </div>
+    <div>
+
+      <div><img src="https://images.openai.com/blob/3a6f663f-c4dc-4dd2-bb24-f2cf9afb33da/combined-poster.jpg"></div>
+
+    </div>
+    <div>
+
+      <div><img src="https://images.openai.com/blob/94ac231f-7348-431b-941c-05cce7d11d8d/dev-experience-poster.jpg">
+      </div>
+
+    </div>
+    <p>
+    <h2>Looking forward</h2>
+    </p>
+    <p>We’re working to develop plugins and bring them to a broader audience. We have a lot to
+      learn, and with the help of everyone, we hope to build something that is both useful and
+      safe.<br></p>
+    <div><!--[--><!--[--><!--]--><!--[--><a
+        href="https://platform.openai.com/docs/plugins/"><span><!--[--><!----><span>Read
+            documentation</span><!--]--></span></a><!--]--><!--]--></div><!--]-->
+  </div>
+</body>
+
+</html>

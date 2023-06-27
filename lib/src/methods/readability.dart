@@ -19,14 +19,14 @@ class Readability extends BaseExtractor {
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
         RemoveUnnecessaryNestedDivProcessor(),
-        RemoveSvgProcessor(),
+        RemoveEmptyTagProcessor(),
+        FigurePrettyProcessor(),
+        RemoveUnusefulAttributeProcessor(),
+        RemoveInvalidFigureTagProcessor(),
       ];
 
   @override
   List<Processor> get postprocessors => [
-        FigurePrettyProcessor(),
-        RemoveUnusefulAttributeProcessor(),
-        RemoveEmptyTagProcessor(),
         RemoveImgParameterProcessor(),
       ];
 
@@ -106,14 +106,14 @@ class Readability extends BaseExtractor {
       }
 
       double score = 1;
-      // TODO use config
+
       score += min(innerTextLen / 100, 3);
 
       score += innerText.split(RegExp(r'[，,]')).length;
 
       candidates[parentTag] = candidates[parentTag]! + score;
       if (grandParentTag != null) {
-        candidates[grandParentTag] = candidates[grandParentTag]! + score / 2;
+        candidates[grandParentTag] = candidates[grandParentTag]! + score * 0.6;
       }
 
       // iterate the candiate, caculate link density

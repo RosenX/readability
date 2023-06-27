@@ -11,7 +11,7 @@ class MainContent {
 
   MainContent({
     this.url,
-    required this.type,
+    this.type = MainContentType.article,
   });
 
   String pureHtml() {

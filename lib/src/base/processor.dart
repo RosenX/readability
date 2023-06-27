@@ -14,7 +14,10 @@ class CleanUnusefulTagProcessor implements Processor {
     'link',
     'nav',
     'style',
-    'button'
+    'button',
+    'svg',
+    'header',
+    'footer'
   ];
 
   @override
@@ -153,17 +156,6 @@ class RemoveUnusefulAttributeProcessor implements Processor {
   }
 }
 
-/// remove all svg tag
-class RemoveSvgProcessor implements Processor {
-  @override
-  String get name => 'remove_svg';
-
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('svg').forEach((e) => e.remove());
-  }
-}
-
 /// remove parameter int img href
 class RemoveImgParameterProcessor implements Processor {
   @override
@@ -271,6 +263,37 @@ class RemoveInvalidImgTagProcessor implements Processor {
       }
       // if src not a url, remove it
       if (!e.attributes['src']!.startsWith('http')) {
+        e.remove();
+      }
+    });
+  }
+}
+
+/// replace span tag with text in it
+class ReplaceSpanTagProcessor implements Processor {
+  @override
+  String get name => 'replace_span_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('span').forEach((e) {
+      e.replaceWith(Text(e.text));
+    });
+  }
+}
+
+/// remove invalid figure tag
+class RemoveInvalidFigureTagProcessor implements Processor {
+  @override
+  String get name => 'remove_invalid_figure_tag';
+
+  @override
+  void process(Document doc) {
+    // if div num in figure is bigger than img num+1, remove figure
+    doc.querySelectorAll('figure').forEach((e) {
+      var divNum = e.querySelectorAll('div').length;
+      var imgNum = e.querySelectorAll('img').length;
+      if (divNum > imgNum + 1) {
         e.remove();
       }
     });

@@ -18,6 +18,8 @@ class HtmlExtractor {
   Method method;
   bool isDebug;
 
+  final notSupportTag = ['video', 'math'];
+
   HtmlExtractor(
       {required this.rawHtml,
       this.url,
@@ -38,14 +40,11 @@ class HtmlExtractor {
   String parse() {
     _htmlDoc = parser.parse(rawHtml);
 
-    var contentType = judgeMainContentType();
-
-    // video type currently not support
-    if (contentType == MainContentType.video) {
-      return "";
+    if (!canParse()) {
+      return '';
     }
 
-    _mainContent = MainContent(url: url, type: contentType);
+    _mainContent = MainContent(url: url);
 
     // parse meta data like title, author
     var metaParser = MetaParser(isDebug: isDebug);
@@ -62,11 +61,13 @@ class HtmlExtractor {
     return _mainContent.pureHtml();
   }
 
-  MainContentType judgeMainContentType() {
-    var video = _htmlDoc.querySelector('video');
-    if (video != null) {
-      return MainContentType.video;
+  bool canParse() {
+    // if there are not support tag in html, return false;
+    for (var tag in notSupportTag) {
+      if (_htmlDoc.querySelector(tag) != null) {
+        return false;
+      }
     }
-    return MainContentType.article;
+    return true;
   }
 }
