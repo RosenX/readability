@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:html/dom.dart';
 import 'package:readability/methods/meta_parser.dart';
 import 'package:readability/methods/readability.dart';
@@ -19,7 +21,17 @@ class HtmlExtractor {
       {required this.rawHtml,
       this.url,
       required this.method,
-      this.isDebug = false});
+      this.isDebug = false}) {
+    if (isDebug) {
+      // remove log folder if exists
+      var logFolder = Directory('log');
+      if (logFolder.existsSync()) {
+        logFolder.deleteSync(recursive: true);
+      }
+      // create log folder
+      logFolder.createSync();
+    }
+  }
 
   String parse() {
     _htmlDoc = parser.parse(rawHtml);

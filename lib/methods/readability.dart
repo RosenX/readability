@@ -5,24 +5,25 @@ import 'package:html/dom.dart';
 import 'package:readability/base/extractor.dart';
 import 'package:readability/base/processor.dart';
 
-class Readability implements Extractor {
-  final preprocessors = [
-    CleanUnusefulTagProcessor(),
-    ReplaceDivWithPTagProcessor(),
-    TransformATagProcessor(),
-  ];
-
+class Readability extends BaseExtractor {
   final int minTextLength;
-  bool isDebug;
 
-  Readability({this.minTextLength = 25, this.isDebug = false});
+  Readability({this.minTextLength = 25, super.isDebug = false});
 
-  final postprocessors = [
-    FigurePrettyProcessor(),
-    RemoveUnusefulAttributeProcessor(),
-    RemoveAInHProcessor(),
-    RemoveEmptyTagProcessor(),
-  ];
+  @override
+  List<Processor> get preprocessors => [
+        CleanUnusefulTagProcessor(),
+        ReplaceDivWithPTagProcessor(),
+        TransformATagProcessor(),
+      ];
+
+  @override
+  List<Processor> get postprocessors => [
+        FigurePrettyProcessor(),
+        RemoveUnusefulAttributeProcessor(),
+        RemoveAInHProcessor(),
+        RemoveEmptyTagProcessor(),
+      ];
 
   final tagScore = {
     'div': 5,
@@ -60,11 +61,7 @@ class Readability implements Extractor {
   }
 
   @override
-  String extract(Document doc) {
-    for (var processor in preprocessors) {
-      processor.process(doc);
-    }
-
+  Document extractContent(Document doc) {
     Map<Element, double> candidates = _scoreParagraphs(doc);
 
     Element topCandidate = _selectBestCandidate(candidates);
@@ -72,11 +69,7 @@ class Readability implements Extractor {
     // convert Element to Document
     Document html = Document();
     html.append(topCandidate);
-
-    for (var processor in postprocessors) {
-      processor.process(html);
-    }
-    return html.outerHtml;
+    return html;
   }
 
   /// score nodes in html

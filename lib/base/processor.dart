@@ -1,6 +1,7 @@
 import 'package:html/dom.dart';
 
 abstract class Processor {
+  String get name;
   void process(Document doc);
 }
 
@@ -14,6 +15,10 @@ class CleanUnusefulTagProcessor implements Processor {
     'nav',
     'style'
   ];
+
+  @override
+  String get name => 'clean_unuseful_tag';
+
   @override
   void process(Document doc) {
     for (var tag in unUsefulTag) {
@@ -35,6 +40,10 @@ class ReplaceDivWithPTagProcessor implements Processor {
     'table',
     'ul',
   ];
+
+  @override
+  String get name => 'replace_div_with_p_tag';
+
   @override
   void process(Document doc) {
     // querySelectorAll return a pre-order traversal of dom tree
@@ -58,6 +67,9 @@ class ReplaceDivWithPTagProcessor implements Processor {
 
 class TransformATagProcessor implements Processor {
   @override
+  String get name => 'transform_a_tag';
+
+  @override
   void process(Document doc) {
     // if <a> has no child, but text is empty, try to find 'data-text' in attr
     // case for zhihu article
@@ -70,6 +82,9 @@ class TransformATagProcessor implements Processor {
 }
 
 class FigurePrettyProcessor implements Processor {
+  @override
+  String get name => 'figure_pretty';
+
   @override
   void process(Document doc) {
     var figures = doc.querySelectorAll('figure');
@@ -95,6 +110,10 @@ class FigurePrettyProcessor implements Processor {
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio'];
   final keepAttr = ['href', 'src'];
+
+  @override
+  String get name => 'remove_unuseful_attribute';
+
   @override
   void process(Document doc) {
     for (var child in doc.children) {
@@ -116,6 +135,9 @@ class RemoveUnusefulAttributeProcessor implements Processor {
 
 class RemoveAInHProcessor implements Processor {
   @override
+  String get name => 'remove_a_in_h';
+
+  @override
   void process(Document doc) {
     /// query h1 tag, if there is a <a> tag in h1, remove the <a> tag
     var h1 = doc.querySelector('h1');
@@ -127,6 +149,10 @@ class RemoveAInHProcessor implements Processor {
 
 class RemoveEmptyTagProcessor implements Processor {
   final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+  @override
+  String get name => 'remove_empty_tag';
+
   @override
   void process(Document doc) {
     for (var child in doc.children) {

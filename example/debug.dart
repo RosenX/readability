@@ -8,7 +8,8 @@ void main(List<String> args) async {
   final htmlFile = File(inputFile);
   final content = await htmlFile.readAsString();
 
-  var extractor = HtmlExtractor(rawHtml: content, method: Method.readability);
+  var extractor = HtmlExtractor(
+      rawHtml: content, method: Method.readability, isDebug: true);
   var result = extractor.parse();
 
   var outputFile = File('clean.html');
