@@ -42,8 +42,11 @@ class BaseExtractor with Logger implements Extractor {
   @override
   String extract(Document doc) {
     preprocess(doc);
-    extractContent(doc);
-    postprocess(doc);
-    return doc.outerHtml;
+    var result = extractContent(doc);
+    if (isDebug) {
+      log("extract", result);
+    }
+    postprocess(result);
+    return result.outerHtml;
   }
 }

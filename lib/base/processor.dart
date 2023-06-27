@@ -155,19 +155,45 @@ class RemoveEmptyTagProcessor implements Processor {
 
   @override
   void process(Document doc) {
+    // because text tag is nested in p or div tag, so we need to remove text tag first
     for (var child in doc.children) {
-      _removeEmptyTag(child);
+      _removeEmptyTextTag(child);
     }
+    _removeEmptyPTag(doc);
+    // because p tag is nested in div, so we need to remove div tag after p tag
+    _removeEmptyDivTag(doc);
   }
 
   /// if tag in textTag and its text is empty, remove it
-  void _removeEmptyTag(Element elem) {
+  void _removeEmptyTextTag(Element elem) {
     if (textTag.contains(elem.localName) && elem.text.trim().isEmpty) {
       elem.remove();
       return;
     }
     for (var child in elem.children) {
-      _removeEmptyTag(child);
+      _removeEmptyTextTag(child);
     }
+  }
+
+  /// remove p tag if it has no child
+  void _removeEmptyPTag(Document doc) {
+    // querySelectorAll return a pre-order traversal of dom tree
+    // so we can remove from leaf to root
+    doc.querySelectorAll('p').forEach((e) {
+      if (e.children.isEmpty && e.text.trim().isEmpty) {
+        e.remove();
+      }
+    });
+  }
+
+  /// remove div tag if it has no child
+  void _removeEmptyDivTag(Document doc) {
+    // querySelectorAll return a pre-order traversal of dom tree
+    // so we can remove from leaf to root
+    doc.querySelectorAll('div').forEach((e) {
+      if (e.children.isEmpty && e.text.trim().isEmpty) {
+        e.remove();
+      }
+    });
   }
 }

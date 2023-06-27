@@ -30,6 +30,7 @@ class HtmlExtractor {
       }
       // create log folder
       logFolder.createSync();
+      print("url: $url");
     }
   }
 

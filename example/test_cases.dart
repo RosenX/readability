@@ -1,10 +1,17 @@
 import 'dart:io';
 
-import 'package:readability/readability.dart';
+import 'package:readability/html_extractor.dart';
 
 void main() async {
   final caseDir = Directory('../test_cases');
   final outputDir = '../test_cases_output';
+  // remove output dir if exists
+  final outputDirFile = Directory(outputDir);
+  if (outputDirFile.existsSync()) {
+    outputDirFile.deleteSync(recursive: true);
+  }
+  // create output dir
+  outputDirFile.createSync();
 
   final List<FileSystemEntity> entities = await caseDir.list().toList();
 
@@ -15,15 +22,10 @@ void main() async {
     final htmlFile = File(file.path);
 
     final content = await htmlFile.readAsString();
+    var extractor = HtmlExtractor(rawHtml: content, method: Method.readability);
 
-    var doc = HtmlDocument(input: content);
-    File outputFile = File(outputName);
-
-    try {
-      var result = doc.parse();
-      outputFile.writeAsString(result ? doc.pureHtml : "not support page");
-    } catch (e) {
-      outputFile.writeAsString(e.toString());
-    }
+    var result = extractor.parse();
+    var outputFile = File(outputName);
+    outputFile.writeAsString(result);
   }
 }
