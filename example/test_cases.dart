@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:readability/html_extractor.dart';
+import 'package:readability/readability.dart';
 
 void main() async {
   final caseDir = Directory('../test_cases');

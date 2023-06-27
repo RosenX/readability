@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library readability;
 
-export 'src/readability.dart';
+export 'src/html_extractor.dart';
 
 // TODO: Export any libraries intended for clients of this package.

@@ -1,5 +1,5 @@
 import 'package:html/dom.dart';
-import 'package:readability/base/main_content.dart';
+import 'package:readability/src/base/main_content.dart';
 
 class MetaParser {
   bool isDebug;

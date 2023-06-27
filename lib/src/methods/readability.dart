@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:html/dom.dart';
-import 'package:readability/base/extractor.dart';
-import 'package:readability/base/processor.dart';
+import 'package:readability/src/base/extractor.dart';
+import 'package:readability/src/base/processor.dart';
 
 class Readability extends BaseExtractor {
   final int minTextLength;

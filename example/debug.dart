@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:readability/html_extractor.dart';
+import 'package:readability/src/html_extractor.dart';
 
 void main(List<String> args) async {
   var inputFile = args[0];

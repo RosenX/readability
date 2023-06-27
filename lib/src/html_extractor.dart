@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:html/dom.dart';
-import 'package:readability/methods/meta_parser.dart';
-import 'package:readability/methods/readability.dart';
+
+import 'package:html/parser.dart' as parser;
 
 import 'base/main_content.dart';
-import 'package:html/parser.dart' as parser;
+import 'methods/meta_parser.dart';
+import 'methods/readability.dart';
 
 enum Method { readability }
 
