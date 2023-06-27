@@ -1,0 +1,211 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+这里为什么不用写成生命周期？ - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/blog_with_author?author_id=f1f5559f-8980-44c4-b1e5-2f8001386dbb" class="return">&lt; 返回我的博客</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=479fdbc3-c4eb-4c25-8cc6-9e0ec55fb66d">这里为什么不用写成生命周期？</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=f1f5559f-8980-44c4-b1e5-2f8001386dbb">berners</a>
+
+	    发表于 <span class="article_created_time">2023-03-13 11:37</span>
+
+	    
+	</p>
+	<p>
+	    
+	    <small>Tags：生命周期，租借权</small>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<p>我在看教程的时候看到生命周期，然后回看前面的教程：
+When I read the tutorial, I see the Lifetime chapter, and then look back at the previous chapter .There is one of that sample code:</p>
+<pre><code class="hljs rust">fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&amp;s1);
+
+    println!("The length of '{}' is {}.", s1, len);
+}
+
+fn calculate_length(s: &amp;String) -&gt; usize {
+    s.len()
+}
+
+</code></pre>
+<p>这里的calculate_length引用和usize为什么可以不要求以生命周期'a的形式去声明？而且这里也不会报错。
+Why can calculate_length and usize not be declared in the form of lifetime 'a ? And there will be no error here.
+我看生命周期的教程时都要写成类似于这样：
+When I read the lifetime tutorial, I should write something like this:</p>
+<pre><code class="hljs rust">fn longer&lt;'a&gt;(s1: &amp;'a str, s2: &amp;'a str) -&gt; &amp;'a str {
+    if s2.len() &gt; s1.len() {
+        s2
+    } else {
+        s1
+    }
+}
+</code></pre>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=479fdbc3-c4eb-4c25-8cc6-9e0ec55fb66d">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=e98fff96-1eee-41eb-a716-2e33e7ebb491">
+			meloalright
+		    </a>
+		    <span class="created-time">2023-03-26 17:30</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>usize 这里是拷贝</p>
+
+		</div>
+	    </div>
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=c7c0adc2-4766-4753-9900-f046f4b4d3dc">
+			Snowmanzzz
+		    </a>
+		    <span class="created-time">2023-03-23 21:16</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>ellision</p>
+
+		</div>
+	    </div>
+	    
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=479fdbc3-c4eb-4c25-8cc6-9e0ec55fb66d&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 2 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

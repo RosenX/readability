@@ -1,0 +1,175 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+【Rust日报】2023-06-10 - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/section?id=f4703117-7e6b-4caf-aa22-a3ad3db6898f" class="return">&lt; 返回版块</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=b4df70dc-5652-440b-a4b5-04533d90773b">【Rust日报】2023-06-10</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=dd4a77ca-2042-459e-901a-b8f9bfeb7db0">binarytom</a>
+
+	    发表于 <span class="article_created_time">2023-06-10 23:26</span>
+
+	    
+	</p>
+	<p>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<h3>nt-apiset: 一个用于 WindowsAPI  API Set Map文件 的 Rust 解析器</h3>
+<p>我的bootloader程序项目的下一个构建块已经准备好了！Nt-apiset 是用 Rust 编写的用于 Windows10及更高版本的 API Set Map 文件的解析器。</p>
+<p>API Set是名称以“ API-”或“ ext-”开头的 PE 可执行文件的依赖项，例如 API-ms-win-core-sysinfo-l1-1-0。它们不作为真正的 DLL 文件存在。相反，当加载 PE 可执行文件时，将检查操作系统的 API Set Map 文件，以确定属于依赖项的实际库文件(在本例中为 kernelbase.dll)。</p>
+<p>最著名的 API Set Map 文件是 apisetschema.dll。</p>
+<p><a href="https://colinfinck.de/posts/nt-apiset-a-rust-parser-for-windows-10-api-set-map-files/" rel="noopener noreferrer">文章链接</a>，https://colinfinck.de/posts/nt-apiset-a-rust-parser-for-windows-10-api-set-map-files/</p>
+<p><a href="https://github.com/ColinFinck/nt-apiset" rel="noopener noreferrer">Github 链接</a>，https://github.com/ColinFinck/nt-apiset</p>
+<h3>mds v0.18.3</h3>
+<p>mds是一个命令行工具，可以：</p>
+<ol>
+<li>导航一组markdown笔记集合</li>
+<li>创建新的markdown笔记并将它们链接在一起。笔记的元数据和笔记之间的链接存储在.sqlite 数据库中。
+...</li>
+</ol>
+<p><a href="https://github.com/dj8yfo/meudeus" rel="noopener noreferrer">Github 链接</a>，https://github.com/dj8yfo/meudeus</p>
+<h3>使用 gtk4-rs 和 relm4编写的具有 GUI 的重复文件查找器</h3>
+<p>fclones，高效的重复文件查找器和删除器</p>
+<p>这个repository包含两个相关 Rust 项目的源: fclone 和 fclone-gui。</p>
+<p><a href="https://github.com/pkolaczk/fclones" rel="noopener noreferrer">Github 链接</a>，https://github.com/pkolaczk/fclones</p>
+<hr>
+<p>From 日报小组 <a href="https://rustcc.cn/blog_with_author?author_id=dd4a77ca-2042-459e-901a-b8f9bfeb7db0" rel="noopener noreferrer">TOM</a></p>
+<p>社区学习交流平台订阅：</p>
+<ul>
+<li><a href="https://rustcc.cn/" rel="noopener noreferrer">Rustcc论坛: 支持rss</a></li>
+<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62" rel="noopener noreferrer">微信公众号：Rust语言中文社区</a></li>
+</ul>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=b4df70dc-5652-440b-a4b5-04533d90773b">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    <p class="useless">还没有评论</p>
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=b4df70dc-5652-440b-a4b5-04533d90773b&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 0 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

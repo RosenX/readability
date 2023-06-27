@@ -1,0 +1,178 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+请问oncecell里面包的结构体里面有个泛型，这种咋写啊？ - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/section?id=498bfc50-3707-406f-b7ca-ede9cbf8808d" class="return">&lt; 返回版块</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=39b17cad-c0d4-447b-ae71-e7be863bcdf7">请问oncecell里面包的结构体里面有个泛型，这种咋写啊？</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=4b5b5ce1-acbd-4a6f-8dd0-9dcd1a3b53a2">heliping</a>
+
+	    发表于 <span class="article_created_time">2023-06-16 10:09</span>
+
+	    
+	</p>
+	<p>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<pre><code class="hljs rust">pub static SHMDISPATCHER: OnceCell&lt;ShmDispatcher&lt;T&gt;&gt; = OnceCell::new();
+
+#[derive(Debug, Clone)]
+pub struct ShmDispatcher&lt;T: Message&gt; {
+    pub msg_listeners_: HashMap&lt;u64, fn(T)&gt;
+}
+
+</code></pre>
+<p>提示报错</p>
+<pre><code class="hljs coffeescript">cannot find type `T` in this scope
+not found in this scope
+</code></pre>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=39b17cad-c0d4-447b-ae71-e7be863bcdf7">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=21945a5a-02f2-4bd9-bff3-6cc6d63017bc">
+			SethWen
+		    </a>
+		    <span class="created-time">2023-06-16 11:11</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>你这都初始化了，应该写具体得类型了，就不能 <code>T</code> 了。</p>
+
+		</div>
+	    </div>
+	    
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=39b17cad-c0d4-447b-ae71-e7be863bcdf7&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 1 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

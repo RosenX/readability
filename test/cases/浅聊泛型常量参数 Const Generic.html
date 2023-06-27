@@ -1,0 +1,458 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+浅聊泛型常量参数 Const Generic - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/blog_with_author?author_id=dc9fba7d-3d31-4359-9064-adf55db351e0" class="return">&lt; 返回我的博客</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=d1d98ea9-8460-416d-9280-e22dc8d47b6b">浅聊泛型常量参数 Const Generic</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=dc9fba7d-3d31-4359-9064-adf55db351e0">爱国的张浩予</a>
+
+	    发表于 <span class="article_created_time">2023-03-12 12:55</span>
+
+	    
+	</p>
+	<p>
+	    
+	    <small>Tags：generic,const,const-expression,macro-by-example,recursion,macro-design-pattern,feature-gate,meta-variable-expression</small>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<h1>浅聊泛型常量参数<code>Const Generic</code></h1>
+<h2>引题</h2>
+<p>最近有网友私信我讨论：若使用规则宏<strong>编译时</strong>统计<code>token tree</code>序列的长度，如何绕开由<strong>宏递归</strong>自身局限性造成的：</p>
+<ul>
+<li>被统计序列不能太长</li>
+<li>编译延时显著拖长</li>
+</ul>
+<p>的问题。然后，就贴出了如下的一段<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=65f352392409a7778bdbc3f7c6042496" rel="noopener noreferrer">例程代码1</a>：</p>
+<pre><code class="hljs ruby">fn main() {
+    macro_rules! count_tts {
+        ($_a:tt $($tail: tt)*) =&gt; { 1_usize + count_tts!($($tail)*) };
+        () =&gt; { 0_usize };
+    }
+    assert_eq!(10, count_tts!(,,,,,,,,,,));
+}
+</code></pre>
+<blockquote>
+<p>嚯！这段短小精悍的代码馁馁地演示了<code>Incremental TT Muncher</code>设计模式的精髓。赞！</p>
+</blockquote>
+<p>首先，宏递归深度是有极限的（默认是<code>128</code>层）。所以，若每次递归仅新统计一个<code>token</code>，那么被统计序列的最大长度自然不能超过<code>128</code>。否则，突破上限，编译失败！</p>
+<p>其次，<strong>尾递归优化</strong>是<strong>运行时</strong>压缩<strong>函数</strong>调用栈的技术手段，却做不到<strong>编译时</strong>抑制<strong>宏</strong>调用栈的膨胀。所以，巧用<code>#![recursion_limit="…"]</code>元属性强制调高宏递归深度上限很可能会导致编译器栈溢出。</p>
+<p>由此，如果仅追求<strong>快速绕过</strong>问题，那最经济实惠的作法是：在每次宏递归期间，<strong>多</strong>统计<strong>几个</strong><code>token</code> <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=7ebdfea2c2d4e43999479cdf0859e075" rel="noopener noreferrer">例程2</a>（而不是一次一个）。从算数上，将总递归次数降下来，和使计数更长的<code>token tree</code>序列成为可能。</p>
+<pre><code class="hljs php">fn main() { // 这代码看着就“傻乎乎的”。
+    macro_rules! count_tts {
+        ($_a: tt $_b: tt $_c: tt $_d: tt $_e: tt $_f: tt // 一次递归统计 6 个。
+         $($tail: tt)*) =&gt; { 6_usize + count_tts!($($tail)*) };
+        ($_a: tt $_b: tt $_c: // 一次递归统计 3 个。
+         tt $($tail: tt)*) =&gt; { 3_usize + count_tts!($($tail)*) };
+        ($_a: tt // 一次递归统计 1 个。
+         $($tail: tt)*) =&gt; { 1_usize + count_tts!($($tail)*) };
+        () =&gt; { 0_usize };  // 结束了，统计完成
+    }
+    println!("token tree 个数是 {}", count_tts!(,,,,,,,,,,));
+}
+</code></pre>
+<p>倘若要<strong>标本兼治</strong>地解决问题，将<strong>递归调用</strong>变形成<strong>循环结构</strong>才是正途，因为循环本身不会增加调用栈的深度。这涵盖了：</p>
+<ol>
+<li><strong>宏循环结构</strong>将<code>token tree</code>序列变形成<strong>数组字面量</strong>。</li>
+<li><strong>常量函数调用</strong>触发编译器对数组字面量的<strong>类型推导</strong>。</li>
+<li>因为<code>rust</code>数组在编译时明确大小，所以数组长度被编入了<strong>数据类型定义</strong>内。</li>
+<li><strong>泛型常量参数</strong>从数据类型定义中<strong>提取</strong>出数组<strong>长度值</strong>，并作为序列长度返回。</li>
+</ol>
+<p>全套操作被统称为<code>Array length</code>设计模式。它带入了两个技术难点：</p>
+<ol>
+<li>如何触发<code>rustc</code>对数组字面量的类型推导，和从推导结果中提取出数组长度信息。</li>
+<li>如何撇开递归的“吐吞模式”（即，吐<code>Incremental TT Muncher</code>和吞<code>Push-down Accumulation</code>），仅凭<strong>宏循环结构</strong>，将<code>token tree</code>序列变形成为数组字面量。</li>
+</ol>
+<p>第一个难点源于自<code>rustc 1.51</code>才稳定的新语言特性“泛型<strong>常量</strong>参数<code>Const Generic</code>”。而第二个难点的解决就多样化了</p>
+<ul>
+<li>要么，采用“循环替换设计模式<code>Repetition Replacement(RR)</code>”</li>
+<li>要么，启用试验阶段语言特性“元变量表达式<code>Meta-variable Expression</code>”</li>
+</ul>
+<p>接下来，它们会被逐一地讲解分析。</p>
+<h2>泛型<strong>常量</strong>参数</h2>
+<p>从<code>rustc 1.51+</code>起，【泛型<strong>常量</strong>参数 】允许泛型项（类或函数）接受常量值或常量表达式为泛型参数。根据泛型常量参数出现的位置不同（请见下图<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=b4051253f690a28d50649c41fa7314c3" rel="noopener noreferrer">例程3</a>），它又细分为</p>
+<ul>
+<li>泛型常量参数的<strong>形</strong>参</li>
+<li>泛型常量参数的<strong>实</strong>参</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/13935927/224486800-b598c3f9-ff54-49fa-b8ea-ebfea55f1768.png" alt="图例1"></p>
+<p>下文分别将它们简称为“泛型常量<strong>形参</strong>”与“泛型常量<strong>实参</strong>”。</p>
+<h3>泛型参数的分类</h3>
+<p>于是，已知的泛型参数就包含有三种类型：</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/224525221-c801c300-1f1a-45e1-aa95-307d2da2be4c.png" alt="图例2"></p>
+<h2>泛型<strong>常量</strong>参数的数据类型</h2>
+<p>可用作【泛型常量参数】的数据类型包括两类：</p>
+<ul>
+<li>整数<strong>数字</strong>类型：<code>u8</code>，<code>u16</code>，<code>u32</code>，<code>u64</code>，<code>u128</code>，<code>usize</code>，<code>i8</code>，<code>i16</code>，<code>i32</code>，<code>i64</code>，<code>i128</code>，<code>isize</code></li>
+<li>可<strong>数字</strong>化类型：<code>char</code>，<code>bool</code></li>
+</ul>
+<h2>泛型<strong>常量</strong>参数的“怪癖”</h2>
+<p>首先，就“同名冲突”而言，若【泛型常量<strong>形参</strong>】与【类型】<strong>同名</strong>并作为另一个泛型项的泛型参数<strong>实参</strong>，那么<code>rustc</code>会优先将该泛型参数当作<strong>类型</strong>带入程序上下文。多数情况下，这会造成程序<strong>编译失败</strong>。解决方案是使用<strong>块</strong>表达式<code>{...}</code><strong>包装</strong>泛型<strong>常量</strong>参数，以向<code>rustc</code>标注此同名参数是泛型常量参数而不是类型名 <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=dcf6bbaf2a7812eb4bd47d49e6ad72c5" rel="noopener noreferrer">例程4</a>。</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/223871080-ad87ef03-d8e5-4dc2-bd2c-418634387780.png" alt="图例3"></p>
+<p>其次，就“声明和使用”而言，泛型常量<strong>形</strong>参允许仅被声明，而<strong>不被使用</strong>。对另两种泛型参数而言，这却会导致编译失败<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=dcbd99d1ef57fa389a7cb5fc3e7fd9d0" rel="noopener noreferrer">例程5</a>。</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/223873443-54cfe022-0197-4d3f-a685-3ae61fae0e4f.png" alt="图例4"></p>
+<p>最后，泛型常量<strong>实</strong>参的<code>trait</code>实现不会因为穷举了全部备选形参值而自动过渡给泛型常量<strong>形</strong>参。如下<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=75b9ccd07b48f4192ae9f11e2403961b" rel="noopener noreferrer">例程6（左）</a>，即便泛型项<code>struct Foo</code>显示地给泛型常量<strong>形</strong>参<code>B</code>的<strong>每个</strong>可能的（<strong>实</strong>参）值<code>true / false</code>都实现的<strong>同一个</strong><code>trait Bar</code>，编译器也不会“聪明地”归纳出该<code>trait Bar</code>已经被此泛型项的泛型常量<strong>形</strong>参充分实现了，因为编译器可不会“归纳法”方法论（不确定<code>chatGPT</code>是否能做到？）。相反，每个<strong>实</strong>参上的<code>trait</code>实现都被视作不相关的个例。正确地作法是：泛型项必须明确地给泛型常量<strong>形</strong>参实现<code>trait</code><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=ec985f68693460fa2bef91a3d6a8269f" rel="noopener noreferrer">例程7（右）</a>。</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/224487692-0e34605f-7ecc-440e-843b-e87c329f9eea.png" alt="图例5"></p>
+<h2>泛型<strong>常量</strong>参数的适用位置</h2>
+<p>泛型<strong>常量</strong>参数原则上可出现于<a href="https://doc.rust-lang.org/reference/items/constant-items.html" rel="noopener noreferrer">常量项</a>适用的<strong>全部</strong>位置，包括但不限于：</p>
+<ul>
+<li><strong>运行时</strong>求值表达式 <code>#1</code> — 模糊了编译时泛型参数与运行时值之间的界限。</li>
+<li>常量表达式 <code>#2</code></li>
+<li>关联常量 <code>#2</code></li>
+<li>关联类型 <code>#3</code></li>
+<li>结构体字段 或 绑定变量的数据类型 <code>#4</code>。比如，编译时参数化数组长度。</li>
+<li>结构体字段 或 绑定变量的值 <code>#5</code></li>
+</ul>
+<p>上述列表内的<code>#1 ~ #5</code>，可在下面<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=3ed4491f8e2ffde0733f1b5b8d3da937" rel="noopener noreferrer">例程8</a>源码内找到对应的代码行。</p>
+<pre><code class="hljs rust">use rand::{thread_rng, Rng};
+fn main() {
+    fn foo1&lt;const N1: usize&gt;(input: usize) { // 在泛型函数内，泛型常量参数的形参可用于
+        let sum = 1 + N1 * input;   // #1 运行时求值的表达式
+        let foo = Foo([input; N1]); // #5 结构体字段的值
+        let arr: [usize; N1] = [input; N1]; // #4 绑定变量的数据类型 —— 编译时参数化数组长度
+                                            // #5 绑定变量的值
+        println!("运行时表达式：{sum},\n\
+                  元组结构体：  {foo:?},\n\
+                  数组：       {arr:?}");
+    }
+    trait Trait&lt;const N2: usize&gt; {
+        const CONST: usize = N2 + 4; // #2 关联常量 + 常量表达式
+        type Output;
+    }
+    #[derive(Debug)]
+    struct Foo&lt;const N3: usize&gt;(
+        [usize; N3] // #4 结构体字段的数据类型 —— 编译时参数化数组长度
+    );
+    impl&lt;const N4: usize&gt; Trait&lt;N4&gt; for Foo&lt;N4&gt; {
+        type Output = [usize; N4]; // #3 关联类型 —— 编译时参数化数组长度
+    }
+    let mut rng = thread_rng();
+    foo1::&lt;2&gt;(rng.gen_range::&lt;usize, _&gt;(1..10));
+    foo1::&lt;{1 + 2}&gt;(rng.gen_range::&lt;usize, _&gt;(1..10));
+    const K: usize = 3;
+    foo1::&lt;K&gt;(rng.gen_range::&lt;usize, _&gt;(1..10));
+    foo1::&lt;{K * 2}&gt;(rng.gen_range::&lt;usize, _&gt;(1..10));
+}
+</code></pre>
+<h2>泛型<strong>常量</strong>参数的不适用位置</h2>
+<p>首先，泛型常量<strong>形</strong>参不能：</p>
+<ul>
+<li>定义<strong>常量</strong>和<strong>静态变量</strong>，无论是作为类型定义的一部分，还是值 <code>#1</code></li>
+<li>隔层使用。比如，在子函数内引用由外层函数声明的泛型常量<strong>形</strong>参<code>#2</code>。除了子函数，该规则也适用于在函数体内定义的
+<ul>
+<li>结构体 <code>#3</code></li>
+<li>类型别名 <code>#4</code></li>
+</ul>
+</li>
+</ul>
+<p>上述列表内的<code>#1 ~ #4</code>，可在下面<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=c0a72419d50c506936fd3a4f1ad1853a" rel="noopener noreferrer">例程9</a>源码内找到对应的代码行。</p>
+<pre><code class="hljs rust">fn main() {
+    fn outer&lt;const N: usize&gt;(input: usize) {
+        // 泛型常量参数【不】可用于函数体内的
+        // #1 常量定义
+        //     - 既不能定义类型
+        const BAD_CONST: [usize; N] = [1; N];
+        //     - 既不能定义值
+        const BAD_CONST: usize = 1 + N;
+        // #1 静态变量定义
+        //     - 既不能定义类型
+        static BAD_STATIC: [usize; N] = [N + 1; N];
+        //     - 既不能定义值
+        static BAD_STATIC: usize = 1 + N;
+        fn inner(bad_arg: [usize; N]) {
+            // #2 在子函数内不能引用外层函数声明的
+            //    泛型常量形参，无论是将其作为
+            //    变量类型，还是常量值。
+            let bad_value = N * 2;
+        }
+        // #3 结构体内也不能引用外层函数声明的
+        //    泛型常量形参。
+        struct BadStruct([usize; N]);
+        //    相反，需要给结构体重新声明泛型常量参数
+        struct BadStruct&lt;const N: usize&gt;([usize; N]);
+        // #4 类型别名内不能引用外层函数声明的
+        //    泛型常量形参。
+        type BadAlias = [usize; N];
+        //    相反，需要给类型别名重新声明泛型常量参数
+        type BadAlias&lt;const N: usize&gt; = [usize; N];
+    }
+}
+</code></pre>
+<p>其次，泛型常量<strong>实</strong>参<strong>不</strong>接受包含了泛型常量<strong>形</strong>参的<strong>常量表达式</strong><a href="https://play.rust-lang.org/?version=nightly&amp;mode=debug&amp;edition=2021&amp;gist=df07c995c32ab128bdc26b2d0820a9bc" rel="noopener noreferrer">例程10</a>。</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/224537041-7cc09848-3aad-46ce-8a26-0ffba36721af.png" alt="图例6"></p>
+<p>但是，泛型常量<strong>实</strong>参并不拒绝接受</p>
+<ul>
+<li>
+<p><strong>独立</strong>泛型常量<strong>形</strong>参 <a href="https://play.rust-lang.org/?version=nightly&amp;mode=debug&amp;edition=2021&amp;gist=ce78e109d895b9f9dbb8b2861073e486" rel="noopener noreferrer">例程11</a></p>
+</li>
+<li>
+<p><strong>不</strong>包含泛型常量<strong>形</strong>参的普通<strong>常量表达式</strong><a href="https://play.rust-lang.org/?version=nightly&amp;mode=debug&amp;edition=2021&amp;gist=e8e5ef2837a06c355d517077663bb413" rel="noopener noreferrer">例程12</a></p>
+<ul>
+<li>被用作泛型常量<strong>实</strong>参的<strong>常量表达式</strong>必须被包装在<strong>块</strong>表达式<code>{...}</code>内。避免编译器在解析<code>AST</code>过程中陷入正向环视<code>lookahead</code>的无限循环中。</li>
+</ul>
+<blockquote>
+<p>题外话，不确定这么翻译该术语<code>lookahead</code>是否正确。我借鉴了 @余晟 在《精通正则表达式》一书中对此词条的译文。</p>
+</blockquote>
+</li>
+</ul>
+<h2><a href="https://doc.rust-lang.org/reference/expressions/array-expr.html" rel="noopener noreferrer">数组重复表达式</a>与泛型常量参数</h2>
+<p>数组重复表达式<code>[repeat_operand; length_operand]</code>是数组字面量的一种形式。在数组重复表达式中，泛型<strong>常量</strong>形参</p>
+<ul>
+<li>虽然既可用于左<code>repeat</code>操作数位置，也可用于右<code>length</code>操作数位置<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=6ca161c5353acadae3852d003e1129e6" rel="noopener noreferrer">例程13</a></li>
+<li>但在右<code>length</code>操作数位置上，泛型常量<strong>形</strong>参只能<strong>独立出现</strong><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=ba3e3b0da0d4da1b63c4720be8f442d3" rel="noopener noreferrer">例程14</a>，而不能作为常量表达式的一部分 —— 等同于泛型常量<strong>实</strong>参的限制。</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/13935927/224492046-4a139682-fef8-452d-9584-1df3a504e2c0.png" alt="图例7"></p>
+<h2>回到序列计数问题</h2>
+<p>类似于解析几何中的“投影”方法，通过将<strong>高维</strong>物体（<code>token tree</code>序列）投影于<strong>低维</strong>平面（数组），以主动舍弃若干信息项（每个<code>token</code>的具体值与数据类型）为代价，突出该物体更有价值的信息内容（序列<strong>长度</strong>），便可降低从复杂结构中摘取特定关注信息项的合计复杂度。这套“降维算法”带来的启发就是：</p>
+<ol>
+<li>既然读取数组<strong>长度</strong>是简单的，那为什么不先将<code>token tree</code>序列变形为数组呢？
+<ol>
+<li>答：投影<code>token tree</code>序列为<strong>数组</strong></li>
+</ol>
+</li>
+<li>既然<code>token tree</code>序列的内容细节不被关注，那为什么还要纠结于数组的数据类型与填充值呢？全部充满<code>unit type</code>岂不快哉！
+<ol>
+<li>再答：投影<code>token tree</code>序列为<strong>单位数组</strong><code>[(); N]</code>。仅数组长度对我们有价值。</li>
+</ol>
+</li>
+</ol>
+<p>于是，循环替换设计模式<code>Repetition Replacement(RR)</code>与元变量表达式<code>${ignore(识别符名)}</code>都是被用来改善【宏循环结构】的使用体验，以允许<code>Rustacean</code>对循环结构中的循环重复项“宣而<strong>不用</strong>” —— 既遍历<code>token tree</code>序列，同时又弃掉每个具体的<code>token</code>元素，最后还生成一个等长的单位数组<code>[(); N]</code>。否则，未被使用的“循环重复项”会导致<code>error: attempted to repeat an expression containing no syntax variables matched as repeating at this depth</code>的编译错误。</p>
+<ul>
+<li>循环替换设计模式<code>Repetition Replacement(RR)</code>是以在宏循环体内插入一层“空转”宏调用，消费掉<code>consuming</code>未被使用的“循环重复项”<a href="https://play.rust-lang.org/?version=nightly&amp;mode=debug&amp;edition=2021&amp;gist=0409f9c1088ec2cf8b0797fbf7c86de2" rel="noopener noreferrer">例程15</a></li>
+<li>元变量表达式<code>${ignore(识别符名)}</code>是前者的语法糖，允许<code>Rustacean</code>少敲几行代码。但因为元变量表达式是试验性的新语法，所以需要开启对应的<code>feature-gate</code>开关<code>#![feature(macro_metavar_expr)]</code>才能被使用。<a href="https://play.rust-lang.org/?version=nightly&amp;mode=debug&amp;edition=2021&amp;gist=b90e89501ae144feeeebb6051d98a206" rel="noopener noreferrer">例程16</a></li>
+</ul>
+<p>然后，常量函数调用和函数<strong>形</strong>参触发编译器对<strong>单位数组</strong>字面量的<strong>类型推导</strong>。</p>
+<p>接着，泛型常量<strong>形</strong>参从被推导出的数据类型定义内提取出<strong>数组长度</strong>信息。</p>
+<p>最后，将泛型常量<strong>形</strong>参作为常量函数的<strong>返回值</strong>输出。</p>
+<p>上图，一图抵千词。</p>
+<p><img src="https://user-images.githubusercontent.com/13935927/224543765-0f29cc97-3074-44ae-b422-433ab9056fcd.png" alt="图例8"></p>
+<h2>结束语</h2>
+<p>除了前文提及的【宏递归法】与<code>Array Length</code>设计模式，统计<code>token tree</code>序列长度还有</p>
+<ul>
+<li><code>Slice Length</code>设计模式
+<ul>
+<li>原理类似<code>Array Length</code>，但调用数组字面量的<code>pub const fn len(&amp;self) -&gt; usize</code>成员方法读取长度值（而不是依赖类型推导和泛型参数提取）。</li>
+</ul>
+</li>
+<li>枚举计数法
+<ul>
+<li>规则宏将<code>token tree</code>序列变形为“枚举类”（而不是数组字面量），再由最后一个枚举值的分辨因子<code>discriminant</code>值加<code>1</code>获得序列长度。</li>
+<li>但，缺点也明显。比如，<code>token tree</code>序列内不能包含<code>rust</code>语法关键字与重复项。</li>
+</ul>
+</li>
+<li>比特计数法
+<ul>
+<li>典型的算法优化。从<strong>数学</strong>层面，将程序复杂度从<code>O(n)</code>降到<code>O(log(n))</code>。有些复杂，回头单独写一篇文章分享之。</li>
+</ul>
+</li>
+</ul>
+<p>【规则宏】与【泛型参数】皆是<code>rust</code>编程语言提供的业务功能开发利器。宏循环结构与泛型常量参数仅只是它们的冰山一角。此文既汇总分享与网友的讨论成果，也对此话题抛砖引玉。希望有机会与路过的神仙哥哥和仙女妹妹们更深入地交流相关技术知识点与实践经验。</p>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=d1d98ea9-8460-416d-9280-e22dc8d47b6b">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=54197995-2433-4805-b653-bb509466f752">
+			c5soft
+		    </a>
+		    <span class="created-time">2023-03-13 17:49</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>实战中一直没有机会细细玩味泛型常量的威力，阅读作者此文，大饱眼福。
+建议再次修订时将文中图片换成代码，省去敲打键盘的时间。想必一定有我等莽夫，需要将文中的代码去跑一跑，才能深刻体会Rust的精妙。</p>
+<p>顺便附上文中结尾处的代码：</p>
+<pre><code class="hljs ruby">#![feature(macro_metavar_expr)]
+
+fn main() {
+    const fn counter&lt;const N: usize&gt;(_: [(); N]) -&gt; usize {
+        N
+    }
+    macro_rules! count_tts {
+        (@replace $_t:tt with $sub:expr) =&gt; {
+            $sub
+        };
+        ($($smth:tt)*)=&gt;{
+            counter([$(count_tts!(@replace $smth with ())),*])
+        }
+    }
+    println!("{}", count_tts!(-12 abc));
+
+    macro_rules! c_tts {
+            ($($smth:tt)*)=&gt;{
+                counter([$(${ignore(smth)}()),*])
+        };
+    }
+
+    println!("{}", c_tts!(-12 abc));
+}
+</code></pre>
+
+		</div>
+	    </div>
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=5f719586-8833-4fbb-b971-0e2fdac335ae">
+			rd084c
+		    </a>
+		    <span class="created-time">2023-03-13 14:48</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>难得的好文, 先收藏再慢慢研究。</p>
+
+		</div>
+	    </div>
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=489c349c-55fb-41de-8309-85b0873cbac3">
+			SunBobJingtao
+		    </a>
+		    <span class="created-time">2023-03-13 09:34</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>精品！</p>
+
+		</div>
+	    </div>
+	    
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=d1d98ea9-8460-416d-9280-e22dc8d47b6b&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 3 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

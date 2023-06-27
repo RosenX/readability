@@ -1,0 +1,59 @@
+    <html>
+      <body>
+        <h1>
+		【Rust日报】2023-06-13 - Rust语言中文社区
+	</h1><div>
+				<h2>Mailtuta: 一个轻量的 SMTP 服务器</h2>
+				<p>Mailtutan 是一个用 Rust 构建的 SMTP 服务器。它允许您模拟
+					SMTP（简单邮件传输协议）服务器，以进行测试和开发，而不必向实际地址发送电子邮件。该服务器支持同时支持多个客户端连接，它还提供了一个 Web 界面和 REST API 来查看电子邮件列表，并使用
+					WebSockets 实时更新 Web 界面。</p>
+				<p>Mailtutan 的实现非常轻量级和高效，Docker镜像小于2MB。它支持多种存储选项：内存（默认），Maildir（文件中）。</p>
+				<p>可以通过下面的命令快速安装:</p>
+				<ul>
+					<li><code>cargo install mailtutan</code></li>
+					<li><code>docker run -p 1080:1080 -p 1025:1025 -d mailtutan/mailtutan:latest</code></li>
+				</ul>
+				<p><a href="https://github.com/mailtutan/mailtutan">github地址</a></p>
+				<h2>libtracecmd-rs: libtracecmd 的 rust 封装</h2>
+				<p>这个库是 libtracecmd 的 Rust 包装器，允许您编写程序来分析由 trace-cmd 记录的 Linux 的 ftrace 数据。（要在程序中使用此包，您需要在系统上安装
+					libtracecmd&gt;=1.2.0）。</p>
+				<p>例如：</p>
+				<ol>
+					<li>
+						<p>首先使用 trace-cmd 记录各个 syscall 的调用情况，这将得到一个名为 <code>trace.dat</code> 的记录文件：</p>
+						<p><code>trace-cmd record -e syscalls sleep 10</code></p>
+					</li>
+					<li>
+						<p>运行下面的指令，使用仓库中的 <code>top_n_events</code> 示例，统计每一个 syscall 的调用次数：
+							<code>cargo run --example top_n_events -- --input trace.dat --n 10 --prefix sys_enter_</code>
+						</p>
+					</li>
+					<li>
+						<p>最终的输出如下所示：</p>
+						<pre><code>Top 10 events:
+#1: ioctl: 62424 times
+#2: futex: 59074 times
+#3: read: 30144 times
+#4: write: 28361 times
+#5: newfstatat: 22590 times
+#6: close: 15893 times
+#7: splice: 14650 times
+#8: getuid: 13579 times
+#9: epoll_pwait: 12298 times
+#10: ppoll: 10523 times
+</code></pre>
+					</li>
+				</ol>
+				<p>更多内容请阅读原文</p>
+				<p><a href="https://github.com/mailtutan/mailtutan">github地址</a></p>
+				<p>-- From 日报小组 RustPlumber</p>
+				<p>社区学习交流平台订阅：</p>
+				<ul>
+					<li><a href="https://rustcc.cn/">Rust.cc 论坛: 支持 rss</a></li>
+					<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62">微信公众号：Rust 语言中文社区</a></li>
+				</ul>
+
+			</div>
+      </body>
+    </html>
+    

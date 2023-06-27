@@ -1,0 +1,209 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+tokio的单元测试相关 - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/blog_with_author?author_id=cb015683-e906-42b8-9ac2-77a4afc505cb" class="return">&lt; 返回我的博客</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=6156ace0-203e-494a-bb1e-a43328993916">tokio的单元测试相关</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=cb015683-e906-42b8-9ac2-77a4afc505cb">lsk569937453</a>
+
+	    发表于 <span class="article_created_time">2023-03-13 22:16</span>
+
+	    
+	</p>
+	<p>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<pre><code class="hljs rust">lazy_static! {
+        pub static ref TOKIO_RUNTIME: Runtime = Builder::new_multi_thread()
+            .worker_threads(4)
+            .thread_name("my-custom-name")
+            .thread_stack_size(3 * 1024 * 1024)
+            .max_blocking_threads(1000)
+            .enable_all()
+            .build()
+            .unwrap();
+    }
+#[test]
+    fn test_https_client_ok() {
+        let private_key_path = env::current_dir()
+            .unwrap()
+            .join("config")
+            .join("privkey.pem");
+        let private_key = std::fs::read_to_string(private_key_path).unwrap();
+
+        let ca_certificate_path = env::current_dir()
+            .unwrap()
+            .join("config")
+            .join("privkey.pem");
+        let ca_certificate = std::fs::read_to_string(ca_certificate_path).unwrap();
+
+        TOKIO_RUNTIME.spawn(async {
+            let (_, receiver) = tokio::sync::mpsc::channel(10);
+
+            let mut http_proxy = HttpProxy {
+                port: 4450,
+                channel: receiver,
+                mapping_key: String::from("random key"),
+            };
+            http_proxy
+                .start_https_server(ca_certificate, private_key)
+                .await;
+        });
+        let sleep_time = time::Duration::from_millis(100);
+        thread::sleep(sleep_time);
+        TOKIO_RUNTIME.spawn(async {
+            let client = Clients::new();
+            let request = Request::builder()
+                .uri("https://localhost:4450/get")
+                .body(Body::empty())
+                .unwrap();
+            let response_result = client.request_https(request).await;
+            assert_eq!(response_result.is_ok(), true);
+            let response = response_result.unwrap();
+            assert_eq!(response.status(), StatusCode::INTERNAL_SERVER_ERROR);
+            let body_bytes = hyper::body::to_bytes(response.into_body()).await.unwrap();
+            println!("{:?}", body_bytes);
+            let base_response: BaseResponse&lt;String&gt; = serde_json::from_slice(&amp;body_bytes).unwrap();
+            assert_eq!(base_response.response_code, -1);
+        });
+        let sleep_time2 = time::Duration::from_millis(1000);
+        thread::sleep(sleep_time2);
+    }
+</code></pre>
+<p>以上是我的单元测试用例，主要用来启动一个http server,然后用http client去调用一下这个server。上面的代码是ok的。</p>
+<p>问题是如果将代码里的spawn改为spawn_blocking,那么spawn_blocking包含的代码都不会执行。而如果改为spawn，则spawn包含的代码都会执行。这是为什么呢？</p>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=6156ace0-203e-494a-bb1e-a43328993916">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    <p class="useless">还没有评论</p>
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=6156ace0-203e-494a-bb1e-a43328993916&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 0 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

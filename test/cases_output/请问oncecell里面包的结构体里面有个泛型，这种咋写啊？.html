@@ -1,0 +1,22 @@
+    <html>
+      <body>
+        <h1>
+请问oncecell里面包的结构体里面有个泛型，这种咋写啊？ - Rust语言中文社区
+</h1><div>
+	<pre><code>pub static SHMDISPATCHER: OnceCell&lt;ShmDispatcher&lt;T&gt;&gt; = OnceCell::new();
+
+#[derive(Debug, Clone)]
+pub struct ShmDispatcher&lt;T: Message&gt; {
+    pub msg_listeners_: HashMap&lt;u64, fn(T)&gt;
+}
+
+</code></pre>
+<p>提示报错</p>
+<pre><code>cannot find type `T` in this scope
+not found in this scope
+</code></pre>
+
+    </div>
+      </body>
+    </html>
+    

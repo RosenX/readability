@@ -1,0 +1,177 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+【Rust日报】2023-06-12  Rust到汇编：了解 Rust 的内部工作原理 - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/section?id=f4703117-7e6b-4caf-aa22-a3ad3db6898f" class="return">&lt; 返回版块</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=798d56d0-9f44-4259-834d-dd13e0da84fc">【Rust日报】2023-06-12  Rust到汇编：了解 Rust 的内部工作原理</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=1f717eca-c529-45a7-b9d3-2f56e58fcc38">gensmusic</a>
+
+	    发表于 <span class="article_created_time">2023-06-12 21:37</span>
+
+	    
+	</p>
+	<p>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<h1>Rust到汇编：了解 Rust 的内部工作原理</h1>
+<p>非常好的Rust系列文章，通过生成的汇编代码，让你了解很多Rust内部的工作机制。例如文章有</p>
+<ol>
+<li>Rust枚举和匹配表示在汇编中的代码组织</li>
+<li>通过值，引用或智能指针传递self时生成的汇编方式</li>
+<li>Rust递归树生成的汇编代码</li>
+<li>更多见原文链接</li>
+</ol>
+<p><img src="https://pbs.twimg.com/media/FyY4KpLWYAIw5yL?format=jpg&amp;name=900x900" alt="img"></p>
+<p><a href="https://www.eventhelix.com/rust/" rel="noopener noreferrer">原文链接</a></p>
+<h1>libtracecmd-rs: google发布的 libtracecmd Rust wrapper</h1>
+<p>这个库是libtracecmd的Rust wrapper，它允许编写程序来分析由trace-cmd 生成的Linux的ftrace数据。</p>
+<p><a href="https://github.com/google/libtracecmd-rs" rel="noopener noreferrer">github地址</a></p>
+<h1>Cells</h1>
+<p>Cells是一款单人游戏，灵感来自用Rust编写的 agar.io。</p>
+<p><img src="https://user-images.githubusercontent.com/44228825/243118918-6078fc04-6b42-4922-95ad-e5917e2beefb.png" alt="img"></p>
+<p><a href="https://github.com/psincf/Cells" rel="noopener noreferrer">github地址</a></p>
+<h1>Rust学习系列: 函数</h1>
+<p>这是一系列Rust学习教程， 本文是第3章， 函数的介绍。</p>
+<p><a href="https://dev.to/fadygrab/learning-rust-03-the-basics-functions-4d92" rel="noopener noreferrer">原文链接</a></p>
+<p>--</p>
+<p>From 日报小组 BobQin，FBI小白</p>
+<p>社区学习交流平台订阅：</p>
+<ul>
+<li><a href="https://rustcc.cn/" rel="noopener noreferrer">Rustcc论坛: 支持rss</a></li>
+<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62" rel="noopener noreferrer">微信公众号：Rust语言中文社区</a></li>
+</ul>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=798d56d0-9f44-4259-834d-dd13e0da84fc">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    <p class="useless">还没有评论</p>
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=798d56d0-9f44-4259-834d-dd13e0da84fc&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 0 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>

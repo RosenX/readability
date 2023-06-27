@@ -1,0 +1,337 @@
+[
+  {
+    "filename": "Introducing ChatGPT and Whisper APIs.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Planning for AGI and beyond.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "迈向 ChatGPT 时代 - 技术篇.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Announcing OpenAI’s Bug Bounty Program.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "OpenAI and Microsoft extend partnership.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "人机语音交互场景中的低延迟流式语音识别技术.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "判别Fn、FnMut、FnOnce的标准.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：LLMs的美好未来.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "招聘rust开发工程师.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Rust的爬坑之旅.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Robust 2.0：支持Android R8的升级版热修复框架.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "长期招聘Rust开发工程师！.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "浅聊泛型常量参数 Const Generic.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信： 以合法和公平的方式向前发展.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "如何快速切换一个变量的指向？.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：此GPT非彼GPT.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "获取主机IP地址.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Introducing ChatGPT Plus.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "请问rust有靠谱点的ipc进程间通信的内存共享方案吗？.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：吴老师喊你上课啦！.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：LandingLens震撼发布，免费羊毛等你来薅！.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "OpenAI cybersecurity grant program.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：超越测试集——prompting改变了机器学习.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "【Rust日报】2023-06-08 freeCodeCamp 发布面向初学者的 Rust 课程.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：AI的民主化.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "ICDE 2023 | 多场景多任务学习在美团到店餐饮推荐的实践.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Function calling and other API updates.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "读《数据智能的历史机遇与现实困境》有感.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "重新思考软件测试.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "SOTA！目标检测开源框架YOLOv6 3.0版本来啦.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Our approach to AI safety.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "招聘Rust数据库开发人员【武汉急招】.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "wasm-pack build失败.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "在 Rust 中使用内联汇编.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "国家智能网联汽车创新中心Rust工程师招聘（车载操作系统）.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "How should AI systems behave, and who should decide?.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "flac_music 0.2.3 新版本发布.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Democratic Inputs to AI.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Introducing the ChatGPT app for iOS.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "ChatGPT plugins.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "The power of continuous learning.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "迈向 ChatGPT 时代 - 生产力篇.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "tokio的单元测试相关.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "New AI classifier for indicating AI-written text.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "2022 年读书学习总结.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "迈向 ChatGPT 时代 - 商业篇.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "AutoGPT与LLM Agent解析.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "一次「找回」TraceId的问题分析与过程思考.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Introducing ChatGPT.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：更“省”数据的大型预训练模型.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "March 20 ChatGPT outage: Here’s what happened.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Discovering the minutiae of backend systems.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "OpenAI Hub现已推出！更安全、更灵活的OpenAI API代理.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "新手初学Rust Tokio异步流，求推荐学习资料.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "New and improved embedding model.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "机器学习模型质量评估.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "Governance of superintelligence.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "New ways to manage your data in ChatGPT.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "LLM 全栈开发指南补遗.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "这里为什么不用写成生命周期？.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "MRCP在美团语音交互中的实践和应用.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "请问oncecell里面包的结构体里面有个泛型，这种咋写啊？.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：区别人工智能生成与人类生成.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：风浪面前，团结就是力量！.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "基于AI+数据驱动的慢查询索引推荐.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "吴恩达来信：持续推动AGI发展.html",
+    "needCheck": true,
+    "isPassed": false
+  },
+  {
+    "filename": "请问我怎么安装 x86_64-pc-windows-msvc， 我安装时怎么老报错.html",
+    "needCheck": true,
+    "isPassed": false
+  }
+]

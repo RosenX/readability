@@ -1,0 +1,43 @@
+    <html>
+      <body>
+        <h1>
+		【Rust日报】2023-06-09 配置语言 Nickel 1.0 发布 - Rust语言中文社区
+	</h1><div>
+				<h2>配置语言 Nickel 1.0 发布</h2>
+				<p>Nickel 1.0 是用 Rust 开发的配置语言。它在某种程度上是一种通用但特定领域的语言，专门用于生成配置（例如，通常评估为 YAML 或
+					JSON），但比纯序列化格式更具表现力，使配置可重用、可维护等正确（特别是选择加入静态类型和运行时合同）。它适用于任何类型的配置，对用例会相当大且复杂用例很有好处。</p>
+				<p><a href="https://www.tweag.io/blog/2023-05-17-nickel-1.0-release/">详情：https://www.tweag.io/blog/2023-05-17-nickel-1.0-release/</a>
+					<a href="https://www.reddit.com/r/rust/comments/144b9hf/announcing_nickel_10_a_configuration_language/">reddit
+						讨论：https://www.reddit.com/r/rust/comments/144b9hf/announcing_nickel_10_a_configuration_language/</a>
+				</p>
+				<h2>Fyrox 游戏引擎 0.30 更新</h2>
+				<p>Fyrox 0.30 已经发布，Fyrox 是一个用 Rust 编写的现代游戏引擎，它可以使用原生编辑器轻松创建 2D 和 3D 游戏，就像 Godot。0.30
+					是该引擎从一开始就发布的最大版本。此版本主要侧重于动画、编辑器、音频和生活质量改进，动画系统得到了显着改进，现在创建现代游戏开发中随处可见的复杂动画应该容易得多。
+					<img src="https://fyrox.rs/assets/twif15/blend_space.gif">
+					<a href="https://fyrox.rs/blog/post/fyrox-game-engine-0-30/">详情：https://fyrox.rs/blog/post/fyrox-game-engine-0-30/</a>
+				</p>
+				<h2>async-hal 项目</h2>
+				<p>嵌入式设备的异步硬件抽象层，使用示例</p>
+				<pre><code>use async_hal::delay::DelayMs;
+
+let mut led = _;
+let mut timer = _;
+
+loop {
+    led.toggle();
+    timer.delay_ms(1_000).await?;
+}
+</code></pre>
+				<p><a href="https://github.com/matthunz/async-hal">项目地址：https://github.com/matthunz/async-hal</a></p>
+				<hr>
+				<p>From 日报小组 <a href="https://github.com/Jancd">@Jancd</a></p>
+				<p>社区学习交流平台订阅：</p>
+				<ul>
+					<li><a href="https://rustcc.cn/">Rust.cc论坛: 支持rss</a></li>
+					<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62">微信公众号：Rust语言学习交流</a></li>
+				</ul>
+
+			</div>
+      </body>
+    </html>
+    

@@ -1,0 +1,105 @@
+    <html>
+      <body>
+        <h1>
+【Rust日报】2023-06-14 prometheus 官方 rust_client 使用示例 - Rust语言中文社区
+</h1><div>
+	<h4>prometheus 官方 rust_client 使用示例</h4>
+<p>promethes 是我们常用的监控系统之一，下面是一个使用 rust_client 的🌰:</p>
+<pre><code>use prometheus_client::encoding::{EncodeLabelSet, EncodeLabelValue};
+use prometheus_client::encoding::text::encode;
+use prometheus_client::metrics::counter::{Atomic, Counter};
+use prometheus_client::metrics::family::Family;
+use prometheus_client::registry::Registry;
+use std::io::Write;
+
+// 创建一个指标 registry。
+// 注意尖括号以确保对泛型类型参数使用默认值（动态调度装箱指标）。
+let mut registry = &lt;Registry&gt;::default();
+
+#[derive(Clone, Debug, Hash, PartialEq, Eq, EncodeLabelValue)]
+enum Method {
+  GET,
+  PUT,
+};
+
+// 定义一个表示指标标签集的类型，即键值对。
+// 您也可以使用 `(String, String)` 来表示标签集，而不是下面的自定义类型。
+
+#[derive(Clone, Debug, Hash, PartialEq, Eq, EncodeLabelSet)]
+struct Labels {
+  method: Method,
+  path: String,
+};
+
+// 使用上述自定义标签类型创建示例计数器指标系列，表示收到的 HTTP 请求数。
+let http_requests = Family::&lt;Labels, Counter&gt;::default();
+
+// 注册指标
+registry.register(
+  "http_requests",
+  "Number of HTTP requests received",
+  http_requests.clone(),
+);
+
+// 在您的业务逻辑中的某处记录单个 HTTP GET 请求。
+http_requests.get_or_create(
+    &amp;Labels { method: Method::GET, path: "/metrics".to_string() }
+).inc();
+
+// 当像 Prometheus 这样的监控系统抓取本地节点时，将 registry 中的所有指标以文本格式编码，并将编码后的指标发回。
+
+let mut buffer = String::new();
+encode(&amp;mut buffer, &amp;registry).unwrap();
+
+let expected = "# HELP http_requests Number of HTTP requests received.\n".to_owned() +
+               "# TYPE http_requests counter\n" +
+               "http_requests_total{method=\"GET\",path=\"/metrics\"} 1\n" +
+               "# EOF\n";
+assert_eq!(expected, buffer);
+</code></pre>
+<ul>
+<li><a href="https://github.com/prometheus/client_rust/tree/master/examples">更多使用示例</a></li>
+</ul>
+<h4>openai-hub 安全高效的 OpenAI 网关</h4>
+<p>OpenAI Hub 是一个全面而强大的工具，旨在简化和增强您与 OpenAI 的 API 的交互。它采用创新的方式来平衡多个 API 密钥，允许用户在不需要单独的 OpenAI API 密钥的情况下发出请求。此外，它还采用全局访问控制列表 (ACL)，使您能够控制用户可以使用哪些 API 和模型。该集线器还包括用于安全可靠的用户身份验证的 JWT 身份验证，现在还包括用于跟踪 API 使用情况和令牌消耗的访问日志功能。</p>
+<hr>
+<p>主要特征</p>
+<ul>
+<li>负载平衡：有效利用多个 API 密钥，防止过度使用任何单个密钥。</li>
+<li>API 密钥保护：允许用户在不需要单独的 OpenAI API 密钥的情况下发出请求，从而增强安全性和易用性。</li>
+<li>全局 ACL：规范用户对特定 API 和模型的访问，确保合适的人可以访问合适的资源。</li>
+<li>JWT 身份验证：使用 JSON Web 令牌 (JWT) 的安全可靠的用户身份验证系统。</li>
+<li>访问日志：使用我们新实施的访问日志功能跟踪 API 使用情况和令牌消耗。您可以选择将日志存储在文件、SQLite、MySQL 或 PostgreSQL 后端。</li>
+</ul>
+<hr>
+<pre><code>git clone https://github.com/lightsing/openai-hub.git
+cd openai-hub
+
+# build and run
+cargo run run --bin openai-hubd --all-features --release
+</code></pre>
+<p>or</p>
+<pre><code># pull the Docker image
+docker pull lightsing/openai-hub:latest
+
+# run the Docker container
+docker run -p 8080:8080 lightsing/openai-hub
+
+# or with your custom configs
+docker run -v /your/path/to/config:/opt/openai-hub/config -p &lt;yourport&gt; lightsing/openai-hub
+</code></pre>
+<ul>
+<li>https://github.com/lightsing/openai-hub</li>
+</ul>
+<hr>
+<p>From 日报小组 侯盛鑫 mock</p>
+<p>社区学习交流平台订阅：</p>
+<ul>
+<li><a href="https://rustcc.cn/">Rust.cc 论坛: 支持 rss</a></li>
+<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62">微信公众号：Rust 语言中文社区</a></li>
+</ul>
+
+    </div>
+      </body>
+    </html>
+    

@@ -1,0 +1,210 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<title>
+		【Rust日报】2023-06-13 - Rust语言中文社区
+	</title>
+	<!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+	<link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+
+<body>
+	<div id="header">
+		<div class="header">
+			<div class="logo left">
+				<a href="/">
+					<img class="left" src="/img/rust-logo.svg">
+					<div class="logo-title left">Rust语言中文社区</div>
+					<div style="clear:both;"></div>
+				</a>
+				<div style="clear:both;"></div>
+			</div>
+
+			<div class="signpart right">
+				<a href="/search">Search</a> &nbsp;
+				<a href="/rss">RSS</a> &nbsp;
+				<a href="/account">帐户</a>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+
+	</div>
+	<div id="content">
+
+		<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+		<link rel="stylesheet" href="/css/gruvbox-light.css">
+		<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/highlight.pack.js"></script>
+
+		<div class="body-content article_detail detail">
+			<div class="article_detail_head">
+
+				<a href="/section?id=f4703117-7e6b-4caf-aa22-a3ad3db6898f" class="return">&lt; 返回版块</a>
+
+				<div class="title">
+					<h2><a href="/article?id=85ef2b2d-3c56-4691-b32e-3de0960b9cd1">【Rust日报】2023-06-13 </a></h2>
+				</div>
+				<p class="vice-title">
+					<a href="/blog_with_author?author_id=2b80bb37-8ceb-479e-b9b3-ad8cb8dd93f8">hsqStephenZhang</a>
+
+					发表于 <span class="article_created_time">2023-06-13 21:41</span>
+
+
+				</p>
+				<p>
+
+					<small>Tags：smtp, trace-cmd</small>
+
+				</p>
+			</div>
+
+			<div class="detail-body ">
+				<h2>Mailtuta: 一个轻量的 SMTP 服务器</h2>
+				<p>Mailtutan 是一个用 Rust 构建的 SMTP 服务器。它允许您模拟
+					SMTP（简单邮件传输协议）服务器，以进行测试和开发，而不必向实际地址发送电子邮件。该服务器支持同时支持多个客户端连接，它还提供了一个 Web 界面和 REST API 来查看电子邮件列表，并使用
+					WebSockets 实时更新 Web 界面。</p>
+				<p>Mailtutan 的实现非常轻量级和高效，Docker镜像小于2MB。它支持多种存储选项：内存（默认），Maildir（文件中）。</p>
+				<p>可以通过下面的命令快速安装:</p>
+				<ul>
+					<li><code>cargo install mailtutan</code></li>
+					<li><code>docker run -p 1080:1080 -p 1025:1025 -d mailtutan/mailtutan:latest</code></li>
+				</ul>
+				<p><a href="https://github.com/mailtutan/mailtutan" rel="noopener noreferrer">github地址</a></p>
+				<h2>libtracecmd-rs: libtracecmd 的 rust 封装</h2>
+				<p>这个库是 libtracecmd 的 Rust 包装器，允许您编写程序来分析由 trace-cmd 记录的 Linux 的 ftrace 数据。（要在程序中使用此包，您需要在系统上安装
+					libtracecmd&gt;=1.2.0）。</p>
+				<p>例如：</p>
+				<ol>
+					<li>
+						<p>首先使用 trace-cmd 记录各个 syscall 的调用情况，这将得到一个名为 <code>trace.dat</code> 的记录文件：</p>
+						<p><code>trace-cmd record -e syscalls sleep 10</code></p>
+					</li>
+					<li>
+						<p>运行下面的指令，使用仓库中的 <code>top_n_events</code> 示例，统计每一个 syscall 的调用次数：
+							<code>cargo run --example top_n_events -- --input trace.dat --n 10 --prefix sys_enter_</code>
+						</p>
+					</li>
+					<li>
+						<p>最终的输出如下所示：</p>
+						<pre><code class="hljs shell">Top 10 events:
+#1: ioctl: 62424 times
+#2: futex: 59074 times
+#3: read: 30144 times
+#4: write: 28361 times
+#5: newfstatat: 22590 times
+#6: close: 15893 times
+#7: splice: 14650 times
+#8: getuid: 13579 times
+#9: epoll_pwait: 12298 times
+#10: ppoll: 10523 times
+</code></pre>
+					</li>
+				</ol>
+				<p>更多内容请阅读原文</p>
+				<p><a href="https://github.com/mailtutan/mailtutan" rel="noopener noreferrer">github地址</a></p>
+				<p>-- From 日报小组 RustPlumber</p>
+				<p>社区学习交流平台订阅：</p>
+				<ul>
+					<li><a href="https://rustcc.cn/" rel="noopener noreferrer">Rust.cc 论坛: 支持 rss</a></li>
+					<li><a href="https://rustcc.cn/article?id=ed7c9379-d681-47cb-9532-0db97d883f62"
+							rel="noopener noreferrer">微信公众号：Rust 语言中文社区</a></li>
+				</ul>
+
+			</div>
+
+
+
+			<div class="comments">
+				<div class="">
+					<h3 class="left">评论区</h3>
+					<a class="right new-comment"
+						href="/p/comment/new?article_id=85ef2b2d-3c56-4691-b32e-3de0960b9cd1">写评论</a>
+					<div style="clear:both;"></div>
+				</div>
+
+
+				<p class="useless">还没有评论</p>
+
+			</div>
+
+			<div class="comment_paginator_part">
+				<div class="comment_paginator right">
+
+					<a href="/article?id=85ef2b2d-3c56-4691-b32e-3de0960b9cd1&amp;current_page=1" class="current_page">
+						1
+					</a>
+
+					共 0 条评论, 1 页
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+
+		<script type="application/javascript">
+			function hightlight($doms) {
+				$doms.each(function (i, block) {
+					hljs.highlightBlock(block);
+				});
+			}
+
+			hightlight($("pre code"));
+		</script>
+
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="site-desc">
+				<p class="links">
+					友情链接：
+					<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+					| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+					| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+					| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+				</p>
+				<p class="links">
+					<a href="/acknowledgement">鸣谢：</a>
+					<a href="/acknowledgement">迅达云</a>
+					<a href="/acknowledgement">赛贝</a>
+					<a href="/acknowledgement">LongHash</a>
+				</p>
+				<p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+					<span class="powered">Powered by
+						<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+						<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+						<a href="https://github.com/sappworks/sapper">Sapper</a>
+					</span>
+				</p>
+				<p>
+					<span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+				</p>
+
+			</div>
+		</div>
+
+		<script>
+			var _hmt = _hmt || [];
+			(function () {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+
+	</div>
+
+
+
+
+</body>
+
+</html>

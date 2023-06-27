@@ -1,0 +1,35 @@
+    <html>
+      <body>
+        <h1>
+wasm-pack build失败 - Rust语言中文社区
+</h1><div>
+	<p>我按照官方的流程编译失败,日志如下,请求大佬支持
+rustc 1.69.0 (84c898d65 2023-04-16) (built from a source tarball)</p>
+<pre><code>wasm-pack build
+[INFO]: 🎯  Checking for the Wasm target...
+[INFO]: 🌀  Compiling to Wasm...
+   Compiling proc-macro2 v1.0.60
+   Compiling cfg-if v1.0.0
+   Compiling quote v1.0.28
+   Compiling wasm-bindgen-shared v0.2.87
+   Compiling wasm-bindgen v0.2.87
+error[E0786]: found invalid metadata files for crate `core`
+  |
+  = note: metadata not found in rlib '/usr/local/Cellar/rust/1.69.0/lib/rustlib/wasm32-unknown-unknown/lib/libcore-6a9d233d01acc350.rlib'
+
+error[E0786]: found invalid metadata files for crate `compiler_builtins`
+  |
+  = note: metadata not found in rlib '/usr/local/Cellar/rust/1.69.0/lib/rustlib/wasm32-unknown-unknown/lib/libcompiler_builtins-851bb3b5f6c4db49.rlib'
+
+For more information about this error, try `rustc --explain E0786`.
+error: could not compile `cfg-if` due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+Error: Compiling your crate to WebAssembly failed
+Caused by: Compiling your crate to WebAssembly failed
+Caused by: failed to execute `cargo build`: exited with exit status: 101
+</code></pre>
+
+    </div>
+      </body>
+    </html>
+    

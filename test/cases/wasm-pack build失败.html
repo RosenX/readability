@@ -1,0 +1,193 @@
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>
+wasm-pack build失败 - Rust语言中文社区
+</title>
+    <!--    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+</head>
+<body>
+<div id="header">
+    <div class="header">
+    <div class="logo left">
+        <a href="/">
+		<img class="left" src="/img/rust-logo.svg">
+		<div class="logo-title left">Rust语言中文社区</div>
+		<div style="clear:both;"></div>
+        </a>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="signpart right">
+        <a href="/search">Search</a> &nbsp;
+        <a href="/rss">RSS</a> &nbsp;
+        <a href="/account">帐户</a>
+	</div>
+	<div style="clear:both;"></div>
+</div>
+
+</div>
+<div id="content">
+    
+<!--<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.12.0/build/styles/default.min.css">-->
+<link rel="stylesheet" href="/css/gruvbox-light.css">
+<script src="https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a"></script><script src="/js/jquery.min.js"></script>
+<script src="/js/highlight.pack.js"></script>
+
+<div class="body-content article_detail detail">
+    <div class="article_detail_head">
+	
+	    <a href="/section?id=522c7491-6a5f-4141-a3a1-3070c0466586" class="return">&lt; 返回版块</a>
+	
+	<div class="title">
+	    <h2><a href="/article?id=95782565-17fc-4818-a11e-e200876332c3">wasm-pack build失败</a></h2>
+	</div>
+	<p class="vice-title">
+	    <a href="/blog_with_author?author_id=b5a032e4-4745-4f96-b3ab-e02e0f9f0333">borneygit</a>
+
+	    发表于 <span class="article_created_time">2023-06-13 18:01</span>
+
+	    
+	</p>
+	<p>
+	    
+	    <small>Tags：wasm</small>
+	    
+	</p>
+    </div>
+
+    <div class="detail-body ">
+	<p>我按照官方的流程编译失败,日志如下,请求大佬支持
+rustc 1.69.0 (84c898d65 2023-04-16) (built from a source tarball)</p>
+<pre><code class="hljs coffeescript">wasm-pack build
+[INFO]: 🎯  Checking for the Wasm target...
+[INFO]: 🌀  Compiling to Wasm...
+   Compiling proc-macro2 v1.0.60
+   Compiling cfg-if v1.0.0
+   Compiling quote v1.0.28
+   Compiling wasm-bindgen-shared v0.2.87
+   Compiling wasm-bindgen v0.2.87
+error[E0786]: found invalid metadata files for crate `core`
+  |
+  = note: metadata not found in rlib '/usr/local/Cellar/rust/1.69.0/lib/rustlib/wasm32-unknown-unknown/lib/libcore-6a9d233d01acc350.rlib'
+
+error[E0786]: found invalid metadata files for crate `compiler_builtins`
+  |
+  = note: metadata not found in rlib '/usr/local/Cellar/rust/1.69.0/lib/rustlib/wasm32-unknown-unknown/lib/libcompiler_builtins-851bb3b5f6c4db49.rlib'
+
+For more information about this error, try `rustc --explain E0786`.
+error: could not compile `cfg-if` due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+Error: Compiling your crate to WebAssembly failed
+Caused by: Compiling your crate to WebAssembly failed
+Caused by: failed to execute `cargo build`: exited with exit status: 101
+</code></pre>
+
+    </div>
+
+    
+
+    <div class="comments">
+	<div class="">
+	    <h3 class="left">评论区</h3>
+	    <a class="right new-comment" href="/p/comment/new?article_id=95782565-17fc-4818-a11e-e200876332c3">写评论</a>
+	    <div style="clear:both;"></div>
+	</div>
+
+	
+	    
+	    <div class="item">
+		<div class="comment-title">
+		    
+		    <a class="author-name" href="/blog_with_author?author_id=50a85679-e246-475b-a0ba-84c058a972cd">
+			Toursslivers
+		    </a>
+		    <span class="created-time">2023-06-14 09:50</span>
+		    
+		    
+		</div>
+		<div class="comment-content">
+		    <p>确定是按照官方流程吗，重来！</p>
+
+		</div>
+	    </div>
+	    
+	
+    </div>
+
+    <div class="comment_paginator_part">
+	<div class="comment_paginator right">
+	    
+	    <a href="/article?id=95782565-17fc-4818-a11e-e200876332c3&amp;current_page=1" class="current_page">
+		1
+	    </a>
+	    
+	    共 1 条评论, 1 页
+	</div>
+	<div style="clear:both;"></div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function hightlight($doms) {
+	$doms.each(function (i, block) {
+	    hljs.highlightBlock(block);
+	});
+    }
+
+    hightlight($("pre code"));
+</script>
+
+</div>
+<div id="footer">
+    <div class="footer">
+    <div class="site-desc">
+	<p class="links">
+		友情链接：
+			<a target="_blank" href="http://tinylab.org/">泰晓科技</a>
+			| <a target="_blank" href="https://ruby-china.org/">Ruby China</a>
+			| <a target="_blank" href="https://eleduck.com/">电鸭远程社区</a>
+			| <a target="_blank" href="http://ipfs.cn/">IPFS中文社区</a>
+	</p>
+	<p class="links">
+	    <a href="/acknowledgement">鸣谢：</a>
+	    <a href="/acknowledgement">迅达云</a>
+	    <a href="/acknowledgement">赛贝</a>
+	    <a href="/acknowledgement">LongHash</a>
+	</p>
+	    <p> ©2016~2020 Rust.cc 版权所有 &nbsp;&nbsp;
+	    <span class="powered">Powered by
+		<a href="https://github.com/daogangtang/forustm">Forustm</a> &amp;
+		<a href="https://github.com/daogangtang/rusoda">Rusoda</a> &amp;
+		<a href="https://github.com/sappworks/sapper">Sapper</a>
+	    </span>
+	</p>
+		<p>
+        <span><a href="https://beian.miit.gov.cn">蜀ICP备20010673号-1</a></span>
+		</p>
+
+    </div>
+</div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+ var hm = document.createElement("script");
+ hm.src = "https://hm.baidu.com/hm.js?1fd834970f3ad2bab2cb57d4aa2b2e5a";
+ var s = document.getElementsByTagName("script")[0]; 
+ s.parentNode.insertBefore(hm, s);
+ })();
+</script>
+
+</div>
+
+
+
+
+</body></html>
