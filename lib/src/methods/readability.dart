@@ -15,14 +15,19 @@ class Readability extends BaseExtractor {
         CleanUnusefulTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         TransformATagProcessor(),
+        RemoveAInHProcessor(),
+        RemoveInvalidATagProcessor(),
+        RemoveInvalidImgTagProcessor(),
+        RemoveUnnecessaryNestedDivProcessor(),
+        RemoveSvgProcessor(),
       ];
 
   @override
   List<Processor> get postprocessors => [
         FigurePrettyProcessor(),
         RemoveUnusefulAttributeProcessor(),
-        RemoveAInHProcessor(),
         RemoveEmptyTagProcessor(),
+        RemoveImgParameterProcessor(),
       ];
 
   final tagScore = {
@@ -93,11 +98,11 @@ class Readability extends BaseExtractor {
       }
 
       if (!candidates.containsKey(parentTag)) {
-        candidates[parentTag] = _scoreNode(parentTag);
+        candidates[parentTag] = 0;
       }
 
       if (grandParentTag != null && !candidates.containsKey(grandParentTag)) {
-        candidates[grandParentTag] = _scoreNode(grandParentTag);
+        candidates[grandParentTag] = 0;
       }
 
       double score = 1;
@@ -124,13 +129,6 @@ class Readability extends BaseExtractor {
       // }
     }
     return candidates;
-  }
-
-  /// score elem
-  double _scoreNode(Element elem) {
-    double score = 0;
-    score += tagScore[elem.localName] ?? 0;
-    return score;
   }
 
   // choose best candidate

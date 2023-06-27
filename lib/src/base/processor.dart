@@ -13,7 +13,8 @@ class CleanUnusefulTagProcessor implements Processor {
     'meta',
     'link',
     'nav',
-    'style'
+    'style',
+    'button'
   ];
 
   @override
@@ -60,6 +61,25 @@ class ReplaceDivWithPTagProcessor implements Processor {
         Element p = Element.tag('p');
         p.children.addAll(div.children);
         div.replaceWith(p);
+      }
+    }
+  }
+}
+
+class RemoveUnnecessaryNestedDivProcessor implements Processor {
+  @override
+  String get name => 'remove_unnecessary_nested_div';
+
+  @override
+  void process(Document doc) {
+    // the order is from leaf to root
+    var divs = doc.querySelectorAll('div');
+    for (var div in divs) {
+      if (div.children.length == 1) {
+        if (div.children.first.localName == 'div' ||
+            div.children.first.localName == 'p') {
+          div.replaceWith(div.children.first);
+        }
       }
     }
   }
@@ -133,6 +153,34 @@ class RemoveUnusefulAttributeProcessor implements Processor {
   }
 }
 
+/// remove all svg tag
+class RemoveSvgProcessor implements Processor {
+  @override
+  String get name => 'remove_svg';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('svg').forEach((e) => e.remove());
+  }
+}
+
+/// remove parameter int img href
+class RemoveImgParameterProcessor implements Processor {
+  @override
+  String get name => 'remove_img_parameter';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('img').forEach((e) {
+      var src = e.attributes['src'];
+      if (src != null) {
+        // split by '?', and get the first part
+        e.attributes['src'] = src.split('?').first;
+      }
+    });
+  }
+}
+
 class RemoveAInHProcessor implements Processor {
   @override
   String get name => 'remove_a_in_h';
@@ -148,7 +196,8 @@ class RemoveAInHProcessor implements Processor {
 }
 
 class RemoveEmptyTagProcessor implements Processor {
-  final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li'];
+  final blockTag = ['p', 'div'];
 
   @override
   String get name => 'remove_empty_tag';
@@ -159,39 +208,69 @@ class RemoveEmptyTagProcessor implements Processor {
     for (var child in doc.children) {
       _removeEmptyTextTag(child);
     }
-    _removeEmptyPTag(doc);
-    // because p tag is nested in div, so we need to remove div tag after p tag
-    _removeEmptyDivTag(doc);
+    for (var child in doc.children) {
+      _removeEmptyBlockTag(child);
+    }
   }
 
   /// if tag in textTag and its text is empty, remove it
   void _removeEmptyTextTag(Element elem) {
-    if (textTag.contains(elem.localName) && elem.text.trim().isEmpty) {
-      elem.remove();
-      return;
-    }
     for (var child in elem.children) {
       _removeEmptyTextTag(child);
     }
+    if (textTag.contains(elem.localName) &&
+        elem.text.trim().isEmpty &&
+        elem.children.isEmpty) {
+      elem.remove();
+    }
   }
 
-  /// remove p tag if it has no child
-  void _removeEmptyPTag(Document doc) {
-    // querySelectorAll return a pre-order traversal of dom tree
-    // so we can remove from leaf to root
-    doc.querySelectorAll('p').forEach((e) {
-      if (e.children.isEmpty && e.text.trim().isEmpty) {
+  /// if tag is empty, remove it
+  void _removeEmptyBlockTag(Element elem) {
+    for (var child in elem.children) {
+      _removeEmptyBlockTag(child);
+    }
+    if (blockTag.contains(elem.localName) &&
+        elem.children.isEmpty &&
+        elem.text.trim().isEmpty) {
+      elem.remove();
+    }
+  }
+}
+
+class RemoveInvalidATagProcessor implements Processor {
+  @override
+  String get name => 'remove_empty_a_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('a').forEach((e) {
+      if (e.text.trim().isEmpty && e.children.isEmpty) {
+        e.remove();
+      }
+      if (e.attributes['href'] == null) {
+        e.remove();
+      }
+      // if href not a url, remove it
+      if (!e.attributes['href']!.startsWith('http')) {
         e.remove();
       }
     });
   }
+}
 
-  /// remove div tag if it has no child
-  void _removeEmptyDivTag(Document doc) {
-    // querySelectorAll return a pre-order traversal of dom tree
-    // so we can remove from leaf to root
-    doc.querySelectorAll('div').forEach((e) {
-      if (e.children.isEmpty && e.text.trim().isEmpty) {
+class RemoveInvalidImgTagProcessor implements Processor {
+  @override
+  String get name => 'remove_empty_img_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('img').forEach((e) {
+      if (e.attributes['src'] == null) {
+        e.remove();
+      }
+      // if src not a url, remove it
+      if (!e.attributes['src']!.startsWith('http')) {
         e.remove();
       }
     });

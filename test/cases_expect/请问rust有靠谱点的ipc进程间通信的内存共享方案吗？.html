@@ -1,0 +1,619 @@
+    <html>
+      <body>
+        <div><h1>
+请问rust有靠谱点的ipc进程间通信的内存共享方案吗？ - Rust语言中文社区
+</h1>
+		    <p>原理和平台接口大同小异，如果对你的程序来说是非常关键的功能，那么最好自己能亲手实现并改进它。</p>
+<p>--<br>
+👇<br>
+heliping: 多谢大神，
+请问有linux的方案吗？</p>
+<p>--<br>
+👇<br>
+gqf2008:</p>
+<h3>各个平台都有完整的方案，下面是windows平台的实现代码，供您参考</h3>
+<pre><code>/// 进程间自旋锁
+#[cfg(target_os = "windows")]
+use super::windows::{Error, SharedMemory};
+use core::hint;
+use std::cell::UnsafeCell;
+use std::intrinsics::*;
+use std::marker::PhantomData;
+use std::ops::{Deref, DerefMut};
+
+pub struct Mutex&lt;T&gt;(SharedMemory, UnsafeCell&lt;T&gt;);
+
+unsafe impl&lt;T&gt; Send for Mutex&lt;T&gt; where T: Send {}
+unsafe impl&lt;T&gt; Sync for Mutex&lt;T&gt; where T: Sync {}
+
+pub struct MutexGuard&lt;'a, T&gt;(&amp;'a Mutex&lt;T&gt;, PhantomData&lt;T&gt;);
+
+impl&lt;'a, T&gt; Drop for MutexGuard&lt;'a, T&gt; {
+   fn drop(&amp;mut self) {
+       let _ = self.0.unlock();
+   }
+}
+
+impl&lt;'a, T&gt; Deref for MutexGuard&lt;'a, T&gt; {
+   type Target = T;
+   fn deref(&amp;self) -&gt; &amp;T {
+       unsafe { &amp;*self.0 .1.get() }
+   }
+}
+
+impl&lt;'a, T&gt; DerefMut for MutexGuard&lt;'a, T&gt; {
+   fn deref_mut(&amp;mut self) -&gt; &amp;mut T {
+       unsafe { &amp;mut *self.0 .1.get() }
+   }
+}
+
+impl&lt;T&gt; Mutex&lt;T&gt; {
+   pub fn new&lt;S: AsRef&lt;str&gt;&gt;(key: S, resource: T) -&gt; Result&lt;Self, Error&gt; {
+       Ok(Self(SharedMemory::new(key, 8)?, UnsafeCell::new(resource)))
+   }
+}
+
+impl&lt;T&gt; Mutex&lt;T&gt; {
+   pub fn lock(&amp;self) -&gt; MutexGuard&lt;'_, T&gt; {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       loop {
+           if compare_exchange_weak(shm, 0, 1) {
+               return MutexGuard(self, PhantomData);
+           }
+           if num_cpus::get() &gt; 1 {
+               for n in (0..2048).map(|i| i &lt;&lt; 1).into_iter() {
+                   (0..n).for_each(|_| hint::spin_loop());
+                   if compare_exchange_weak(shm, 0, 1) {
+                       return MutexGuard(self, PhantomData);
+                   }
+               }
+           }
+           std::thread::yield_now();
+       }
+   }
+
+   pub fn try_lock(&amp;self) -&gt; Result&lt;MutexGuard&lt;'_, T&gt;, ()&gt; {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       if compare_exchange_weak(shm, 0, 1) {
+           Ok(MutexGuard(self, PhantomData))
+       } else {
+           Err(())
+       }
+   }
+
+   pub fn is_locked(&amp;self) -&gt; bool {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       load_relaxed(shm) == 1
+   }
+
+   fn unlock(&amp;self) {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       compare_exchange(shm, 1, 0);
+   }
+
+   fn try_unlock(&amp;self) -&gt; Result&lt;(), ()&gt; {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       if compare_exchange(shm, 1, 0) {
+           Ok(())
+       } else {
+           Err(())
+       }
+   }
+
+   pub fn force_unlock(&amp;self) {
+       let shm = unsafe { &amp;mut *(self.0.as_mut_ptr() as *mut u64) };
+       store_seqcst(shm, 0)
+   }
+}
+
+pub struct RwLock&lt;T: ?Sized&gt; {
+   lock: SharedMemory,
+   data: T,
+}
+
+const READER: usize = 1 &lt;&lt; 2;
+const UPGRADED: usize = 1 &lt;&lt; 1;
+const WRITER: usize = 1;
+
+pub struct RwLockReadGuard&lt;'a, T: 'a + ?Sized&gt; {
+   lock: &amp;'a SharedMemory,
+   data: &amp;'a T,
+}
+
+pub struct RwLockWriteGuard&lt;'a, T: 'a + ?Sized&gt; {
+   inner: &amp;'a RwLock&lt;T&gt;,
+   data: &amp;'a mut T,
+}
+
+pub struct RwLockUpgradableGuard&lt;'a, T: 'a + ?Sized&gt; {
+   inner: &amp;'a RwLock&lt;T&gt;,
+   data: &amp;'a T,
+}
+
+unsafe impl&lt;T: ?Sized + Send&gt; Send for RwLock&lt;T&gt; {}
+unsafe impl&lt;T: ?Sized + Send + Sync&gt; Sync for RwLock&lt;T&gt; {}
+
+#[inline]
+fn compare_exchange_weak&lt;T: Copy&gt;(dst: *mut T, old: T, new: T) -&gt; bool {
+   let (_val, ok) = unsafe { atomic_cxchgweak_acquire_relaxed(dst, old, new) };
+   ok
+}
+#[inline]
+fn compare_exchange&lt;T: Copy&gt;(dst: *mut T, old: T, new: T) -&gt; bool {
+   let (_val, ok) = unsafe { atomic_cxchg_acquire_relaxed(dst, old, new) };
+   ok
+}
+#[inline]
+fn store_seqcst&lt;T: Copy&gt;(dst: *mut T, val: T) {
+   unsafe { atomic_store_seqcst(dst, val) }
+}
+
+#[inline]
+fn load_relaxed&lt;T: Copy&gt;(dst: *mut T) -&gt; T {
+   unsafe { atomic_load_relaxed(dst) }
+}
+
+
+use std::ffi::c_void;
+use std::ffi::CString;
+use std::mem::MaybeUninit;
+use std::ops::{Deref, DerefMut};
+use std::ptr::null_mut as NULL;
+use std::ptr::NonNull;
+use std::time::Duration;
+use thiserror::Error;
+use winapi::shared::winerror::ERROR_SUCCESS;
+use winapi::um::errhandlingapi::GetLastError;
+use winapi::um::handleapi::CloseHandle;
+use winapi::um::handleapi::INVALID_HANDLE_VALUE;
+use winapi::um::memoryapi::*;
+use winapi::um::processthreadsapi::*;
+use winapi::um::securitybaseapi::AdjustTokenPrivileges;
+use winapi::um::synchapi::*;
+use winapi::um::winbase::*;
+use winapi::um::winnt::*;
+
+#[derive(Debug, Error)]
+pub enum Error {
+   #[error("OsWaitAbandoned")]
+   WaitAbandoned,
+   #[error("OsWaitTimeout")]
+   WaitTimeout,
+   #[error("OsError {0}")]
+   OsError(u32),
+   #[error("OsCallError {0}")]
+   Error(i32),
+   #[error("OsErrorMappingSize {0}/{1}")]
+   ErrorMappingSize(usize, usize),
+}
+
+pub struct Semaphore(NonNull&lt;c_void&gt;);
+
+impl Drop for Semaphore {
+   fn drop(&amp;mut self) {
+       unsafe {
+           CloseHandle(self.0.as_ptr());
+       }
+   }
+}
+
+impl Semaphore {
+   pub fn new&lt;S: AsRef&lt;str&gt;&gt;(key: S, init: i32, max: i32) -&gt; Result&lt;Self, Error&gt; {
+       let key = CString::new(key.as_ref()).unwrap();
+       let handle = unsafe { CreateSemaphoreA(NULL(), init, max, key.as_ptr()) };
+       if handle.is_null() {
+           return Err(last_error());
+       }
+       Ok(Self(unsafe { NonNull::new_unchecked(handle) }))
+   }
+}
+
+impl Semaphore {
+   pub fn release(&amp;self, n: i32) -&gt; Result&lt;(), Error&gt; {
+       if unsafe { ReleaseSemaphore(self.0.as_ptr(), n, NULL()) } == 0 {
+           return Err(last_error());
+       }
+       Ok(())
+   }
+
+   pub fn wait(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), None) }
+   }
+
+   pub fn wait_timeout(&amp;self, timeout: Duration) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), Some(timeout)) }
+   }
+}
+
+pub struct Event(NonNull&lt;c_void&gt;);
+
+impl Drop for Event {
+   fn drop(&amp;mut self) {
+       unsafe {
+           CloseHandle(self.0.as_ptr());
+       }
+   }
+}
+
+impl Event {
+   pub fn new&lt;S: AsRef&lt;str&gt;&gt;(key: S, manual_reset: bool, init_state: bool) -&gt; Result&lt;Self, Error&gt; {
+       let key = CString::new(key.as_ref()).unwrap();
+       let handle = unsafe {
+           CreateEventA(
+               NULL(),
+               if manual_reset { 1 } else { 0 },
+               if init_state { 1 } else { 0 },
+               key.as_ptr(),
+           )
+       };
+       if handle.is_null() {
+           return Err(last_error());
+       }
+       Ok(Self(unsafe { NonNull::new_unchecked(handle) }))
+   }
+}
+// 自动模式下的WaitForSingleObject + SetEvent，一次唤醒一个线程
+// 手段模式下的WaitForSingleObject + SetEvent + ResetEvent，一次唤醒一批线程
+// 手段模式下的WaitForSingleObject + PulseEvent ，一次唤醒所有线程
+impl Event {
+   pub fn set(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       if unsafe { SetEvent(self.0.as_ptr()) } == 0 {
+           return Err(last_error());
+       }
+       Ok(())
+   }
+
+   pub fn reset(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       if unsafe { ResetEvent(self.0.as_ptr()) } == 0 {
+           return Err(last_error());
+       }
+       Ok(())
+   }
+
+   pub fn pulse(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       if unsafe { PulseEvent(self.0.as_ptr()) } == 0 {
+           return Err(last_error());
+       }
+       Ok(())
+   }
+
+   pub fn wait(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), None) }
+   }
+
+   pub fn wait_timeout(&amp;self, timeout: Duration) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), Some(timeout)) }
+   }
+}
+
+pub struct Mutex(NonNull&lt;c_void&gt;);
+
+impl Drop for Mutex {
+   fn drop(&amp;mut self) {
+       unsafe {
+           CloseHandle(self.0.as_ptr());
+       }
+   }
+}
+
+impl Mutex {
+   pub fn new&lt;S: AsRef&lt;str&gt;&gt;(key: S, owner: bool) -&gt; Result&lt;Self, Error&gt; {
+       let key = CString::new(key.as_ref()).unwrap();
+       let handle = unsafe { CreateMutexA(NULL(), if owner { 1 } else { 0 }, key.as_ptr()) };
+       if handle.is_null() {
+           return Err(last_error());
+       }
+       Ok(Self(unsafe { NonNull::new_unchecked(handle) }))
+   }
+}
+
+impl Mutex {
+   pub fn unlock(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       if unsafe { ReleaseMutex(self.0.as_ptr()) } == 0 {
+           return Err(last_error());
+       }
+       Ok(())
+   }
+
+   pub fn lock(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), None) }
+   }
+
+   pub fn lock_timeout(&amp;self, timeout: Duration) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), Some(timeout)) }
+   }
+}
+
+pub struct WaitPid(NonNull&lt;c_void&gt;);
+
+impl Drop for WaitPid {
+   fn drop(&amp;mut self) {
+       unsafe {
+           CloseHandle(self.0.as_ptr());
+       }
+   }
+}
+impl WaitPid {
+   pub fn new(pid: u32) -&gt; Result&lt;Self, Error&gt; {
+       unsafe {
+           try_adjust_privilege()
+               .map_err(|err| {
+                   log::trace!("Adjust Privilege PID({}) {:?}", pid, err);
+               })
+               .ok();
+
+           let handle = OpenProcess(PROCESS_ALL_ACCESS, 0, pid);
+           if handle.is_null() {
+               return Err(last_error());
+           }
+           Ok(Self(NonNull::new_unchecked(handle)))
+       }
+   }
+}
+
+impl WaitPid {
+   pub fn wait(&amp;self) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), None) }
+   }
+
+   pub fn wait_timeout(&amp;self, timeout: Duration) -&gt; Result&lt;(), Error&gt; {
+       unsafe { wait_for_single_object(self.0.as_ptr(), Some(timeout)) }
+   }
+}
+
+pub struct SharedMemory(NonNull&lt;c_void&gt;, usize, NonNull&lt;u8&gt;);
+
+impl Drop for SharedMemory {
+   fn drop(&amp;mut self) {
+       unsafe {
+           UnmapViewOfFile(self.2.as_ptr() as _);
+           CloseHandle(self.0.as_ptr());
+       }
+   }
+}
+
+impl Deref for SharedMemory {
+   type Target = [u8];
+
+   fn deref(&amp;self) -&gt; &amp;Self::Target {
+       unsafe { self.as_bytes() }
+   }
+}
+
+impl DerefMut for SharedMemory {
+   fn deref_mut(&amp;mut self) -&gt; &amp;mut Self::Target {
+       unsafe { self.as_bytes_mut() }
+   }
+}
+
+impl SharedMemory {
+   pub fn new&lt;S: AsRef&lt;str&gt;&gt;(key: S, size: usize) -&gt; Result&lt;Self, Error&gt; {
+       let name = CString::new(key.as_ref()).unwrap();
+       let handle = unsafe { OpenFileMappingA(FILE_MAP_READ | FILE_MAP_WRITE, 0, name.as_ptr()) };
+       let handle = if handle.is_null() {
+           let high: u32 = ((size as u64 &amp; 0xFFFF_FFFF_0000_0000_u64) &gt;&gt; 32) as u32;
+           let low: u32 = (size as u64 &amp; 0xFFFF_FFFF_u64) as u32;
+           let handle = unsafe {
+               CreateFileMappingA(
+                   INVALID_HANDLE_VALUE,
+                   NULL(),
+                   PAGE_READWRITE,
+                   high,
+                   low,
+                   name.as_ptr(),
+               )
+           };
+           if handle.is_null() {
+               return Err(last_error());
+           }
+           handle
+       } else {
+           handle
+       };
+       Self::with_handle(unsafe { NonNull::new_unchecked(handle) }, size)
+   }
+
+   pub fn with_handle(handle: NonNull&lt;c_void&gt;, size: usize) -&gt; Result&lt;Self, Error&gt; {
+       unsafe {
+           let mmap = MapViewOfFile(handle.as_ptr(), FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, size);
+           if mmap.is_null() {
+               CloseHandle(handle.as_ptr());
+               return Err(last_error());
+           }
+           let mut info = MEMORY_BASIC_INFORMATION::default();
+           let bytes_written = VirtualQuery(
+               mmap,
+               &amp;mut info,
+               std::mem::size_of::&lt;MEMORY_BASIC_INFORMATION&gt;(),
+           );
+           if (bytes_written as usize) &lt; std::mem::size_of::&lt;MEMORY_BASIC_INFORMATION&gt;() {
+               UnmapViewOfFile(mmap);
+               CloseHandle(handle.as_ptr());
+               return Err(last_error());
+           }
+           if info.RegionSize &lt; size {
+               return Err(Error::ErrorMappingSize(size, info.RegionSize));
+           }
+           Ok(Self(
+               handle,
+               info.RegionSize,
+               NonNull::new_unchecked(mmap as _),
+           ))
+       }
+   }
+}
+
+impl SharedMemory {
+   pub fn len(&amp;self) -&gt; usize {
+       self.1
+   }
+
+   pub fn as_ptr(&amp;self) -&gt; *const u8 {
+       self.2.as_ptr()
+   }
+
+   pub fn as_mut_ptr(&amp;self) -&gt; *mut u8 {
+       self.2.as_ptr()
+   }
+
+   pub unsafe fn as_bytes(&amp;self) -&gt; &amp;[u8] {
+       std::slice::from_raw_parts(self.2.as_ptr(), self.len())
+   }
+
+   pub unsafe fn as_bytes_mut(&amp;self) -&gt; &amp;mut [u8] {
+       std::slice::from_raw_parts_mut(self.2.as_ptr(), self.len())
+   }
+}
+
+fn last_error() -&gt; Error {
+   Error::OsError(unsafe { GetLastError() })
+}
+
+unsafe fn try_adjust_privilege() -&gt; Result&lt;(), Error&gt; {
+   let mut h_token = NULL();
+   let mut sedebugname_value = std::mem::MaybeUninit::uninit();
+   let mut tkp: MaybeUninit&lt;TOKEN_PRIVILEGES&gt; = std::mem::MaybeUninit::uninit();
+
+   let ret = OpenProcessToken(
+       GetCurrentProcess(),
+       TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
+       &amp;mut h_token,
+   );
+   if ret != 1 {
+       return Err(Error::Error(ret));
+   }
+   let name = CString::new(SE_DEBUG_NAME).unwrap();
+   let ret = LookupPrivilegeValueA(NULL(), name.as_ptr(), sedebugname_value.as_mut_ptr());
+   if ret != 1 {
+       CloseHandle(h_token);
+       return Err(Error::Error(ret));
+   }
+   tkp.assume_init_mut().PrivilegeCount = 1;
+   tkp.assume_init_mut().Privileges[0].Luid = sedebugname_value.assume_init();
+   tkp.assume_init_mut().Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+   let ret = AdjustTokenPrivileges(
+       h_token,
+       0,
+       tkp.as_mut_ptr(),
+       std::mem::size_of::&lt;TOKEN_PRIVILEGES&gt;() as u32,
+       NULL(),
+       NULL(),
+   );
+   CloseHandle(h_token);
+   if ret != 1 {
+       return Err(Error::Error(ret));
+   }
+   let errno = GetLastError();
+   if errno != ERROR_SUCCESS {
+       return Err(Error::OsError(errno));
+   }
+   Ok(())
+}
+
+unsafe fn wait_for_single_object(
+   handle: *mut c_void,
+   timeout: Option&lt;Duration&gt;,
+) -&gt; Result&lt;(), Error&gt; {
+   let timeout = if let Some(timeout) = timeout {
+       timeout.as_millis() as u32
+   } else {
+       INFINITE
+   };
+   match WaitForSingleObject(handle, timeout) {
+       0x00000000 =&gt; Ok(()),
+       0x00000080 =&gt; Err(Error::WaitAbandoned),
+       0x00000102 =&gt; Err(Error::WaitTimeout),
+       0xFFFFFFFF =&gt; Err(last_error()),
+       ret =&gt; Err(Error::OsError(ret)),
+   }
+}
+
+</code></pre>
+<h3>共享内存使用示例</h3>
+<pre><code>
+//进程间原子操作
+#![feature(atomic_from_mut)]
+
+use byteorder::{BigEndian, ByteOrder, LittleEndian};
+use std::io::Write;
+use std::sync::atomic::{fence, AtomicU64, Ordering};
+use std::thread;
+use std::{sync::Arc, time::Duration};
+use xtalk_ipc::windows::SharedMemory;
+
+fn main() {
+   {
+       let mut shm = SharedMemory::new("1111", 8).unwrap();
+       let ptr = &amp;mut shm[8..16];
+       let ptr = unsafe { &amp;mut *(ptr.as_mut_ptr() as *mut u64) };
+       println!("{:p} {:p}", shm.as_mut_ptr(), ptr);
+
+       let lock = AtomicU64::from_mut(ptr);
+       let val = lock.load(Ordering::Relaxed);
+       println!("value1 {}", val);
+
+       lock.compare_exchange_weak(0, 1, Ordering::Acquire, Ordering::Relaxed)
+           .ok();
+       fence(Ordering::Acquire);
+       let val = lock.load(Ordering::Relaxed);
+       println!("value2 {} {}", val, LittleEndian::read_u64(&amp;shm[8..16]));
+
+       lock.compare_exchange_weak(1, 0, Ordering::Acquire, Ordering::Relaxed)
+           .ok();
+       fence(Ordering::Acquire);
+       let val = lock.load(Ordering::Relaxed);
+       println!("value2 {} {}", val, LittleEndian::read_u64(&amp;shm[8..16]));
+   }
+}
+
+// 读共享内存
+
+use std::io::Write;
+use std::thread;
+use std::time::{Duration, Instant};
+use xtalk_ipc::spinlock::Mutex;
+use xtalk_ipc::windows::SharedMemory;
+
+fn main() {
+   let spin = Mutex::new("spinlock", SharedMemory::new("xxxxxxx", 4096).unwrap()).unwrap();
+   loop {
+       {
+           let shm = spin.lock();
+           println!(
+               "{:?} 主线程{:?} 获得锁 {:?}",
+               Instant::now(),
+               thread::current().id(),
+               String::from_utf8_lossy(&amp;shm[0..12])
+           );
+       }
+       thread::sleep(Duration::from_secs(1));
+   }
+}
+
+
+// 写共享内存
+
+use std::io::Write;
+use std::thread;
+use std::time::{Duration, Instant};
+use xtalk_ipc::spinlock::Mutex;
+use xtalk_ipc::windows::SharedMemory;
+
+fn main() {
+   let spin = Mutex::new("spinlock", SharedMemory::new("xxxxxxx", 4096).unwrap()).unwrap();
+   loop {
+       {
+           let mut shm = spin.lock();
+           write!(&amp;mut shm[0..12], "萨芬卡拉圣诞节");
+       }
+       thread::sleep(Duration::from_secs(1));
+   }
+}
+
+</code></pre>
+<p><a href="https://github.com/gqf2008/Xtalk/tree/main/xtalk-ipc">代码来源</a>: https://github.com/gqf2008/Xtalk/tree/main/xtalk-ipc</p>
+
+		</div>
+      </body>
+    </html>
+    

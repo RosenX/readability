@@ -1,8 +1,8 @@
     <html>
       <body>
-        <h1>
+        <div><h1>
 【Rust日报】2023-06-10 - Rust语言中文社区
-</h1><div>
+</h1>
 	<h3>nt-apiset: 一个用于 WindowsAPI  API Set Map文件 的 Rust 解析器</h3>
 <p>我的bootloader程序项目的下一个构建块已经准备好了！Nt-apiset 是用 Rust 编写的用于 Windows10及更高版本的 API Set Map 文件的解析器。</p>
 <p>API Set是名称以“ API-”或“ ext-”开头的 PE 可执行文件的依赖项，例如 API-ms-win-core-sysinfo-l1-1-0。它们不作为真正的 DLL 文件存在。相反，当加载 PE 可执行文件时，将检查操作系统的 API Set Map 文件，以确定属于依赖项的实际库文件(在本例中为 kernelbase.dll)。</p>

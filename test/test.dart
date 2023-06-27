@@ -17,11 +17,11 @@ Future<void> runTestOutput(String caseFolder, String outputFolder) async {
     var extractor = HtmlExtractor(rawHtml: content, method: Method.readability);
     var result = extractor.parse();
     var outputFile = File(outputName);
-    outputFile.writeAsString(result);
+    outputFile.writeAsStringSync(result);
   }
 }
 
-Future<List<TestCase>> runTest(String outputFolder, String expectFolder) async {
+List<TestCase> runTest(String outputFolder, String expectFolder) {
   final outputDir = Directory(outputFolder);
   final expectDir = Directory(expectFolder);
   final List<FileSystemEntity> entities = outputDir.listSync();
@@ -30,22 +30,17 @@ Future<List<TestCase>> runTest(String outputFolder, String expectFolder) async {
   final List<TestCase> testCases = [];
 
   for (final file in files) {
-    print(file);
     final expectFile = File('${expectDir.path}/${file.path.split('/').last}');
     if (!expectFile.existsSync()) {
       testCases.add(TestCase(
-          filename: file.path.split('/').last,
-          needCheck: true,
-          isPassed: false));
+          filename: file.path.split('/').last, isNew: true, isPassed: false));
       continue;
     }
     final expectContent = expectFile.readAsStringSync();
     final outputContent = file.readAsStringSync();
     if (expectContent != outputContent) {
       testCases.add(TestCase(
-          filename: file.path.split('/').last,
-          needCheck: true,
-          isPassed: false));
+          filename: file.path.split('/').last, isNew: true, isPassed: false));
     } else {
       // remove output file if passed
       file.deleteSync();
@@ -60,7 +55,7 @@ void main() async {
   final outputDir = 'cases_output';
 
   await runTestOutput(caseDir, outputDir);
-  final caseNeedCheck = await runTest(outputDir, expectDir);
+  final caseNeedCheck = runTest(outputDir, expectDir);
 
   String jsonString = JsonEncoder.withIndent('  ').convert(caseNeedCheck);
 

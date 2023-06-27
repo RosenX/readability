@@ -4,7 +4,7 @@ import 'logger.dart';
 import 'processor.dart';
 
 abstract class Extractor {
-  String extract(Document doc);
+  Document extract(Document doc);
 }
 
 class BaseExtractor with Logger implements Extractor {
@@ -40,13 +40,13 @@ class BaseExtractor with Logger implements Extractor {
   }
 
   @override
-  String extract(Document doc) {
+  Document extract(Document doc) {
     preprocess(doc);
     var result = extractContent(doc);
     if (isDebug) {
       log("extract", result);
     }
     postprocess(result);
-    return result.outerHtml;
+    return result;
   }
 }
