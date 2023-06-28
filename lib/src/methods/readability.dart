@@ -48,8 +48,6 @@ class Readability extends BaseExtractor {
     'ul'
   ];
 
-  final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-
   String cleanText(String text) {
     // Many spaces make the following regexes run forever
     text = text.replaceAll(RegExp(r"\s{255,}"), ' ' * 255);
