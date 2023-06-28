@@ -31,29 +31,22 @@ class Readability extends BaseExtractor {
         RemoveImgParameterProcessor(),
       ];
 
-  final tagScore = {
-    'div': 5,
-    'pre': 3,
-    'td': 3,
-    'blockquote': 3,
-    'address': -3,
-    'ol': -3,
-    'ul': -3,
-    'dl': -3,
-    'dd': -3,
-    'dt': -3,
-    'li': -3,
-    'form': -3,
-    'th': -5,
-    'h1': -5,
-    'h2': -5,
-    'h3': -5,
-    'h4': -5,
-    'h5': -5,
-    'h6': -5,
-  };
-
-  final scoreTag = ['p', 'pre', 'td', 'img', 'video'];
+  final scoreTag = [
+    'p',
+    'pre',
+    'td',
+    'img',
+    'video',
+    'pre',
+    'td',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'ul'
+  ];
 
   final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
