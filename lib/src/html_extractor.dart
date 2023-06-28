@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:html/dom.dart';
 
 import 'package:html/parser.dart' as parser;
-
-import 'base/main_content.dart';
-import 'methods/meta_parser.dart';
-import 'methods/readability.dart';
+import 'package:readability/src/base/main_content.dart';
+import 'package:readability/src/methods/meta_parser.dart';
+import 'package:readability/src/methods/readability.dart';
 
 enum Method { readability }
 
@@ -23,7 +22,7 @@ class HtmlExtractor {
   HtmlExtractor(
       {required this.rawHtml,
       this.url,
-      required this.method,
+      this.method = Method.readability,
       this.isDebug = false}) {
     if (isDebug) {
       // remove log folder if exists
