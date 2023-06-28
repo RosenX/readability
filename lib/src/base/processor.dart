@@ -299,3 +299,20 @@ class RemoveInvalidFigureTagProcessor implements Processor {
     });
   }
 }
+
+/// remove tag with suspicious class name like comment, comment-text, comment-content
+class RemoveSuspiciousTagProcessor implements Processor {
+  final suspiciousClassRegx = RegExp(r'comment');
+
+  @override
+  String get name => 'remove_suspicious_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('div').forEach((e) {
+      if (suspiciousClassRegx.hasMatch(e.className)) {
+        e.remove();
+      }
+    });
+  }
+}
