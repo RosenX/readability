@@ -17,7 +17,7 @@ class CleanUnusefulTagProcessor implements Processor {
     'button',
     'svg',
     'header',
-    'footer'
+    'footer',
   ];
 
   @override
@@ -225,6 +225,13 @@ class RemoveEmptyTagProcessor implements Processor {
     if (blockTag.contains(elem.localName) &&
         elem.children.isEmpty &&
         elem.text.trim().isEmpty) {
+      elem.remove();
+    }
+    // special case for <p><br></p>
+    if (blockTag.contains(elem.localName) &&
+        elem.children.length == 1 &&
+        elem.text.trim().isEmpty &&
+        elem.children.first.localName == 'br') {
       elem.remove();
     }
   }
