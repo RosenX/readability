@@ -1,0 +1,133 @@
+    <html>
+      <body>
+        <div><h1>Rust项目结构Package和Crate-基础篇 - 掘金</h1>
+                                        
+                                        
+                                        <h2>1. Package和Crate</h2>
+                                        <p>在 Rust 中，<code>package</code> 和 <code>crate</code>
+                                            是两个重要的概念，用于组织和管理代码。它们分别表示不同层次的代码组织和封装。</p>
+                                        <h3>1.1 Crate</h3>
+                                        <ul>
+                                            <li>一个 <code>crate</code> 是一个 Rust 项目或库的编译单元，它可以包含多个模块和代码文件。一个
+                                                <code>crate</code> 可以是一个二进制可执行文件或一个库（例如，静态库或动态库）。
+                                            </li>
+                                            <li><code>crate</code> 是 Rust 的最小编译单元，每个 <code>crate</code>
+                                                都会生成一个独立的二进制文件或库文件。<code>crate</code> 中的模块和代码可以通过 <code>use</code>
+                                                关键字在其他 <code>crate</code> 中引用和重用。</li>
+                                            <li><code>crate</code> 也可以被其他 <code>crate</code>
+                                                依赖，以在项目中使用外部库。这些外部库称为依赖库，可以在项目的 <code>Cargo.toml</code> 文件中指定。</li>
+                                        </ul>
+                                        <h3>1.2 Package</h3>
+                                        <ul>
+                                            <li>一个 <code>package</code> 是一个包含一个或多个 <code>crate</code> 的更高级别的组织单元。通常，一个
+                                                <code>package</code> 包含一个主 <code>crate</code>，即二进制可执行文件或库，以及其他可能的辅助
+                                                <code>crate</code>。
+                                            </li>
+                                            <li><code>package</code> 是由一个 <code>Cargo.toml</code>
+                                                文件定义的，它包含了项目的元数据（如名称、版本、作者等）以及项目的依赖配置。</li>
+                                            <li><code>package</code> 可以包含多个 <code>crate</code>，这些 <code>crate</code>
+                                                可以是主 <code>crate</code> 的辅助模块或库，也可以是不同的二进制文件。</li>
+                                        </ul>
+                                        <h3>1.3 与Java对比</h3>
+                                        <p>Java中的模块可以看做成Rust的Crate,而Java中的项目和Rust的Package可以看成是等价的。所以Rust的package和Java中的package不是一个概念。<code>crate</code>
+                                            是 Rust 中最小的编译单元，可以是项目的二进制文件或库。而 <code>package</code>
+                                            则是一个更高级别的组织单元，包含一个或多个相关的 <code>crate</code>，由一个 <code>Cargo.toml</code>
+                                            文件定义。<code>crate</code> 可以通过 <code>use</code> 关键字在其他代码中引用，而
+                                            <code>package</code> 可以被其他项目依赖和集成。
+                                        </p>
+                                        <h2>2. Package的格式</h2>
+                                        <p>Package分为两种：</p>
+                                        <ul>
+                                            <li><strong>binary</strong>：应用模版</li>
+                                            <li><strong>library</strong>: 库模版</li>
+                                        </ul>
+                                        <p>Cargo使用文件放置的约定，以便轻松地深入了解新的Cargo包：</p>
+                                        <pre><code>.
+├── Cargo.lock
+├── Cargo.toml
+├── src/
+│   ├── lib.rs
+│   ├── main.rs
+│   └── bin/
+│       ├── named-executable.rs
+│       ├── another-executable.rs
+│       └── multi-file-executable/
+│           ├── main.rs
+│           └── some_module.rs
+├── benches/
+│   ├── large-input.rs
+│   └── multi-file-bench/
+│       ├── main.rs
+│       └── bench_module.rs
+├── examples/
+│   ├── simple.rs
+│   └── multi-file-example/
+│       ├── main.rs
+│       └── ex_module.rs
+└── tests/
+    ├── some-integration-tests.rs
+    └── multi-file-test/
+        ├── main.rs
+        └── test_module.rs
+
+</code></pre>
+                                        <ul>
+                                            <li><code>Cargo.toml</code> 和 <code>Cargo.lock</code>
+                                                存储在你的包的根目录中（<em>包根目录</em>）。</li>
+                                            <li>源代码放在 <code>src</code> 目录中。</li>
+                                            <li>默认库文件是 <code>src/lib.rs</code>。</li>
+                                            <li>默认的可执行文件是 <code>src/main.rs</code>。
+                                                <ul>
+                                                    <li>其他可执行文件可以放在 <code>src/bin/</code> 目录中。</li>
+                                                </ul>
+                                            </li>
+                                            <li>基准测试放在 <code>benches</code> 目录中。</li>
+                                            <li>示例放在 <code>examples</code> 目录中。</li>
+                                            <li>集成测试放在 <code>tests</code> 目录中。</li>
+                                        </ul>
+                                        <p>如果一个二进制、示例、基准测试或集成测试由多个源文件组成，在
+                                            <code>src/bin</code>、<code>examples</code>、<code>benches</code> 或
+                                            <code>tests</code> 目录的子目录中放置一个 <code>main.rs</code> 文件以及额外的<a href="https://link.juejin.cn?target=https%3A%2F%2Fdoc.rust-lang.org%2Fcargo%2Fappendix%2Fglossary.html%23module"><em>模块</em></a>。可执行文件的名称将是目录名称。
+                                        </p>
+                                        <p>通过命令:</p>
+                                        <pre><code>cargo new --help
+</code></pre>
+                                        <p>可以看出来创建有两种上面所述的：<strong><code>binary</code></strong> 和
+                                            <strong><code>library</code></strong>
+                                        </p>
+                                        <p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/24d2a7c5b4a846289970b46a6408ed35~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"></p>
+                                        <h3>2.1 创建binary</h3>
+                                        <p>命令：</p>
+                                        <pre><code>cargo new xxx --bin  
+</code></pre>
+                                        <blockquote>
+                                            <p>xxx: package名称</p>
+                                        </blockquote>
+                                        <p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/686090a21e2c4c04b8928e2284587ad1~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"></p>
+                                        <p>通过命令行创建可以看出来自包含了最简单的，而tests等其他的目录是需要自己手动建（可以看出来是非必须得）。</p>
+                                        <h3>2.2 创建library</h3>
+                                        <p>命令：</p>
+                                        <pre><code>cargo new xxx --lib
+</code></pre>
+                                        <blockquote>
+                                            <p>xxx: package名称</p>
+                                        </blockquote>
+                                        <p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bab5e661f8cf482690c86385cce0da4f~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"></p>
+                                        <p>从上图看出和binary的模版一样tests相关的目录没有创建需要手动创建非必须的。</p>
+                                        <h2>3. 总结</h2>
+                                        <ol>
+                                            <li>通过工具cargo创建package有两类：<strong><code>binary</code></strong> 和
+                                                <strong><code>library</code></strong>
+                                                ，<strong><code>binary</code></strong> 是一个包含可执行文件的 Rust
+                                                项目，通常用于创建独立的可执行应用程序。，也就是Java中的带有main函数的Java类，<strong><code>library</code></strong>
+                                                一个库包中至少包含一个 Rust 代码文件（通常是 lib.rs），其中定义了模块、结构体、函数等等。
+                                            </li>
+                                            <li>benches模块，examples模块以及tests模块非必须。这个根据个人需要进行新建设置。</li>
+                                        </ol>
+                                        <blockquote>
+                                            <p>我是蚂蚁背大象，文章对你有帮助给<a href="https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fmxsm%2Fmxsm-website">项目点个❤</a>关注我<a href="https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fmxsm">GitHub:mxsm</a>，文章有不正确的地方请您斧正,创建<a href="https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fmxsm%2Fmxsm-website%2Fissues">ISSUE提交PR</a>~谢谢! Emal:<a href="https://link.juejin.cn?target=mailto%3Amxsm%40apache.com">mxsm@apache.com</a></p>
+                                        </blockquote>
+                                    </div>
+      </body>
+    </html>
+    
