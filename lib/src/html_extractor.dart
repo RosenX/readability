@@ -16,6 +16,7 @@ class HtmlExtractor {
   late MainContent _mainContent;
   Method method;
   bool isDebug;
+  bool onlyClean = false;
 
   final notSupportTag = ['video', 'math'];
 
@@ -23,6 +24,7 @@ class HtmlExtractor {
       {required this.rawHtml,
       this.url,
       this.method = Method.readability,
+      this.onlyClean = false,
       this.isDebug = false}) {
     if (isDebug) {
       // remove log folder if exists
@@ -51,7 +53,9 @@ class HtmlExtractor {
 
     switch (method) {
       case Method.readability:
-        _mainContent.content = Readability(isDebug: isDebug).extract(_htmlDoc);
+        _mainContent.content =
+            Readability(isDebug: isDebug, onlyClean: onlyClean)
+                .extract(_htmlDoc);
         break;
       default:
         throw Exception('not support method');

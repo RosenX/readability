@@ -12,8 +12,9 @@ class BaseExtractor with Logger implements Extractor {
   List<Processor> get postprocessors => [];
 
   bool isDebug;
+  bool onlyClean;
 
-  BaseExtractor({this.isDebug = false});
+  BaseExtractor({this.isDebug = false, this.onlyClean = false});
 
   void preprocess(Document doc) {
     for (var i = 0; i < preprocessors.length; i++) {
@@ -42,11 +43,13 @@ class BaseExtractor with Logger implements Extractor {
   @override
   Document extract(Document doc) {
     preprocess(doc);
-    var result = extractContent(doc);
-    if (isDebug) {
-      log("extract", result);
+    if (!onlyClean) {
+      doc = extractContent(doc);
+      if (isDebug) {
+        log("extract", doc);
+      }
     }
-    postprocess(result);
-    return result;
+    postprocess(doc);
+    return doc;
   }
 }
