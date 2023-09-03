@@ -25,13 +25,16 @@ class MainContent {
       content.children.first.children
           .insert(0, Element.tag('h1')..text = title);
     }
-
-    return '''
+    if (content.body == null) {
+      return '''
     <html>
       <body>
         ${content.outerHtml}
       </body>
     </html>
     ''';
+    } else {
+      return content.outerHtml;
+    }
   }
 }
