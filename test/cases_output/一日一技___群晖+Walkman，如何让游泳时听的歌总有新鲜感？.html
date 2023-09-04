@@ -1,0 +1,99 @@
+    <html>
+      <body>
+        <div><h1>用好尘封的群晖，让你的耳朵在每一次游泳时都能充满新意 - 少数派</h1><p><strong>Matrix 首页推荐</strong>&nbsp;</p><p><a href="https://sspai.com/matrix">Matrix</a>&nbsp;是少数派的写作社区，我们主张分享真实的产品体验，有实用价值的经验与思考。我们会不定期挑选 Matrix 最优质的文章，展示来自用户的最真实的体验和观点。&nbsp;<br>文章代表作者个人观点，少数派仅对标题和排版略作修改。</p><hr><p>在游泳时听歌的一个常见痛点是，耳机上存放的音乐内容越来越过时或者听腻了，要手动通过电脑来管理音乐，但是操作却非常麻烦。本文将会使用群晖（DS218+），通过简单的 USB Copy 或者自动化脚本来解决这个问题，实现自动帮耳机（Sony Walkman NW-WS623，以下统称 Walkman）更新歌曲。</p><p><strong>重要提示：</strong>本文将涉及编写并执行自定义脚本，存在一定安全风险。请不要轻易信任和运行不明来源的脚本，以免造成数据损坏或信息泄漏。请在自己完全理解的前提下谨慎操作。</p><h2>Walkman 的痛点</h2><p>夏天到了，游泳的最佳时节也到了。每次去游泳，游泳耳机是必不可少的，它让我在泳池里面不会那么枯燥了，只要戴上我心爱的 Walkman 扑通入水后，整个游泳馆就会只剩下我这最靓的仔。</p><p>不过美中不足的是，除了偶尔会被蛙泳的人踹脸，就剩下我的 Walkman 里面的音乐却是几年前的这件事了。在这过去的几年里，我的个人音乐库里面的红心歌曲也已经更新了好多，现在有必要把 Walkman 里面的歌单更新一下了。</p><p>上周末从游泳馆回家的路上，一直想着要更新歌单，想着想着，结果一进门，心里记着的事儿也就跟我扔在一边的游泳装备一样，啪嗒掉在了地上。</p><p>直到隔天晚上，偶然瞥到游泳装备，这件需要解决的小麻烦这才又浮上心头。于是，那天晚上我大概花了一个小时才把这件事情搞定：</p><ol><li>把 Walkman 从游泳装备中取出；</li><li>打开电脑；</li><li>忘记连接线，又去我的杂物箱里面拿到数据连接线；</li><li>把电脑跟 Walkman 连接；</li><li>先清空 Walkman 里面 Music 文件夹；</li><li>打开了我的音乐下载文件夹，随机挑了几百个音乐（对的，手动，挑到眼花）；</li><li>开始漫长的拷贝过程（估算了下，得有接近 20 分钟）；</li></ol><p>实在不能忍受着这个效率，我得想办法节约自己的时间。回头看到了自己家那台一直在吃灰的群晖，我突然有了灵感：用群晖的 USB Copy 功能直接导出歌曲不就行了。</p><h2>简易版方案</h2><p>群晖的 USB Copy 功能还是挺简单易用的，通过简单的设置，你就能让它在你把 Walkman 插入群晖前面的 USB 口时，自动复制歌曲到 Walkman，并且在复制完成之后自动弹出设备，然后用「滴」一声告诉你完成了，你只需要直接拔出来就能直接使用了。</p><p>下面是简单的教程：</p><p>第一步，打开 USB Copy：</p><figure><img src="https://cdn.sspai.com/2023/08/21/c55e35c3ce3ad8e87234911ede112092.png"></figure><p>第二步，选择数据导出：<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/ae410b2aac505bb930ba39cc1ba230d4.png"></figure><p>第三步，设置任务，来源选一个你挑好的音乐文件夹列表，注意：</p><ol><li>大小不能超过 Walkman 本身的大小，不然会导致失败报错；</li><li>目的地记得选 Walkman 专门的文件夹，截图未体现；</li><li>复制模式必须是镜像，因为其他模式都是用来备份目的的；</li></ol><figure><img src="https://cdn.sspai.com/2023/08/21/6c353fcb8f0250a06abcff7d40cf7f85.png"></figure><p>第四步，选择触发时间：<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/f90b442cceaf3072b98a5ad4f7d8faf9.png"></figure><p>最后一步，选择文件过滤，我只为听歌，因此这里只选音频：<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/f16143698ec65a14015ddb3e7c39114a.png"></figure><p>创建完成后，可以将你的 Walkman 插上去试试效果。</p><p>不过我想把空间利用率拉满，折腾一次可以顶好久，因此我在测试的时候，等了好久也没听见「哔」声，再去群晖上瞧一眼，果然是挂了。群晖提示我空间不够，原因也很简单，因为我的 Walkman 可用的空间也就 3.5GB 不到，而之前电脑上拷贝的歌曲已经把 Walkman 的空间占满了，虽然我设置的复制策略是镜像，但是实际执行的时候，群晖是不会先把空间删掉腾出来再进行复制的，这样就会导致没有足够的交换空间导致复制失败。</p><p>解决的方案也是有的，那就是留足足够的空间，因为大多数情况下，我一次游泳也不会听那么多的歌曲，也没那么多时间来听，那么，实际上我只向里面拷贝几十首歌就行了，算一首歌 10M 的话，顶多拷贝 500M 左右的歌曲就行了，问题也就迎刃而解了。</p><p>不过，如果你跟我一样有些强迫症，非要把空间利用率尽量拉满，可以像我一样尝试更高阶一些的方法。</p><h2>高阶版方案</h2><p>简单规划了我的的歌曲更新流程，因为本来 USB 这几年只是用来充电了，这次顺便就能把歌单同步跟充电，这两件事一起做了。</p><p>所以我设想了如下的流程：</p><ol><li>游泳回到家，把 Walkman 直接插入群晖的任意一个 USB 口；</li><li>等待一个晚上，充电+歌单同步；</li><li>下次游泳前，把 Walkman 拔出，放入装备包；</li></ol><p>是的，就那么简单，但是，为了能达到这种流程，我需要准备以下几个事情：</p><ol><li>定期同步电脑中的歌曲到群晖</li><li>写一个脚本<ol><li>每天晚上定时执行</li><li>随机选取我的歌曲，做成一个歌单</li><li>把歌单中的歌曲拷贝到 Walkman</li><li>拷贝完成后弹出，方便随时拔出</li></ol></li></ol><p>那么脚本的话，我就贴在下面了，自取即可。</p><pre><code>#!/bin/bash
+
+set -e
+
+# 标记文件，用来标记这个设备是用来拷贝的，可以把其它 U 盘设备排除在这个流程之外，
+# 也就是说不存在这个文件的设备会被跳过。在这里我用的是 Walkman 上自带的文件，
+# 如果你用的是其它的耳机，可以直接在耳机上创建一个同样名字的文件，
+# 或者把下面的名字改为你耳机上已经存在着的并且不会改的名字
+marker_filename="default-capability.xml"
+
+# Walkman 用来存放音乐的文件夹名称
+dest_dirname="MUSIC"
+
+# 最大空间，默认 3.5G 不到，留下100M左右用来当作交换空间
+max_size=$((3400 * 1024 * 1024))
+
+# 音乐文件所在目录
+music_dir=/volume1/music/Music
+
+# 要放音乐链接的临时目录，记得选一个同一个共享文件夹的
+music_symlink_dir=/volume1/music/walkman
+
+rm -rf $music_symlink_dir || true
+mkdir -p $music_symlink_dir
+
+music_dir_size=$(du -sb $music_dir | cut -f1)
+if [ $music_dir_size -lt $max_size ]; then
+  echo "音乐源目录 $music_dir_size 小于设置的最大值 $max_size ，将最大值设置为 $max_size"
+  max_size=$music_dir_size
+fi
+
+for line in $(cat /tmp/usbguidtab); do
+  usb_dev=$(echo "$line" | cut -d= -f1)
+
+  mount_root=$(mount | grep "$usb_dev" | awk '{print $3}')
+  if [ ! -d "$mount_root" ]; then
+    echo "跳过：$usb_dev 非U盘储存设备，或者挂载失败，可尝试插拔"
+    continue
+  fi
+
+  echo "USB device $usb_dev mount on $mount_root"
+  
+  walkman_capability_file="$mount_root/$marker_filename"
+  if [ ! -f "$walkman_capability_file" ]; then
+    echo "跳过：$mount_root: 标记文件 $marker_filename 不存在"
+    continue
+  fi
+
+  walkman_music_dir="$mount_root/$dest_dirname"
+  if [ ! -d "$walkman_music_dir" ]; then
+    echo "跳过：$mount_root: 目的地文件夹 $dest_dirname 不存在"
+    continue
+  fi
+
+  # 先找出所有音频文件
+  orig_files=()
+  while IFS=  read -r -d $'\0'; do
+      orig_files+=("$REPLY")
+  done &lt; &lt;(find $music_dir -type f \( -iname \*.mp3 -o -iname \*.m4a -o -iname \*.wav \) -not -path "*/@eaDir/*" -print0)
+  echo "源文件夹音乐数量：${#orig_files[@]}"
+
+  # 打乱顺序，方便随机挑选
+  files=()
+  while read -r item; do
+      files+=("$item")
+  done &lt; &lt;(shuf -e "${orig_files[@]}")
+
+  size=0
+  index=0
+  while [ $size -lt $max_size ]; do
+    file="${files[$index]}"
+
+    if [ -n "$file" ]; then
+      echo "选中音乐文件：$file"
+
+      next_size=$(( size + $(du -sb "$file" | awk '{print $1}') ))
+      if [ "$next_size" -gt "$max_size" ]; then
+        break
+      fi
+
+      ln "$file" $music_symlink_dir
+      size=$next_size
+
+      index=$(( index + 1 ))
+    fi
+  done
+
+  rsync -av --delete-before "$music_symlink_dir/" "$walkman_music_dir/" 2&gt;&amp;1
+  rm -rf ${music_symlink_dir:?}/
+
+  sync # 刷盘
+  /usr/syno/bin/synousbdisk -umount "$usb_dev" # 安全弹出，方便拔出
+  echo 2 &gt; /dev/ttyS1 # 哔一声用来提醒
+done</code></pre><p>接下来说说怎么用。</p><h3>怎么使用</h3><p>首先，我们需要确定参数：</p><ol><li>Walkman 中的音乐文件夹名，我的是 <code>MUSIC</code>，必须要确定存在，否则会被跳过；</li><li>Walkman 中的标志文件，我用的是设备自带的文件 <code>default-capability.xml</code>，你的设备如果不存在这个文件，则可以创建一个跟我一样同名的（内容可空），用来表示你只会使用这个设备来同步音乐，而不是其他同时插在群晖上的设备，不存在这个文件的设备会被跳过；</li><li>最大空间，我的是 3.5G，但是为了留一些交换空间，我就设置了 3400M；</li><li>音乐文件夹目录，按照下面的提示，在群晖的 File Station 中，找到你的音乐文件夹的路径，比如我的就是 <code>/volume1/music/Music</code>；</li><li>临时目录：在<strong>同一个共享文件夹</strong>下面，你需要指定一个不存在的临时目录，比如我的就是 <code>/volume1/music/walkman</code>，用来存放随机筛选的音乐（放心，完成之后会删的）；</li></ol><p>查看音乐文件夹的目录：</p><figure><img src="https://cdn.sspai.com/2023/09/01/c41b45871a8962f1a52c1c9df20366a5.png"><img src="https://cdn.sspai.com/2023/09/01/6dcb869d694298aafb4f680a3e86eb4a.png"></figure><p>将你的参数替换掉我在脚本中的数值即可，你的定制脚本就完成了。</p><p>然后，我们来设置你的定制脚本：</p><p>打开群晖的系统面板，任务计划。</p><p>第一步，新增，计划的任务，用户定义的脚本。<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/244af1957735378071158cdfbb6f068d.png"></figure><p>第二步，常规 Tab，任务名称随便填了，比如我填的就是 Walkman，用户账户需要选择 root，因为最后弹出 Walkman <strong>需要 root 权限</strong>（admin 实测权限不够，截图的账号不正确，实际应为 root）。</p><p>这里需要提醒一句，对于不理解脚本的小白来说，<strong>轻易不要使用来路不明的脚本</strong>，尤其是需要高权限运行的情况下。如果是恶意脚本，轻则被投毒挂马挖矿，重则被加密勒索或者数据全毁，慎重，慎重，慎重。</p><figure><img src="https://cdn.sspai.com/2023/08/21/8fa4122ed7c6c7e14d707d5a31c8ab19.png"></figure><p>第三步，点击计划 Tab，可以先留空，我就是留着它默认时间的，每天凌晨执行就行。<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/5f80911cbd444c703df6971b9bfc1757.png"></figure><p>第四步，任务设置，通知设置这边，如果想收邮件通知的话就勾选，不需要也无所谓，最后将上面的脚本粘贴到用户定义的脚本里面就行。（如果你不是跟我一样的 Walkman，理论上也可以用，但是需要你能修改脚本。）</p><figure><img src="https://cdn.sspai.com/2023/08/21/c4342acb6804f11841bd8d2b41211fbe.png"></figure><p>最后一步，点击确定即可。<br>&nbsp;</p><figure><img src="https://cdn.sspai.com/2023/08/21/49ee3902ff1a9255c8920e3e3053803d.png"></figure><p>设置完成后将 Walkman 连接到群晖，然后选中任务，点击「运行」，手动执行一遍，测试一下。另外如果你设置了邮件通知，那么在任务结束的时候，你应该会收到任务完成的邮件提示。</p><h2>最后</h2><p>P.S. 我买的这个 Walkman 当时搜了挺多的资料，看了各种推荐才下单的，如今已经用了差不多 4 年了（刚刚去瞟了一眼电商平台，价格依然坚挺）。其实当时也考虑过骨传导耳机，对比了下价格后，我立马觉得还是入耳的更好，因为它不需要额外戴耳塞了，它本身就是耳塞 🌝。</p><p>P.P.S. 这个脚本已经改了几个版本，目前能支持自动检测插入 U 口的设备，并且可以支持多个，功能还是比较简陋的，目前在我的使用习惯下勉强凑合了，有能力的同学修改下这个脚本，就能支持把追更的最新播客，说书，相声（游泳时听郭德纲，想想就挺带感的……）之类的音频也放进去，显然在遇到这种经常需要更新音频的情况下，这个流程就显得更契合了。</p><p>另外，如果有其它不会修改脚本的同学也有类似的需求，或者遇到了使用问题，可以在评论区留言，我会尝试继续改进这个脚本。</p><p>P.P.P.S. 最后的最后，这个流程唯二的问题就是：</p><ol><li>在游泳之后，忘记把 Walkman 从游泳装备取出去插进群晖；</li><li>在游泳之前，忘记把 Walkman 拔出放入游泳装备；</li></ol><p>不过相信我，忘个几次之后，记性还是会长的。</p><p>&gt; 下载 <a href="https://sspai.com/page/client">少数派 2.0 客户端</a>、关注 <a href="https://sspai.com/s/J71e">少数派公众号</a>，解锁全新阅读体验 📰</p><p>&gt; 实用、好用的 <a href="https://sspai.com/mall">正版软件</a>，少数派为你呈现 🚀</p></div>
+      </body>
+    </html>
+    

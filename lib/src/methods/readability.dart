@@ -27,6 +27,7 @@ class Readability extends BaseExtractor {
         FigurePrettyProcessor(),
         RemoveUnusefulAttributeProcessor(),
         RemoveInvalidFigureTagProcessor(),
+        ReplaceH5WithPProcessor()
       ];
 
   @override

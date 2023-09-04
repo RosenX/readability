@@ -31,6 +31,20 @@ class CleanUnusefulTagProcessor implements Processor {
   }
 }
 
+class ReplaceH5WithPProcessor implements Processor {
+  @override
+  String get name => 'replace_h5_with_p';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('h5').forEach((e) {
+      Element p = Element.tag('p');
+      p.children.addAll(e.children);
+      e.replaceWith(p);
+    });
+  }
+}
+
 class ReplaceDivWithPTagProcessor implements Processor {
   final blockTag = [
     'a',
@@ -189,7 +203,7 @@ class RemoveAInHProcessor implements Processor {
 
 class RemoveEmptyTagProcessor implements Processor {
   final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li'];
-  final blockTag = ['p', 'div', 'section'];
+  final blockTag = ['p', 'div', 'section', 'span'];
 
   @override
   String get name => 'remove_empty_tag';
