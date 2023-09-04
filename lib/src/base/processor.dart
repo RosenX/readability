@@ -189,7 +189,7 @@ class RemoveAInHProcessor implements Processor {
 
 class RemoveEmptyTagProcessor implements Processor {
   final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li'];
-  final blockTag = ['p', 'div'];
+  final blockTag = ['p', 'div', 'section'];
 
   @override
   String get name => 'remove_empty_tag';
@@ -227,7 +227,8 @@ class RemoveEmptyTagProcessor implements Processor {
         elem.text.trim().isEmpty) {
       elem.remove();
     }
-    // special case for <p><br></p>
+    // special case for
+    // <block tag> <br> </block tag>
     if (blockTag.contains(elem.localName) &&
         elem.children.length == 1 &&
         elem.text.trim().isEmpty &&

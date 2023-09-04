@@ -12,6 +12,7 @@ enum Method { readability }
 class HtmlExtractor {
   String rawHtml;
   String? url;
+  String? title;
   late Document _htmlDoc;
   late MainContent _mainContent;
   Method method;
@@ -23,6 +24,7 @@ class HtmlExtractor {
   HtmlExtractor(
       {required this.rawHtml,
       this.url,
+      this.title,
       this.method = Method.readability,
       this.onlyClean = false,
       this.isDebug = false}) {
@@ -45,7 +47,7 @@ class HtmlExtractor {
       return '';
     }
 
-    _mainContent = MainContent(url: url);
+    _mainContent = MainContent(url: url, title: title);
 
     // parse meta data like title, author
     var metaParser = MetaParser(isDebug: isDebug);

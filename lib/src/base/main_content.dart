@@ -3,14 +3,17 @@ import 'package:html/dom.dart';
 enum MainContentType { article, video }
 
 class MainContent {
-  late String title;
+  String? title;
   final String? url;
   late String author;
   late Document content;
   final MainContentType type;
 
+  bool get hasTitle => title != null && title!.isNotEmpty;
+
   MainContent({
     this.url,
+    this.title,
     this.type = MainContentType.article,
   });
 
@@ -20,8 +23,7 @@ class MainContent {
       return '';
     }
 
-    if (content.children.first.children.first.localName != 'h1' &&
-        title.isNotEmpty) {
+    if (content.children.first.children.first.localName != 'h1' && hasTitle) {
       content.children.first.children
           .insert(0, Element.tag('h1')..text = title);
     }

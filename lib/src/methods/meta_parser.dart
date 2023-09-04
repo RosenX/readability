@@ -7,7 +7,9 @@ class MetaParser {
   MetaParser({this.isDebug = false});
 
   void parse(MainContent content, Document htmlDoc) {
-    content.title = _parseTitle(htmlDoc);
+    if (!content.hasTitle) {
+      content.title = _parseTitle(htmlDoc);
+    }
     content.author = _parseAuthor(htmlDoc);
 
     if (isDebug) {
