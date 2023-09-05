@@ -104,7 +104,9 @@
                           <div><img src="https://images.openai.com/blob/10634e3c-0c4c-4cee-84ef-e8ee30dfaf3f/example-of-how-to-use-chatgpt-plugins-16x9-poster.png"></div>
                           
                         </div>
-            <p><h2>Overview</h2></p>
+            <p>
+                      <h2>Overview</h2>
+                    </p>
             <div>
                           <p>Language models today, while useful for a variety of tasks, are still limited. The only
                             information they can learn from is their training data. This information can be out-of-date
@@ -126,7 +128,9 @@
                             systems, we’ll iterate on this protocol, and we plan to enable developers using OpenAI
                             models to integrate plugins into their own applications beyond ChatGPT.<br></p>
                         </div>
-            <p><h2>Safety and broader implications</h2></p>
+            <p>
+                      <h2>Safety and broader implications</h2>
+                    </p>
             <div>
                           <p>Connecting language models to external tools introduces new opportunities as well as
                             significant <a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">new risks</a>.</p>
@@ -178,8 +182,11 @@
                             eager to collaborate with external <a href="https://share.hsforms.com/1NeBQeLgkS2SZPE3lQ6oNRQ4sk30">researchers</a> and our <a href="https://share.hsforms.com/1dxauGUqlTsKdqFriJjriDA4sk30">customers</a> to study these impacts.<br></p>
                         </div>
             <div>
-                      <p><h2>Browsing</h2><span>Alpha</span></p>
-                      
+                      <p>
+                        <h2>Browsing</h2><span>Alpha</span>
+                      </p>
+                      <p>An experimental model that knows when and how to browse
+                        the internet</p>
                     </div>
             <div>
                           <p>Motivated by past work (our own <a href="https://openai.com/research/webgpt">WebGPT</a>, as well as <a href="https://arxiv.org/abs/2203.11147">GopherCite</a>, <a href="https://parl.ai/projects/blenderbot2/">BlenderBot2</a>, <a href="https://ai.googleblog.com/2022/01/lamda-towards-safe-grounded-and-high.html">LaMDA2</a> and <a href="https://arxiv.org/pdf/2209.14375.pdf">others</a>), allowing language models to read information from the
@@ -202,7 +209,9 @@
             <div>
                     
                   </div>
-            <p><h3>Safety considerations</h3></p>
+            <p>
+                      <h3>Safety considerations</h3>
+                    </p>
             <div>
                           <p>We’ve created a web browsing plugin which gives a language model access to a web browser,
                             with its design prioritizing both safety and operating as a good citizen of the web. The
@@ -225,7 +234,9 @@
                             websites.<br></p>
                         </div>
             <div>
-                      <p><span>Click failed</span></p><span>You can block ChatGPT crawling your site
+                      <p>
+                        <span>Click failed</span>
+                      </p><span>You can block ChatGPT crawling your site
                         using the
                         robots.txt file, ChatGPT will show this error message when this happens.</span>
                     </div>
@@ -235,8 +246,11 @@
                             interacting with the web, and welcome feedback on additional ways to drive traffic back to
                             sources and add to the overall health of the ecosystem.<br></p>
             <div>
-                      <p><h2>Code interpreter</h2><span>Alpha</span></p>
-                      
+                      <p>
+                        <h2>Code interpreter</h2><span>Alpha</span>
+                      </p>
+                      <p>An experimental ChatGPT model that can use Python,
+                        handle uploads and downloads</p>
                     </div>
             <p>We provide our models with a working Python interpreter in<strong> </strong>a sandboxed,
                             firewalled execution environment, along with some ephemeral disk space. Code run by our
@@ -266,7 +280,9 @@
                           <div><img src="https://images.openai.com/blob/5388d90c-ddc8-46f0-a49e-9ba8257ee2f2/interpreter-plug-in-poster.jpeg"></div>
                           
                         </div>
-            <p><h3>Safety considerations</h3></p>
+            <p>
+                      <h3>Safety considerations</h3>
+                    </p>
             <p>The primary consideration for connecting our models to a programming language interpreter
                             is properly sandboxing<strong> </strong>the execution so that AI-generated code does not
                             have unintended side-effects in the real world. We execute code in a secured environment and
@@ -274,7 +290,9 @@
                             Additionally, we have set resource limits on each session. Disabling internet access limits
                             the functionality of our code sandbox, but we believe it’s the right initial tradeoff.  were
                             designed as a safety-first method of connecting our models to the outside world.<br></p>
-            <p><h2>Retrieval</h2></p>
+            <p>
+                      <h2>Retrieval</h2>
+                    </p>
             <div>
                           <p>The open-source retrieval plugin enables ChatGPT to access personal or organizational
                             information sources (with permission). It allows users to obtain the most relevant document
@@ -291,15 +309,20 @@
                           <div><img src="https://images.openai.com/blob/8ca32622-1615-4af6-84ca-6838a73a11fa/retrieval-poster.jpg"></div>
                           
                         </div>
-            <p><h3>Security considerations</h3></p>
+            <p>
+                      <h3>Security considerations</h3>
+                    </p>
             <p>The retrieval plugin allows ChatGPT to search a vector database of content, and add the
                             best results into the ChatGPT session. This means it doesn’t have any external effects, and
                             the main risk is data authorization and privacy. Developers should only add content into
                             their retrieval plugin that they are authorized to use and can share in users’ ChatGPT
                             sessions.<br></p>
             <div>
-                      <p><h2>Third-party plugins</h2><span>Alpha</span></p>
-                      
+                      <p>
+                        <h2>Third-party plugins</h2><span>Alpha</span>
+                      </p>
+                      <p>An experimental model that knows when and how to use
+                        plugins</p>
                     </div>
             <div>
                     
@@ -347,7 +370,9 @@
                           <div><img src="https://images.openai.com/blob/94ac231f-7348-431b-941c-05cce7d11d8d/dev-experience-poster.jpg"></div>
                           
                         </div>
-            <p><h2>Looking forward</h2></p>
+            <p>
+                      <h2>Looking forward</h2>
+                    </p>
             <p>We’re working to develop plugins and bring them to a broader audience. We have a lot to
                             learn, and with the help of everyone, we hope to build something that is both useful and
                             safe.<br></p>

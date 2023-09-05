@@ -76,7 +76,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
       }
       if (!isBlock) {
         Element p = Element.tag('p');
-        p.children.addAll(div.children);
+        p.innerHtml = div.innerHtml;
         div.replaceWith(p);
       }
     }
@@ -333,6 +333,12 @@ class RemoveSuspiciousTagProcessor implements Processor {
   void process(Document doc) {
     doc.querySelectorAll('div').forEach((e) {
       if (suspiciousClassRegx.hasMatch(e.className)) {
+        e.remove();
+      }
+    });
+    // query all p, is p has no child, and text length is greater than 500, remove it
+    doc.querySelectorAll('p').forEach((e) {
+      if (e.children.isEmpty && e.text.length > 1000) {
         e.remove();
       }
     });

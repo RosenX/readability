@@ -16,8 +16,8 @@ class Readability extends BaseExtractor {
   @override
   List<Processor> get preprocessors => [
         CleanUnusefulTagProcessor(),
-        RemoveSuspiciousTagProcessor(),
         ReplaceDivWithPTagProcessor(),
+        RemoveSuspiciousTagProcessor(),
         TransformATagProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
@@ -49,7 +49,7 @@ class Readability extends BaseExtractor {
     'h4',
     'h5',
     'h6',
-    'ul'
+    'ul',
   ];
 
   String cleanText(String text) {
@@ -103,32 +103,39 @@ class Readability extends BaseExtractor {
 
       double score = 1;
 
-      score += min(innerTextLen / 100, 3);
+      score += min(innerTextLen, 3);
 
       score += innerText.split(RegExp(r'[，,]')).length;
 
       candidates[parentTag] = candidates[parentTag]! + score;
       if (grandParentTag != null) {
-        candidates[grandParentTag] = candidates[grandParentTag]! + score * 0.6;
+        candidates[grandParentTag] = candidates[grandParentTag]! + score * 0.5;
       }
+    }
 
-      // iterate the candiate, caculate link density
-      // for (var candidate in candidates.keys) {
-      //   var links = candidate.querySelectorAll('a');
-      //   var text = candidate.text;
-      //   var linkLength = 0;
-      //   for (var link in links) {
-      //     linkLength += link.text.length;
-      //   }
-      //   var linkDensity = linkLength / text.length;
-      //   candidates[candidate] = candidates[candidate]! * (1 - linkDensity);
-      // }
+    // iterate the candiate, caculate link density
+    for (var candidate in candidates.keys) {
+      var links = candidate.querySelectorAll('a');
+      var text = candidate.text;
+      var linkLength = 0;
+      for (var link in links) {
+        linkLength += link.text.length;
+      }
+      var linkDensity = linkLength / text.length;
+      candidates[candidate] = candidates[candidate]! * (1 - linkDensity);
     }
     return candidates;
   }
 
   // choose best candidate
   Element _selectBestCandidate(Map<Element, double> candidates) {
+    // todo add impossible element
+    if (isDebug) {
+      // output score of each tag
+      candidates.forEach((key, value) {
+        this.log("element_score_$value", key.outerHtml);
+      });
+    }
     return candidates.entries
         .reduce(
             (entry1, entry2) => entry1.value > entry2.value ? entry1 : entry2)
