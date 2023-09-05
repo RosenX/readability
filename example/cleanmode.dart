@@ -12,6 +12,7 @@ void main(List<String> args) async {
       rawHtml: content,
       method: Method.readability,
       isDebug: true,
+      title: "aaaa",
       onlyClean: true);
   var result = extractor.parse();
 

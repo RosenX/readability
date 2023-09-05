@@ -18,6 +18,9 @@ class MainContent {
   });
 
   String pureHtml() {
+    if (content.body != null) {
+      return content.outerHtml;
+    }
     // if first child in content is not h1, and title is not empty, add title to content
     if (content.children.isEmpty) {
       return '';
@@ -27,16 +30,12 @@ class MainContent {
       content.children.first.children
           .insert(0, Element.tag('h1')..text = title);
     }
-    if (content.body == null) {
-      return '''
+    return '''
     <html>
       <body>
         ${content.outerHtml}
       </body>
     </html>
     ''';
-    } else {
-      return content.outerHtml;
-    }
   }
 }
