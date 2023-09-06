@@ -19,9 +19,14 @@ class MainContent {
 
   String? pureHtml() {
     if (content.body != null) {
-      if (content.body!.children.isEmpty) return null;
-      if (content.body!.children.first.localName != 'h1' && hasTitle) {
-        content.body!.children.insert(0, Element.tag('h1')..text = title);
+      if (content.body!.children.isEmpty) {
+        if (hasTitle) {
+          content.body!.children.insert(0, Element.tag('h1')..text = title);
+        }
+      } else {
+        if (content.body!.children.first.localName != 'h1' && hasTitle) {
+          content.body!.children.insert(0, Element.tag('h1')..text = title);
+        }
       }
       return content.outerHtml;
     }
