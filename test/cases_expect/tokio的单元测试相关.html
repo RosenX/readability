@@ -1,8 +1,6 @@
-    <html>
-      <body>
-        <div><h1>
+<html><head></head><body><h1>
 tokio的单元测试相关 - Rust语言中文社区
-</h1>
+</h1><div>
 	<pre><code>lazy_static! {
         pub static ref TOKIO_RUNTIME: Runtime = Builder::new_multi_thread()
             .worker_threads(4)
@@ -63,7 +61,4 @@ tokio的单元测试相关 - Rust语言中文社区
 <p>以上是我的单元测试用例，主要用来启动一个http server,然后用http client去调用一下这个server。上面的代码是ok的。</p>
 <p>问题是如果将代码里的spawn改为spawn_blocking,那么spawn_blocking包含的代码都不会执行。而如果改为spawn，则spawn包含的代码都会执行。这是为什么呢？</p>
 
-    </div>
-      </body>
-    </html>
-    
+    </div></body></html>

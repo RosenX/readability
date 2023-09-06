@@ -19,7 +19,7 @@ Future<void> runTestOutput(String caseFolder, String outputFolder) async {
           HtmlExtractor(rawHtml: content, method: Method.readability);
       var result = extractor.parse();
       var outputFile = File(outputName);
-      outputFile.writeAsStringSync(result);
+      outputFile.writeAsStringSync(result ?? '');
     } catch (e) {
       continue;
     }

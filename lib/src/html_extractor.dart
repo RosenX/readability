@@ -40,7 +40,7 @@ class HtmlExtractor {
     }
   }
 
-  String parse() {
+  String? parse() {
     _htmlDoc = parser.parse(rawHtml);
 
     if (!canParse()) {

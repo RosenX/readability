@@ -6,7 +6,9 @@ void main(List<String> args) async {
   var inputFile = args[0];
 
   final htmlFile = File(inputFile);
-  final content = await htmlFile.readAsString();
+  var content = await htmlFile.readAsString();
+
+  // content = "xxxsdfwefxcfxdwefsdfe";
 
   var extractor = HtmlExtractor(
       rawHtml: content,
@@ -17,5 +19,5 @@ void main(List<String> args) async {
   var result = extractor.parse();
 
   var outputFile = File('clean.html');
-  outputFile.writeAsString(result);
+  outputFile.writeAsString(result ?? '');
 }

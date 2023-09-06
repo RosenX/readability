@@ -1,8 +1,6 @@
-    <html>
-      <body>
-        <div><h1>
+<html><head></head><body><h1>
 判别Fn、FnMut、FnOnce的标准 - Rust语言中文社区
-</h1>
+</h1><div>
 	<h2>Fn、FnMut、FnOnce的困惑</h2>
 <p>初闻这三父子，可能会觉得没什么回事，没啥难的。再在实战中遇到这三父子，竟被其折磨的发狂，明明一个FnMut声明的，死活加move也不是，不加move也不是。。唯有感慨一句Rust编译器为何如此不给面子，匆匆再回首查阅各种Fn/FnMut/FnOnce的介绍文档，一脸雾水。。</p>
 <p>经过一番恶战(恶补)，终于对Fn/FnMut/FnOnce有了个系统的正确认知，在此总结分享下，也希望能帮后面的小伙伴少走些弯路。</p>
@@ -118,7 +116,4 @@ let c = move || s1 + s2_ref;
 <p>Tip: 以上有任何理解不正确的地方，欢迎大家指正</p>
 </blockquote>
 
-    </div>
-      </body>
-    </html>
-    
+    </div></body></html>

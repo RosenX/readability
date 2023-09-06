@@ -1,8 +1,6 @@
-    <html>
-      <body>
-        <div><h1>
+<html><head></head><body><h1>
 请问oncecell里面包的结构体里面有个泛型，这种咋写啊？ - Rust语言中文社区
-</h1>
+</h1><div>
 	<pre><code>pub static SHMDISPATCHER: OnceCell&lt;ShmDispatcher&lt;T&gt;&gt; = OnceCell::new();
 
 #[derive(Debug, Clone)]
@@ -16,7 +14,4 @@ pub struct ShmDispatcher&lt;T: Message&gt; {
 not found in this scope
 </code></pre>
 
-    </div>
-      </body>
-    </html>
-    
+    </div></body></html>

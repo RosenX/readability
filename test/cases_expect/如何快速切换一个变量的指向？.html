@@ -1,8 +1,6 @@
-    <html>
-      <body>
-        <div><h1>
+<html><head></head><body><h1>
 如何快速切换一个变量的指向？ - Rust语言中文社区
-</h1>
+</h1><div>
 	<p>我有这样一个多线程读，单线程写的场景，使用了RWLock（标准库的和parking_lot都试过，效果差不多，这不是重点）。</p>
 <pre><code>let state = Arc::new(RwLock::new(MyStruct::new()));
 
@@ -17,7 +15,4 @@
 <p>另外一个延伸的问题是，文件改变一次，但notify会监听到两次事件。。。</p>
 <p>希望有大神可以帮忙指点迷津，多谢！！！</p>
 
-    </div>
-      </body>
-    </html>
-    
+    </div></body></html>

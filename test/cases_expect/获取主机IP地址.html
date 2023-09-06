@@ -1,8 +1,6 @@
-    <html>
-      <body>
-        <div><h1>
+<html><head></head><body><h1>
 获取主机IP地址 - Rust语言中文社区
-</h1>
+</h1><div>
 	
 <p>这是一款用<code>rust</code>制作的命令行工具。其被设计用来从<code>C:\Windows\System32\ipconfig.exe</code>的执行结果内提取出指定【网卡】的属性值。比如，从电脑本的【无线局域网适配器<code>WLAN</code>】中提取出【<code>IPv4</code>地址】字符串值。</p>
 <h2>使用场景</h2>
@@ -63,7 +61,4 @@ sudo ln -s /usr/local/lib/libiconv.so.2 /usr/lib/libiconv.so.2
 <h3>吐槽</h3>
 <p>同一款<code>libiconv</code>链接库怎么对<code>Linux</code>与<code>Windows</code>操作系统提供了<strong>不同名</strong>的导出函数呢？这个“缺德的”命名差异导致我在【编译期·动态链接】环节卡住了好几天。相对于<code>Linux</code>版的链接库导出函数名，<code>Windows</code>版的每个导出函数都有一个<code>lib</code>前缀 —— 故意的吧？真要命。</p>
 
-    </div>
-      </body>
-    </html>
-    
+    </div></body></html>

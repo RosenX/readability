@@ -68,8 +68,8 @@ class Readability extends BaseExtractor {
     Element topCandidate = _selectBestCandidate(candidates);
 
     // convert Element to Document
-    Document html = Document();
-    html.append(topCandidate);
+    Document html = Document.html(topCandidate.outerHtml);
+    // html.append(topCandidate);
     return html;
   }
 
