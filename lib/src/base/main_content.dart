@@ -24,7 +24,10 @@ class MainContent {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       } else {
-        if (content.body!.children.first.localName != 'h1' && hasTitle) {
+        final h1 = content.body!.querySelector('h1');
+        if (h1 == null && hasTitle) {
+          content.body!.children.insert(0, Element.tag('h1')..text = title);
+        } else if (h1 != null && hasTitle && h1.text.trim() != title) {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       }
