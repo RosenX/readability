@@ -1,6 +1,6 @@
-<html><head></head><body><h1>
+<html><head></head><body><div><h1>
 如何快速切换一个变量的指向？ - Rust语言中文社区
-</h1><div>
+</h1>
 	<p>我有这样一个多线程读，单线程写的场景，使用了RWLock（标准库的和parking_lot都试过，效果差不多，这不是重点）。</p>
 <pre><code>let state = Arc::new(RwLock::new(MyStruct::new()));
 

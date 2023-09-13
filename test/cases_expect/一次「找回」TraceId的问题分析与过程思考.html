@@ -1,4 +1,4 @@
-<html><head></head><body><h1>一次「找回」TraceId的问题分析与过程思考</h1><div><h2>1. 问题背景和思考</h2><h3>1.1 问题背景</h3><p>在一次排查线上告警的过程中，突然发现一个链路信息有点不同寻常（这里仅展示测试复现的内容）：</p><p><img src="https://p0.meituan.net/travelcube/8396f1ed5b77dc0318e06f5a76f64ba3454025.png"></p><p>在机器中可以清楚的发现“2022-08-02 19:26:34.952 DXMsgRemoteService ”这一行日志信息并没有携带TraceId，导致调用链路信息戛然而止，无法追踪当时的调用情况。</p><h3>1.2 问题复现和思考</h3><p>在处理完线上告警后，我们开始分析“丢失”的TraceId到底去了哪里？首先在代码中定位TraceId没有追踪到的部分，发现问题出现在一个@Async注解下的方法，删除无关的业务信息代码，并增加MTrace埋点方法后的复现代码如下：</p><pre><code>@SpringBootTest
+<html><head></head><body><div><h1>一次「找回」TraceId的问题分析与过程思考</h1><h2>1. 问题背景和思考</h2><h3>1.1 问题背景</h3><p>在一次排查线上告警的过程中，突然发现一个链路信息有点不同寻常（这里仅展示测试复现的内容）：</p><p><img src="https://p0.meituan.net/travelcube/8396f1ed5b77dc0318e06f5a76f64ba3454025.png"></p><p>在机器中可以清楚的发现“2022-08-02 19:26:34.952 DXMsgRemoteService ”这一行日志信息并没有携带TraceId，导致调用链路信息戛然而止，无法追踪当时的调用情况。</p><h3>1.2 问题复现和思考</h3><p>在处理完线上告警后，我们开始分析“丢失”的TraceId到底去了哪里？首先在代码中定位TraceId没有追踪到的部分，发现问题出现在一个@Async注解下的方法，删除无关的业务信息代码，并增加MTrace埋点方法后的复现代码如下：</p><pre><code>@SpringBootTest
 @RunWith(SpringRunner.class)
 @EnableAsync
 public class DemoServiceTest extends TestCase {

@@ -24,10 +24,20 @@ class MainContent {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       } else {
-        final h1 = content.body!.querySelector('h1');
-        if (h1 == null && hasTitle) {
-          content.body!.children.insert(0, Element.tag('h1')..text = title);
-        } else if (h1 != null && hasTitle && h1.text.trim() != title) {
+        // final h1 = content.body!.querySelector('h1');
+        // if (h1 == null && hasTitle) {
+        //   content.body!.children.insert(0, Element.tag('h1')..text = title);
+        // } else if (h1 != null && hasTitle && h1.text.trim() != title) {
+        //   content.body!.children.insert(0, Element.tag('h1')..text = title);
+        // }
+        final first = content.body!.children.first;
+        if (first.localName == 'div') {
+          if (first.children.isNotEmpty &&
+              first.children.first.localName != 'h1' &&
+              hasTitle) {
+            first.children.insert(0, Element.tag('h1')..text = title);
+          }
+        } else if (first.localName != 'h1' && hasTitle) {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       }

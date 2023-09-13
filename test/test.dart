@@ -45,7 +45,7 @@ List<TestCase> runTest(String outputFolder, String expectFolder) {
     final outputContent = file.readAsStringSync();
     if (expectContent != outputContent) {
       testCases.add(TestCase(
-          filename: file.path.split('/').last, isNew: true, isPassed: false));
+          filename: file.path.split('/').last, isNew: false, isPassed: false));
     } else {
       // remove output file if passed
       file.deleteSync();
