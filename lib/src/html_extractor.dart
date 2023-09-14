@@ -6,13 +6,7 @@ import 'package:html/parser.dart' as parser;
 import 'package:readability/src/base/main_content.dart';
 import 'package:readability/src/methods/meta_parser.dart';
 import 'package:readability/src/methods/readability.dart';
-
-class HtmlExtractResult {
-  String html;
-  int contentLength;
-
-  HtmlExtractResult(this.html, this.contentLength);
-}
+import 'package:readbot/package/readability/lib/readability.dart';
 
 enum Method { readability }
 
