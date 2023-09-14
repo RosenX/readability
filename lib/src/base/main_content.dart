@@ -18,7 +18,7 @@ class MainContent {
     this.type = MainContentType.article,
   });
 
-  HtmlResult? pureHtml() {
+  HtmlExtractResult? pureHtml() {
     if (content.body != null) {
       if (content.body!.children.isEmpty) {
         if (hasTitle) {
@@ -42,7 +42,7 @@ class MainContent {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       }
-      return HtmlResult(content.outerHtml, content.body!.text.length);
+      return HtmlExtractResult(content.outerHtml, content.body!.text.length);
     }
     return null;
   }

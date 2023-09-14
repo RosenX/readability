@@ -9,11 +9,11 @@ import 'package:readability/src/methods/readability.dart';
 
 enum Method { readability }
 
-class HtmlResult {
+class HtmlExtractResult {
   String html;
   int contentLength;
 
-  HtmlResult(this.html, this.contentLength);
+  HtmlExtractResult(this.html, this.contentLength);
 }
 
 class HtmlExtractor {
@@ -47,7 +47,7 @@ class HtmlExtractor {
     }
   }
 
-  HtmlResult? parse() {
+  HtmlExtractResult? parse() {
     _htmlDoc = parser.parse(rawHtml);
 
     if (!canParse()) {
