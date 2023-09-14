@@ -3,18 +3,12 @@ import 'dart:io';
 import 'package:html/dom.dart';
 
 import 'package:html/parser.dart' as parser;
+import 'package:readability/readability.dart';
 import 'package:readability/src/base/main_content.dart';
 import 'package:readability/src/methods/meta_parser.dart';
 import 'package:readability/src/methods/readability.dart';
 
 enum Method { readability }
-
-class HtmlExtractResult {
-  String html;
-  int contentLength;
-
-  HtmlExtractResult(this.html, this.contentLength);
-}
 
 class HtmlExtractor {
   String rawHtml;
