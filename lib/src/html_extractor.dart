@@ -9,6 +9,13 @@ import 'package:readability/src/methods/readability.dart';
 
 enum Method { readability }
 
+class HtmlResult {
+  String html;
+  int contentLength;
+
+  HtmlResult(this.html, this.contentLength);
+}
+
 class HtmlExtractor {
   String rawHtml;
   String? url;

@@ -1,13 +1,7 @@
 import 'package:html/dom.dart';
+import 'package:readability/readability.dart';
 
 enum MainContentType { article, video }
-
-class HtmlResult {
-  String html;
-  int contentLength;
-
-  HtmlResult(this.html, this.contentLength);
-}
 
 class MainContent {
   String? title;
