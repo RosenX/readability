@@ -264,9 +264,8 @@ class RemoveInvalidATagProcessor implements Processor {
       }
       if (e.attributes['href'] == null) {
         e.remove();
-      }
-      // if href not a url, remove it
-      if (!e.attributes['href']!.startsWith('http')) {
+      } else if (!e.attributes['href']!.startsWith('http')) {
+        // if href not a url, remove it
         e.remove();
       }
     });

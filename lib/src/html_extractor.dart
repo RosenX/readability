@@ -6,7 +6,8 @@ import 'package:html/parser.dart' as parser;
 import 'package:readability/src/base/main_content.dart';
 import 'package:readability/src/methods/meta_parser.dart';
 import 'package:readability/src/methods/readability.dart';
-import 'package:readbot/package/readability/lib/readability.dart';
+
+import '../readability.dart';
 
 enum Method { readability }
 
