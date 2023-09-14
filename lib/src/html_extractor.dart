@@ -40,11 +40,11 @@ class HtmlExtractor {
     }
   }
 
-  String? parse() {
+  HtmlResult? parse() {
     _htmlDoc = parser.parse(rawHtml);
 
     if (!canParse()) {
-      return '';
+      return null;
     }
 
     _mainContent = MainContent(url: url, title: title);

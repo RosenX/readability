@@ -19,5 +19,5 @@ void main(List<String> args) async {
   var result = extractor.parse();
 
   var outputFile = File('clean.html');
-  outputFile.writeAsString(result ?? '');
+  outputFile.writeAsString(result?.html ?? '');
 }

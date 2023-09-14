@@ -2,6 +2,13 @@ import 'package:html/dom.dart';
 
 enum MainContentType { article, video }
 
+class HtmlResult {
+  String html;
+  int contentLength;
+
+  HtmlResult(this.html, this.contentLength);
+}
+
 class MainContent {
   String? title;
   final String? url;
@@ -17,7 +24,7 @@ class MainContent {
     this.type = MainContentType.article,
   });
 
-  String? pureHtml() {
+  HtmlResult? pureHtml() {
     if (content.body != null) {
       if (content.body!.children.isEmpty) {
         if (hasTitle) {
@@ -41,7 +48,7 @@ class MainContent {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       }
-      return content.outerHtml;
+      return HtmlResult(content.outerHtml, content.body!.text.length);
     }
     return null;
   }
