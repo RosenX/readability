@@ -1,5 +1,6 @@
 import 'package:html/dom.dart';
-import 'package:readability/readability.dart';
+
+import 'result.dart';
 
 enum MainContentType { article, video }
 
