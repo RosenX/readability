@@ -83,21 +83,26 @@ class ReplaceDivWithPTagProcessor implements Processor {
   }
 }
 
-class RemoveUnnecessaryNestedDivProcessor implements Processor {
+class RemoveUnnecessaryNestedTagProcessor implements Processor {
   @override
-  String get name => 'remove_unnecessary_nested_div';
+  String get name => 'remove_unnecessary_nested_tag';
 
   @override
   void process(Document doc) {
-    // the order is from leaf to root
-    var divs = doc.querySelectorAll('div');
-    for (var div in divs) {
-      if (div.children.length == 1) {
-        if (div.children.first.localName == 'div' ||
-            div.children.first.localName == 'p') {
-          div.replaceWith(div.children.first);
-        }
-      }
+    for (var child in doc.children) {
+      _replace(child);
+    }
+  }
+
+  // if tag has one child and the child is the same tag, remove the tag
+  void _replace(Element elem) {
+    for (var child in elem.children) {
+      _replace(child);
+    }
+    if (elem.children.length == 1 &&
+        elem.children.first.localName == elem.localName &&
+        elem.text.trim().length == elem.children.first.text.trim().length) {
+      elem.replaceWith(elem.children.first);
     }
   }
 }

@@ -102,9 +102,11 @@
                           <div><img src="https://images.openai.com/blob/10634e3c-0c4c-4cee-84ef-e8ee30dfaf3f/example-of-how-to-use-chatgpt-plugins-16x9-poster.png?trim=0,0,0,0&amp;width=10&amp;height=10&amp;quality=50"></div>
                           
                         </div>
-            <p>
+            <div>
+                    <p>
                       </p><h2>Overview</h2>
                     <p></p>
+                  </div>
             <div>
                           <p>Language models today, while useful for a variety of tasks, are still limited. The only
                             information they can learn from is their training data. This information can be out-of-date
@@ -126,9 +128,11 @@
                             systems, we’ll iterate on this protocol, and we plan to enable developers using OpenAI
                             models to integrate plugins into their own applications beyond ChatGPT.<br></p>
                         </div>
-            <p>
+            <div>
+                    <p>
                       </p><h2>Safety and broader implications</h2>
                     <p></p>
+                  </div>
             <div>
                           <p>Connecting language models to external tools introduces new opportunities as well as
                             significant <a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">new risks</a>.</p>
@@ -201,15 +205,19 @@
                           <div><img src="https://images.openai.com/blob/91bc37ec-355d-4af3-9436-ac9cfbe92a07/browsing-poster.jpg?trim=0,0,0,0&amp;width=10&amp;height=10&amp;quality=50"></div>
                           
                         </div>
-            <p>In addition to providing obvious utility to end-users, we think enabling language and chat
+            <div>
+                          <p>In addition to providing obvious utility to end-users, we think enabling language and chat
                             models to do thorough and interpretable research has exciting prospects for <a href="https://openai.com/blog/our-approach-to-alignment-research">scalable alignment</a>.<br>
                           </p>
+                        </div>
             <div>
                     
                   </div>
-            <p>
+            <div>
+                    <p>
                       </p><h3>Safety considerations</h3>
                     <p></p>
+                  </div>
             <div>
                           <p>We’ve created a web browsing plugin which gives a language model access to a web browser,
                             with its design prioritizing both safety and operating as a good citizen of the web. The
@@ -238,11 +246,13 @@
                         using the
                         robots.txt file, ChatGPT will show this error message when this happens.</span>
                     </div>
-            <p>Our browsing plugin shows websites visited and cites its sources in ChatGPT’s responses.
+            <div>
+                          <p>Our browsing plugin shows websites visited and cites its sources in ChatGPT’s responses.
                             This added layer of transparency helps users verify the accuracy of the model’s responses
                             and also gives credit back to content creators. We appreciate that this is a new method of
                             interacting with the web, and welcome feedback on additional ways to drive traffic back to
                             sources and add to the overall health of the ecosystem.<br></p>
+                        </div>
             <div>
                       <p>
                         </p><h2>Code interpreter</h2><span>Alpha</span>
@@ -250,12 +260,14 @@
                       <p>An experimental ChatGPT model that can use Python,
                         handle uploads and downloads</p>
                     </div>
-            <p>We provide our models with a working Python interpreter ina sandboxed,
+            <div>
+                          <p>We provide our models with a working Python interpreter ina sandboxed,
                             firewalled execution environment, along with some ephemeral disk space. Code run by our
                             interpreter plugin is evaluated in a persistent session that is alive for the duration of a
                             chat conversation (with an upper-bound timeout) and subsequent calls can build on top of
                             each other. We support uploading files to the current conversation workspace and downloading
                             the results of your work.<br></p>
+                        </div>
             <div>
                     
                   </div>
@@ -278,19 +290,25 @@
                           <div><img src="https://images.openai.com/blob/5388d90c-ddc8-46f0-a49e-9ba8257ee2f2/interpreter-plug-in-poster.jpeg?trim=0,0,0,0&amp;width=10&amp;height=10&amp;quality=50"></div>
                           
                         </div>
-            <p>
+            <div>
+                    <p>
                       </p><h3>Safety considerations</h3>
                     <p></p>
-            <p>The primary consideration for connecting our models to a programming language interpreter
+                  </div>
+            <div>
+                          <p>The primary consideration for connecting our models to a programming language interpreter
                             is properly sandboxingthe execution so that AI-generated code does not
                             have unintended side-effects in the real world. We execute code in a secured environment and
                             use strict network controls to prevent external internet access from executed code.
                             Additionally, we have set resource limits on each session. Disabling internet access limits
                             the functionality of our code sandbox, but we believe it’s the right initial tradeoff.  were
                             designed as a safety-first method of connecting our models to the outside world.<br></p>
-            <p>
+                        </div>
+            <div>
+                    <p>
                       </p><h2>Retrieval</h2>
                     <p></p>
+                  </div>
             <div>
                           <p>The open-source retrieval plugin enables ChatGPT to access personal or organizational
                             information sources (with permission). It allows users to obtain the most relevant document
@@ -307,14 +325,18 @@
                           <div><img src="https://images.openai.com/blob/8ca32622-1615-4af6-84ca-6838a73a11fa/retrieval-poster.jpg?trim=0,0,0,0&amp;width=10&amp;height=10&amp;quality=50"></div>
                           
                         </div>
-            <p>
+            <div>
+                    <p>
                       </p><h3>Security considerations</h3>
                     <p></p>
-            <p>The retrieval plugin allows ChatGPT to search a vector database of content, and add the
+                  </div>
+            <div>
+                          <p>The retrieval plugin allows ChatGPT to search a vector database of content, and add the
                             best results into the ChatGPT session. This means it doesn’t have any external effects, and
                             the main risk is data authorization and privacy. Developers should only add content into
                             their retrieval plugin that they are authorized to use and can share in users’ ChatGPT
                             sessions.<br></p>
+                        </div>
             <div>
                       <p>
                         </p><h2>Third-party plugins</h2><span>Alpha</span>
@@ -325,8 +347,10 @@
             <div>
                     
                   </div>
-            <p>Third-party plugins are described by a <a href="https://platform.openai.com/docs/plugins/getting-started/">manifest file</a>, which includes a machine-readable description of the
+            <div>
+                          <p>Third-party plugins are described by a <a href="https://platform.openai.com/docs/plugins/getting-started/">manifest file</a>, which includes a machine-readable description of the
                             plugin’s capabilities and how to invoke them, as well as user-facing documentation.<br></p>
+                        </div>
             <div><!----><!----><!---->
                       <div>
                           <pre><code>{
@@ -342,7 +366,9 @@
   "contact_email": "hello@example.com"
 }</code></pre>
                         </div>
-                      <p>An example manifest file for a plugin for managing to-dos<br></p>
+                      <div>
+                        <p>An example manifest file for a plugin for managing to-dos<br></p>
+                      </div>
                     </div>
             <div>
                           <p>The steps for creating a plugin are:</p>
@@ -368,12 +394,16 @@
                           <div><img src="https://images.openai.com/blob/94ac231f-7348-431b-941c-05cce7d11d8d/dev-experience-poster.jpg?trim=0,0,0,0&amp;width=10&amp;height=10&amp;quality=50"></div>
                           
                         </div>
-            <p>
+            <div>
+                    <p>
                       </p><h2>Looking forward</h2>
                     <p></p>
-            <p>We’re working to develop plugins and bring them to a broader audience. We have a lot to
+                  </div>
+            <div>
+                          <p>We’re working to develop plugins and bring them to a broader audience. We have a lot to
                             learn, and with the help of everyone, we hope to build something that is both useful and
                             safe.<br></p>
-            <div><!--[--><!--[--><!--]--><!--[--><a href="https://platform.openai.com/docs/plugins/"><span><!--[--><!----><span>Read
-                              documentation</span><!--]--></span></a><!--]--><!--]--></div><!--]-->
+                        </div>
+            <div><!--[--><!--[--><!--]--><!--[--><a href="https://platform.openai.com/docs/plugins/"><span>Read
+                              documentation</span></a><!--]--><!--]--></div><!--]-->
           </div></body></html>
