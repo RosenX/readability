@@ -151,7 +151,7 @@ class FigurePrettyProcessor implements Processor {
 
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video'];
-  final keepAttr = ['href', 'src'];
+  final keepAttr = ['href', 'src', 'referrerpolicy'];
 
   @override
   String get name => 'remove_unuseful_attribute';
