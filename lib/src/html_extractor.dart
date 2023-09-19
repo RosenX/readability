@@ -20,7 +20,7 @@ class HtmlExtractor {
   bool isDebug;
   bool onlyClean = false;
 
-  final notSupportTag = ['video', 'math'];
+  final notSupportTag = [];
 
   HtmlExtractor(
       {required this.rawHtml,
@@ -63,7 +63,6 @@ class HtmlExtractor {
       default:
         throw Exception('not support method');
     }
-
     return _mainContent.pureHtml();
   }
 

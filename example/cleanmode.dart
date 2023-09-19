@@ -8,8 +8,6 @@ void main(List<String> args) async {
   final htmlFile = File(inputFile);
   var content = await htmlFile.readAsString();
 
-  content = "xxxsdfwefxcfxdwefsdfe";
-
   var extractor = HtmlExtractor(
       rawHtml: content,
       method: Method.readability,
