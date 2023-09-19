@@ -31,9 +31,7 @@ class Readability extends BaseExtractor {
       ];
 
   @override
-  List<Processor> get postprocessors => [
-        RemoveImgParameterProcessor(),
-      ];
+  List<Processor> get postprocessors => [];
 
   final scoreTag = [
     'p',

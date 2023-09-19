@@ -171,21 +171,21 @@ class RemoveUnusefulAttributeProcessor implements Processor {
 }
 
 /// remove parameter int img href
-class RemoveImgParameterProcessor implements Processor {
-  @override
-  String get name => 'remove_img_parameter';
+// class RemoveImgParameterProcessor implements Processor {
+//   @override
+//   String get name => 'remove_img_parameter';
 
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('img').forEach((e) {
-      var src = e.attributes['src'];
-      if (src != null) {
-        // split by '?', and get the first part
-        e.attributes['src'] = src.split('?').first;
-      }
-    });
-  }
-}
+//   @override
+//   void process(Document doc) {
+//     doc.querySelectorAll('img').forEach((e) {
+//       var src = e.attributes['src'];
+//       if (src != null) {
+//         // split by '?', and get the first part
+//         e.attributes['src'] = src.split('?').first;
+//       }
+//     });
+//   }
+// }
 
 class RemoveAInHProcessor implements Processor {
   @override
