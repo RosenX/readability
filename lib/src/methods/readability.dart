@@ -23,6 +23,7 @@ class Readability extends BaseExtractor {
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
         RemoveUnnecessaryNestedDivProcessor(),
+        RemoveUnnecessaryBlankLine(),
         RemoveEmptyTagProcessor(),
         FigurePrettyProcessor(),
         RemoveUnusefulAttributeProcessor(),

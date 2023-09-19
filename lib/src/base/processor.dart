@@ -202,7 +202,18 @@ class RemoveAInHProcessor implements Processor {
 }
 
 class RemoveEmptyTagProcessor implements Processor {
-  final textTag = ['pre', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li'];
+  final textTag = [
+    'pre',
+    'td',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'li',
+    'strong',
+  ];
   final blockTag = ['p', 'div', 'section', 'span'];
 
   @override
@@ -241,10 +252,26 @@ class RemoveEmptyTagProcessor implements Processor {
         elem.text.trim().isEmpty) {
       elem.remove();
     }
-    // special case for
-    // <block tag> <br> </block tag>
-    if (blockTag.contains(elem.localName) &&
-        elem.children.length == 1 &&
+  }
+}
+
+class RemoveUnnecessaryBlankLine implements Processor {
+  @override
+  String get name => 'remove_unnecessary_blank_line';
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      _remove(child);
+    }
+  }
+
+  /// if tag is empty, remove it
+  void _remove(Element elem) {
+    for (var child in elem.children) {
+      _remove(child);
+    }
+    if (elem.children.length == 1 &&
         elem.text.trim().isEmpty &&
         elem.children.first.localName == 'br') {
       elem.remove();
