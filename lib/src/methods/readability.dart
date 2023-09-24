@@ -16,6 +16,7 @@ class Readability extends BaseExtractor {
   @override
   List<Processor> get preprocessors => [
         CleanUnusefulTagProcessor(),
+        ReplaceMarkTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         RemoveSuspiciousTagProcessor(),
         TransformATagProcessor(),

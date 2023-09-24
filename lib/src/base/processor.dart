@@ -206,6 +206,20 @@ class RemoveAInHProcessor implements Processor {
   }
 }
 
+class ReplaceMarkTagProcessor implements Processor {
+  @override
+  String get name => 'replace_mark_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('mark').forEach((e) {
+      Element span = Element.tag('span');
+      span.innerHtml = e.innerHtml;
+      e.replaceWith(span);
+    });
+  }
+}
+
 class RemoveEmptyTagProcessor implements Processor {
   final textTag = [
     'pre',
