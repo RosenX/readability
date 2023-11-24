@@ -8,7 +8,6 @@ abstract class Processor {
 class CleanUnusefulTagProcessor implements Processor {
   final unUsefulTag = [
     'script',
-    'iframe',
     'form',
     'meta',
     'link',
@@ -83,6 +82,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
   }
 }
 
+/// remove nested tag only has one child
 class RemoveUnnecessaryNestedTagProcessor implements Processor {
   @override
   String get name => 'remove_unnecessary_nested_tag';
@@ -150,7 +150,7 @@ class FigurePrettyProcessor implements Processor {
 }
 
 class RemoveUnusefulAttributeProcessor implements Processor {
-  final attrKeepTag = ['audio', 'video'];
+  final attrKeepTag = ['audio', 'video', 'iframe'];
   final keepAttr = ['href', 'src', 'referrerpolicy'];
 
   @override
@@ -220,6 +220,25 @@ class ReplaceMarkTagProcessor implements Processor {
   }
 }
 
+class ReplaceStrongWithSpanProcessor implements Processor {
+  @override
+  String get name => 'replace_strong_with_span';
+
+  final maxStrongTextLength = 30;
+
+  @override
+  void process(Document doc) {
+    // if the length of text in strong tag is more than 30, replace it with span
+    doc.querySelectorAll('strong').forEach((e) {
+      if (e.text.length > maxStrongTextLength) {
+        Element span = Element.tag('span');
+        span.innerHtml = e.innerHtml;
+        e.replaceWith(span);
+      }
+    });
+  }
+}
+
 class RemoveEmptyTagProcessor implements Processor {
   final textTag = [
     'pre',
@@ -232,6 +251,7 @@ class RemoveEmptyTagProcessor implements Processor {
     'h6',
     'li',
     'strong',
+    'span',
   ];
   final blockTag = ['p', 'div', 'section', 'span'];
 
@@ -295,6 +315,22 @@ class RemoveUnnecessaryBlankLine implements Processor {
         elem.children.first.localName == 'br') {
       elem.remove();
     }
+  }
+}
+
+/// remove continue br tag
+class RemoveContinueBrTagProcessor implements Processor {
+  @override
+  String get name => 'remove_continue_br_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('br').forEach((e) {
+      var next = e.nextElementSibling;
+      if (next != null && next.localName == 'br') {
+        next.remove();
+      }
+    });
   }
 }
 

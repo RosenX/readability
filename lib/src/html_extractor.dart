@@ -22,13 +22,14 @@ class HtmlExtractor {
 
   final notSupportTag = [];
 
-  HtmlExtractor(
-      {required this.rawHtml,
-      this.url,
-      this.title,
-      this.method = Method.readability,
-      this.onlyClean = false,
-      this.isDebug = false}) {
+  HtmlExtractor({
+    required this.rawHtml,
+    this.url,
+    this.title,
+    this.method = Method.readability,
+    this.onlyClean = false,
+    this.isDebug = false,
+  }) {
     if (isDebug) {
       // remove log folder if exists
       var logFolder = Directory('log');
