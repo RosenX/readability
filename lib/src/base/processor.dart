@@ -151,7 +151,7 @@ class FigurePrettyProcessor implements Processor {
 
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video', 'iframe'];
-  final keepAttr = ['href', 'src', 'referrerpolicy', 'style'];
+  final keepAttr = ['href', 'src', 'referrerpolicy'];
 
   @override
   String get name => 'remove_unuseful_attribute';
@@ -238,8 +238,6 @@ class RemoveEmptyTagProcessor implements Processor {
   ];
   final blockTag = ['p', 'div', 'section', 'span'];
 
-  final invalidTag = ['o:p'];
-
   @override
   String get name => 'remove_empty_tag';
 
@@ -258,9 +256,6 @@ class RemoveEmptyTagProcessor implements Processor {
   void _removeEmptyTextTag(Element elem) {
     for (var child in elem.children) {
       _removeEmptyTextTag(child);
-    }
-    if (invalidTag.contains(elem.localName)) {
-      elem.remove();
     }
     if (textTag.contains(elem.localName) &&
         elem.text.trim().isEmpty &&
@@ -427,6 +422,30 @@ class RemoveLastBrProcessor implements Processor {
       if (lastChild.localName == 'br') {
         lastChild.remove();
       }
+    }
+  }
+}
+
+/// replace <o:p> with p
+class ReplaceOPTagProcessor implements Processor {
+  @override
+  String get name => 'replace_o_p_tag';
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      replace(child);
+    }
+  }
+
+  void replace(Element elem) {
+    for (var child in elem.children) {
+      replace(child);
+    }
+    if (elem.localName == 'o:p') {
+      Element p = Element.tag('p');
+      p.innerHtml = elem.innerHtml;
+      elem.replaceWith(p);
     }
   }
 }

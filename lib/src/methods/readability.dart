@@ -19,6 +19,7 @@ class Readability extends BaseExtractor {
         CleanUnusefulTagProcessor(),
         ReplaceMarkTagProcessor(),
         ReplaceDivWithPTagProcessor(),
+        ReplaceOPTagProcessor(),
         RemoveSuspiciousTagProcessor(),
         TransformATagProcessor(),
         RemoveUnusefulAttributeProcessor(),
