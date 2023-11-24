@@ -151,7 +151,7 @@ class FigurePrettyProcessor implements Processor {
 
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video', 'iframe'];
-  final keepAttr = ['href', 'src', 'referrerpolicy'];
+  final keepAttr = ['href', 'src', 'referrerpolicy', 'style'];
 
   @override
   String get name => 'remove_unuseful_attribute';
@@ -174,23 +174,6 @@ class RemoveUnusefulAttributeProcessor implements Processor {
     }
   }
 }
-
-/// remove parameter int img href
-// class RemoveImgParameterProcessor implements Processor {
-//   @override
-//   String get name => 'remove_img_parameter';
-
-//   @override
-//   void process(Document doc) {
-//     doc.querySelectorAll('img').forEach((e) {
-//       var src = e.attributes['src'];
-//       if (src != null) {
-//         // split by '?', and get the first part
-//         e.attributes['src'] = src.split('?').first;
-//       }
-//     });
-//   }
-// }
 
 class RemoveAInHProcessor implements Processor {
   @override
