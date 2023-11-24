@@ -1,0 +1,5 @@
+example/*.html
+example/log
+test/cases/*.html
+test/cases_expect/*.html
+test/cases_output/*.html
