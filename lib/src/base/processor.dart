@@ -207,7 +207,7 @@ class ReplaceStrongWithSpanProcessor implements Processor {
   @override
   String get name => 'replace_strong_with_span';
 
-  final maxStrongTextLength = 30;
+  final maxStrongTextLength = 50;
 
   @override
   void process(Document doc) {
@@ -223,7 +223,7 @@ class ReplaceStrongWithSpanProcessor implements Processor {
 }
 
 class RemoveEmptyTagProcessor implements Processor {
-  final textTag = [
+  final tags = [
     'pre',
     'td',
     'h1',
@@ -233,10 +233,15 @@ class RemoveEmptyTagProcessor implements Processor {
     'h5',
     'h6',
     'li',
+    'ul',
     'strong',
     'span',
+    'div',
+    'p',
+    'section',
+    'span',
+    'blockquote',
   ];
-  final blockTag = ['p', 'div', 'section', 'span'];
 
   @override
   String get name => 'remove_empty_tag';
@@ -245,33 +250,18 @@ class RemoveEmptyTagProcessor implements Processor {
   void process(Document doc) {
     // because text tag is nested in p or div tag, so we need to remove text tag first
     for (var child in doc.children) {
-      _removeEmptyTextTag(child);
-    }
-    for (var child in doc.children) {
-      _removeEmptyBlockTag(child);
+      remove(child);
     }
   }
 
   /// if tag in textTag and its text is empty, remove it
-  void _removeEmptyTextTag(Element elem) {
+  void remove(Element elem) {
     for (var child in elem.children) {
-      _removeEmptyTextTag(child);
+      remove(child);
     }
-    if (textTag.contains(elem.localName) &&
+    if (tags.contains(elem.localName) &&
         elem.text.trim().isEmpty &&
         elem.children.isEmpty) {
-      elem.remove();
-    }
-  }
-
-  /// if tag is empty, remove it
-  void _removeEmptyBlockTag(Element elem) {
-    for (var child in elem.children) {
-      _removeEmptyBlockTag(child);
-    }
-    if (blockTag.contains(elem.localName) &&
-        elem.children.isEmpty &&
-        elem.text.trim().isEmpty) {
       elem.remove();
     }
   }
@@ -298,22 +288,6 @@ class RemoveUnnecessaryBlankLine implements Processor {
         elem.children.first.localName == 'br') {
       elem.remove();
     }
-  }
-}
-
-/// remove continue br tag
-class RemoveContinueBrTagProcessor implements Processor {
-  @override
-  String get name => 'remove_continue_br_tag';
-
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('br').forEach((e) {
-      var next = e.nextElementSibling;
-      if (next != null && next.localName == 'br') {
-        next.remove();
-      }
-    });
   }
 }
 
@@ -419,7 +393,8 @@ class RemoveLastBrProcessor implements Processor {
         return;
       }
       var lastChild = elem.children.last;
-      if (lastChild.localName == 'br') {
+      Node lastNode = elem.nodes.last;
+      if (lastChild.localName == 'br' && lastNode == lastChild) {
         lastChild.remove();
       }
     }

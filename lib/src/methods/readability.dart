@@ -16,13 +16,16 @@ class Readability extends BaseExtractor {
 
   @override
   List<Processor> get preprocessors => [
+        // clean & transform
         CleanUnusefulTagProcessor(),
+        FigurePrettyProcessor(),
+        TransformATagProcessor(),
+        RemoveUnusefulAttributeProcessor(),
+        // prettify
         ReplaceMarkTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         ReplaceOPTagProcessor(),
         RemoveSuspiciousTagProcessor(),
-        TransformATagProcessor(),
-        RemoveUnusefulAttributeProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
@@ -30,16 +33,16 @@ class Readability extends BaseExtractor {
         RemoveUnnecessaryBlankLine(),
         RemoveEmptyTagProcessor(),
         RemoveUnnecessaryBlankLine(),
-        FigurePrettyProcessor(),
         RemoveInvalidFigureTagProcessor(),
         ReplaceH5WithPProcessor(),
         ReplaceStrongWithSpanProcessor(),
-        RemoveContinueBrTagProcessor(),
         RemoveLastBrProcessor(),
       ];
 
   @override
-  List<Processor> get postprocessors => [];
+  List<Processor> get postprocessors => [
+        RemoveEmptyTagProcessor(),
+      ];
 
   final scoreTag = [
     'p',
