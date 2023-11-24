@@ -33,6 +33,7 @@ class Readability extends BaseExtractor {
         ReplaceH5WithPProcessor(),
         ReplaceStrongWithSpanProcessor(),
         RemoveContinueBrTagProcessor(),
+        RemoveLastBrProcessor(),
       ];
 
   @override

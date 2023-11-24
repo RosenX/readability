@@ -38,7 +38,7 @@ class ReplaceH5WithPProcessor implements Processor {
   void process(Document doc) {
     doc.querySelectorAll('h5').forEach((e) {
       Element p = Element.tag('p');
-      p.children.addAll(e.children);
+      p.innerHtml = e.innerHtml;
       e.replaceWith(p);
     });
   }
@@ -372,19 +372,6 @@ class RemoveInvalidImgTagProcessor implements Processor {
   }
 }
 
-/// replace span tag with text in it
-class ReplaceSpanTagProcessor implements Processor {
-  @override
-  String get name => 'replace_span_tag';
-
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('span').forEach((e) {
-      e.replaceWith(Text(e.text));
-    });
-  }
-}
-
 /// remove invalid figure tag
 class RemoveInvalidFigureTagProcessor implements Processor {
   @override
@@ -423,5 +410,35 @@ class RemoveSuspiciousTagProcessor implements Processor {
         e.remove();
       }
     });
+  }
+}
+
+/// remove last br in block tag
+class RemoveLastBrProcessor implements Processor {
+  @override
+  String get name => 'remove_last_br';
+
+  final blockTag = ['p', 'div', 'section'];
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      remove(child);
+    }
+  }
+
+  void remove(Element elem) {
+    for (var child in elem.children) {
+      remove(child);
+    }
+    if (blockTag.contains(elem.localName)) {
+      if (elem.children.isEmpty) {
+        return;
+      }
+      var lastChild = elem.children.last;
+      if (lastChild.localName == 'br') {
+        lastChild.remove();
+      }
+    }
   }
 }
