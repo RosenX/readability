@@ -255,6 +255,8 @@ class RemoveEmptyTagProcessor implements Processor {
   ];
   final blockTag = ['p', 'div', 'section', 'span'];
 
+  final invalidTag = ['o:p'];
+
   @override
   String get name => 'remove_empty_tag';
 
@@ -273,6 +275,9 @@ class RemoveEmptyTagProcessor implements Processor {
   void _removeEmptyTextTag(Element elem) {
     for (var child in elem.children) {
       _removeEmptyTextTag(child);
+    }
+    if (invalidTag.contains(elem.localName)) {
+      elem.remove();
     }
     if (textTag.contains(elem.localName) &&
         elem.text.trim().isEmpty &&

@@ -8,10 +8,11 @@ import 'package:readability/src/base/processor.dart';
 class Readability extends BaseExtractor {
   final int minTextLength;
 
-  Readability(
-      {this.minTextLength = 25,
-      super.isDebug = false,
-      super.onlyClean = false});
+  Readability({
+    this.minTextLength = 25,
+    super.isDebug = false,
+    super.onlyClean = false,
+  });
 
   @override
   List<Processor> get preprocessors => [
