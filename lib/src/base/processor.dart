@@ -426,24 +426,24 @@ class ReplaceOPTagProcessor implements Processor {
 }
 
 /// change video to iframe
-class ReplaceVideoWithIframeProcessor implements Processor {
-  @override
-  String get name => 'replace_video_with_iframe';
+// class ReplaceVideoWithIframeProcessor implements Processor {
+//   @override
+//   String get name => 'replace_video_with_iframe';
 
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('video').forEach((e) {
-      Element iframe = Element.tag('iframe');
-      for (var child in e.children) {
-        if (child.localName == 'source' && child.attributes['src'] != null) {
-          iframe.attributes['src'] = child.attributes['src']!;
-          break;
-        }
-      }
-      iframe.attributes['allowfullscreen'] = 'true';
-      if (iframe.attributes['src'] != null) {
-        e.replaceWith(iframe);
-      }
-    });
-  }
-}
+//   @override
+//   void process(Document doc) {
+//     doc.querySelectorAll('video').forEach((e) {
+//       Element iframe = Element.tag('iframe');
+//       for (var child in e.children) {
+//         if (child.localName == 'source' && child.attributes['src'] != null) {
+//           iframe.attributes['src'] = child.attributes['src']!;
+//           break;
+//         }
+//       }
+//       iframe.attributes['allowfullscreen'] = 'true';
+//       if (iframe.attributes['src'] != null) {
+//         e.replaceWith(iframe);
+//       }
+//     });
+//   }
+// }
