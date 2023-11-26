@@ -171,12 +171,12 @@ class RemoveUnusefulAttributeProcessor implements Processor {
     }
     elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
     // remove all style except for keepStyle
-    if (elem.attributes['style'] != null) {
+    if (elem.localName == 'img' && elem.attributes['style'] != null) {
       var style = elem.attributes['style']!;
       var styleList = style.split(';');
       var newStyleList = styleList.where((e) {
         var kv = e.split(':');
-        if (kv.length != 2) {
+        if (kv.length != 2 || kv[1].trim().endsWith('%')) {
           return false;
         }
         return keepStyle.contains(kv[0].trim());
@@ -186,6 +186,8 @@ class RemoveUnusefulAttributeProcessor implements Processor {
       } else {
         elem.attributes['style'] = newStyleList.join(';');
       }
+    } else {
+      elem.attributes.remove('style');
     }
     for (var child in elem.children) {
       _removeUnUsefulAttribue(child);
