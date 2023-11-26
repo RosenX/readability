@@ -151,7 +151,8 @@ class FigurePrettyProcessor implements Processor {
 
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video', 'iframe'];
-  final keepAttr = ['href', 'src', 'referrerpolicy'];
+  final keepAttr = ['href', 'src', 'referrerpolicy', 'style'];
+  final keepStyle = ['width', 'height'];
 
   @override
   String get name => 'remove_unuseful_attribute';
@@ -169,6 +170,23 @@ class RemoveUnusefulAttributeProcessor implements Processor {
       return;
     }
     elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
+    // remove all style except for keepStyle
+    if (elem.attributes['style'] != null) {
+      var style = elem.attributes['style']!;
+      var styleList = style.split(';');
+      var newStyleList = styleList.where((e) {
+        var kv = e.split(':');
+        if (kv.length != 2) {
+          return false;
+        }
+        return keepStyle.contains(kv[0].trim());
+      });
+      if (newStyleList.isEmpty) {
+        elem.attributes.remove('style');
+      } else {
+        elem.attributes['style'] = newStyleList.join(';');
+      }
+    }
     for (var child in elem.children) {
       _removeUnUsefulAttribue(child);
     }
