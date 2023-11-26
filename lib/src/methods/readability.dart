@@ -21,6 +21,7 @@ class Readability extends BaseExtractor {
         FigurePrettyProcessor(),
         TransformATagProcessor(),
         RemoveUnusefulAttributeProcessor(),
+        ReplaceVideoWithIframeProcessor(),
         // prettify
         ReplaceMarkTagProcessor(),
         ReplaceDivWithPTagProcessor(),
