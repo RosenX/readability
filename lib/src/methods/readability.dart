@@ -34,7 +34,7 @@ class Readability extends BaseExtractor {
         RemoveEmptyTagProcessor(),
         RemoveUnnecessaryBlankLine(),
         RemoveInvalidFigureTagProcessor(),
-        ReplaceH5WithPProcessor(),
+        ReplaceUnnecessaryProcessor(),
         ReplaceStrongWithSpanProcessor(),
         RemoveLastBrProcessor(),
       ];

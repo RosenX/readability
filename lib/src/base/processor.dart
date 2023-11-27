@@ -30,13 +30,36 @@ class CleanUnusefulTagProcessor implements Processor {
   }
 }
 
-class ReplaceH5WithPProcessor implements Processor {
+class ReplaceUnnecessaryProcessor implements Processor {
   @override
-  String get name => 'replace_h5_with_p';
+  String get name => 'replace_unnecessary_h';
 
   @override
   void process(Document doc) {
-    doc.querySelectorAll('h5').forEach((e) {
+    replaceBigHToDiv(doc, 'h1');
+    replaceBigHToDiv(doc, 'h2');
+    replaceBigHToDiv(doc, 'h3');
+    replaceBigHToDiv(doc, 'h4');
+    replaceBigHToDiv(doc, 'h5');
+    replaceBigHToDiv(doc, 'h6');
+
+    // replaceHToP(doc, 'h4');
+    // replaceHToP(doc, 'h5');
+    // replaceHToP(doc, 'h6');
+  }
+
+  void replaceBigHToDiv(Document doc, String tagName) {
+    doc.querySelectorAll(tagName).forEach((e) {
+      if (e.children.length > 1 || e.text.length > 100) {
+        Element div = Element.tag('div');
+        div.innerHtml = e.innerHtml;
+        e.replaceWith(div);
+      }
+    });
+  }
+
+  void replaceHToP(Document doc, String tagName) {
+    doc.querySelectorAll(tagName).forEach((e) {
       Element p = Element.tag('p');
       p.innerHtml = e.innerHtml;
       e.replaceWith(p);
