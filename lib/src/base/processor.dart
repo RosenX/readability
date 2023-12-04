@@ -172,6 +172,21 @@ class FigurePrettyProcessor implements Processor {
   }
 }
 
+class ImgSrcReplaceProcessor implements Processor {
+  @override
+  String get name => 'img_src_replace';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('img').forEach((e) {
+      String? dataSrc = e.attributes['data-src'];
+      if (dataSrc != null && dataSrc.startsWith('http')) {
+        e.attributes['src'] = dataSrc;
+      }
+    });
+  }
+}
+
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video', 'iframe'];
   final keepAttr = ['href', 'src', 'referrerpolicy', 'style'];
@@ -284,6 +299,7 @@ class RemoveEmptyTagProcessor implements Processor {
     'section',
     'span',
     'blockquote',
+    'i',
   ];
 
   @override

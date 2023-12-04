@@ -9,11 +9,12 @@ void main(List<String> args) async {
   var content = await htmlFile.readAsString();
 
   var extractor = HtmlExtractor(
-      rawHtml: content,
-      method: Method.readability,
-      isDebug: true,
-      title: "aaaa",
-      onlyClean: true);
+    rawHtml: content,
+    method: Method.readability,
+    isDebug: true,
+    title: "aaaa",
+    onlyClean: true,
+  );
   var result = extractor.parse();
 
   var outputFile = File('clean.html');
