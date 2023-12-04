@@ -1,1 +1,240 @@
-<html><head></head><body><div><h1>迈向 ChatGPT 时代 - 生产力篇</h1><p>本系列的前两篇文章：</p><div><a href="https://zhuanlan.zhihu.com/p/608075096">字节：迈向 ChatGPT 时代 - 技术篇</a></div><div><a href="https://zhuanlan.zhihu.com/p/607127757">字节：迈向 ChatGPT 时代 - 商业篇</a></div><hr><p>最后一部分，我们来聊聊当前能用到的一些基于大模型的生产力工具，已经逐渐在我的日常工作学习中起到了越来越大的提效作用。如果你也是 AI 产品的相关从业者，那么在使用这些工具的过程中，也可以同时去感受和思考它的设计，提效程度，是否解锁了颠覆性的能力，与现有流程的结合程度如何，如何构建起它的商业壁垒等方面的问题。鉴于篇幅已经很长了，我在后面的描述中基本仅关注于它们的功能层面介绍。</p><h3>学术研究</h3><p>大语言模型在做语义理解，文本总结，以及多轮交互查询方面有较强的能力，我们可以把模型当做一个非常好的信息提炼与高级语义搜索的助手，帮助我们提升相关学术内容资料的发现获取。我日常找一些论文或挖掘一些相关联的研究工作时，都会在 Google 搜索的基础上使用一些额外的增强工具。</p><p>找相关问题的论文时，我一般会使用以下几个网站：</p><ul><li><a href="https://link.zhihu.com/?target=https%3A//elicit.org/">Elicit</a></li><li><a href="https://link.zhihu.com/?target=https%3A//scite.ai/">Scite</a></li><li><a href="https://link.zhihu.com/?target=https%3A//consensus.app/">Consensus</a></li></ul><p>其中 Scite 要收费，Consensus 总体来说效果一般，所以还是 Elicit 用得最多。比如我可以在他们的网站上搜索一个问题：如何将多模态模型应用到自动驾驶领域？</p><figure><img src="https://pic4.zhimg.com/v2-327e4c8b4166fa993f7cd35f30e98dff_b.jpg"></figure><p>可以看到左边提供了自然语言形式的总结，覆盖到了排序最高的 4 篇论文内容。右边的论文列表展示中除了标准的标题，摘要外，还可以展示一些自动提取的信息如实验方法，评测指标，样本量等。</p><p>点进论文详情里，还可以看到网站帮忙自动总结的一些内容，比较有趣的比如其它文章里引用了这篇论文，提出了一些存在的问题等。我们也可以在下面对话框里再问这篇论文一些问题，系统会给出回答，并在右边相应的原文里做高亮标记对应，可以说是非常友好了。</p><figure><img src="https://pic3.zhimg.com/v2-f372aa64b174e26c4f19c5386e03d4ee_b.jpg"></figure><p>免费版的 Scite 效果也挺不错的，甚至论文结果比 Elicit 感觉更全一些。因为我不做科研，所以也没深入尝试付费版。</p><p>如果有感兴趣的论文，想进一步看下它周围的引用关系，还可以尝试 <a href="https://link.zhihu.com/?target=https%3A//www.connectedpapers.com/">Connected Papers</a>。比如我把一篇多模态应用到自动驾驶领域的文章输入进去，就能得到一张引用关系图。</p><figure><img src="https://pic4.zhimg.com/v2-9ad9396260e19e25f35acdac859f5c0b_b.jpg"></figure><p>可以从图中非常直观的看到该领域相关的工作中影响力比较大，引用数比较多的工作有哪些，可以重点关注一下。</p><p>此外也有专门做论文 summary 的产品如 <a href="https://link.zhihu.com/?target=https%3A//www.paper-digest.com/">Paper Digest</a>，可以帮助加速浏览相关工作。而 <a href="https://link.zhihu.com/?target=https%3A//typeset.io/">SciSpace</a> 和 <a href="https://link.zhihu.com/?target=https%3A//www.explainpaper.com/">Explainpaper</a> 这类则可以像一位助手那样跟你一起阅读文献，随时标记相关内容向它提问。</p><figure><img src="https://pic4.zhimg.com/v2-702793bb015bfee10012d9d0b506ea53_b.jpg"></figure><p>在这些工具的加持下，做研究的效率肯定是大幅进步，未来可能提出好的问题，作出有远见的判断方面的能力会变得越来越重要。</p><h3>搜索与学习</h3><p>如果不局限于学术领域，很多人应该也都开始使用类似 ChatGPT（如果嫌注册麻烦，也可以使用诸如 Quora 推出的 <a href="https://link.zhihu.com/?target=https%3A//poe.com/">Poe</a> 来替代）的工具做一些更广泛场景的搜索与学习。从教育角度来看，类似 ChatGPT 已经能作为一个非常好的各个专业领域的老师了。我经常向它提问诸如：</p><ul><li>帮我创建一个领域的 mind map。</li><li>告诉我某个领域最值得读的 5 本书是什么。</li><li>某个领域当前最重要的问题是什么。</li><li>某个领域最有争议的人物/主题是什么。</li><li>学习某个特定概念的动机是什么？</li><li>某个定理/概念有什么应用？</li><li>帮我列一个面向初学者的 xx 学习计划。</li><li>针对某个领域，出几道问题来考考我。</li><li>我已经想到了某些点子，是否可以帮我补充更多。</li><li>让它扮演某个领域的专家，来帮我完成一些具体任务。</li></ul><p>相比搜索引擎，我们可以在一个问题的基础上不断提 follow-up 问题，省去了很多想关键词，浏览，大量阅读网页的时间。当然对于提问的技巧方面，目前仍然需要很多学习和思考。由此也可以联想一下未来的正统教育会是什么样的形式，如何能超越 AI 提供的知识点。</p><p>前面有提到 ChatGPT 上搜东西相比搜索引擎来说，缺乏实际出处的引用方便我们来验证或拓展阅读，这时就可以考虑一些“下一代搜索引擎”产品了，例如我最近用的很多的 <a href="https://link.zhihu.com/?target=https%3A//www.perplexity.ai/">Perplexity</a>。</p><figure><img src="https://pic4.zhimg.com/v2-889637f9c9c78965697e316474b38567_b.jpg"></figure><p>可以看到在它上面的搜索结果中，除了像 ChatGPT 一样会给出自然语言形式的回答，它也会把引用的具体网站链接也附带上来，用户可以点击查看原文。还可以进一步提 follow up 的问题，做多轮交互。非常像一个已经产品化的 WebGPT/Sparrow。另外类似的产品还有 <a href="https://link.zhihu.com/?target=https%3A//you.com/search%3Fq%3Dwho%2Bare%2Byou%26tbm%3Dyouchat%26cfr%3Dchat">YouChat</a>，面向决策类问题的 <a href="https://link.zhihu.com/?target=https%3A//rationale.jinaai.cn/">Rationale</a>，包括 Bing 也已经开始提供类似的能力了（UPDATE：非常好用，已经成为我日常的主要搜索工具），接下来的竞争应该会相当激烈 :)</p><p>也有一些公司做了面向企业内部的搜索整合工具，例如 <a href="https://link.zhihu.com/?target=https%3A//www.hebbia.ai/">hebbia</a> 和 <a href="https://link.zhihu.com/?target=https%3A//www.glean.com/">glean</a>，虽然目前看起来还比较早期（尤其前者），但这个方向和产品形态的确很有未来感。</p><p>延伸到多模态领域，也出现了类似 <a href="https://link.zhihu.com/?target=https%3A//twelvelabs.io/">Twelve Labs</a> 的产品，提供了相关的 API，可以让开发者很容易构建出一个支持自然语言搜索视频片段的应用来。</p><h3>播客/阅读</h3><p>21 年开始也通过播客软件听了大量的节目，学到了很多信息，但如何在把相关内容以笔记方式保存下来一直是个痛点，我一般都是直接在微信上给自己发消息来写类似简短笔记。今年通过知乎上的朋友推荐，发现了 <a href="https://link.zhihu.com/?target=https%3A//www.snipd.com/">Snipd</a> 这个 App，听到有收获的部分，可以一键点击“Create Snip”，软件会自动解析语音，然后通过语言模型来生成相关的 summary 保存下来，异常方便！另外它还有很多贴心且智能的功能：</p><ul><li>通过你的收听口味，它会推荐一些其它的播客片段给你，可以快速发现一些有意思的节目或者单集。</li><li>可以通过 AI 自动生成某个节目的 highlights，快速收听一遍看有没有必要全部回放。</li><li>在听具体单集时，也会有自动归纳生成的 chapters，虽然有时候不那么准，但总体来说还是能帮助我们跳过一些不感兴趣的片段。</li></ul><figure><img src="https://pic4.zhimg.com/v2-c93c5f4edcc8a747332472d24580654b_b.jpg"></figure><p>Snipd 的这些利用大模型能力解锁非结构化数据化数据的信息提取，搜索，推荐等方面的应用，并且非常顺滑地结合进了用户已经每天习惯于使用的播客软件载体中，是一种非常有启发的创新方式。类似想法的产品还有像 <a href="https://link.zhihu.com/?target=https%3A//lazy.so/">Lazy</a>，<a href="https://link.zhihu.com/?target=https%3A//readwise.io/read">Reader</a> 等，支持从 Twitter，网页，YouTube 视频，纸质书等各处来“划重点”并收集到一起，很有未来感。</p><p>另外一个最近用的比较多的是 <a href="https://link.zhihu.com/?target=https%3A//books.google.com/talktobooks/">Talk to Books</a>，背后的思路也很有意思，很多时候我们想要了解一个问题，背后有没有相关书籍已经做过深入且体系性的阐述了。如果有一个大模型已经看过了所有的书籍，提供了自然语言的接口可以让你随意的问问题，岂不是一种非常好的高质量信息摄取方式？不过目前看起来还没有收录中文类的书籍，所以我一般都还是使用英文来做相关提问和学习。如果发现比较好的书籍文献，再上 libgen 下载全文，美滋滋。</p><figure><img src="https://pic3.zhimg.com/v2-692e700df2137388a03daaed2735335e_b.jpg"></figure><p><a href="https://link.zhihu.com/?target=https%3A//bearly.ai/">Bearly.ai</a> 也是一个很有意思的产品，提供了浏览器插件，可以直接帮你生成网页文章的 summary。有意思的是它还支持对 amazon 上的产品分析评论，快速给出优缺点，非常节约时间。类似的产品还有 <a href="https://link.zhihu.com/?target=https%3A//tldrthis.com/">TLDR this</a> 等。</p><figure><img src="https://pic3.zhimg.com/v2-c838027ec16317ae864fe74490a94a4a_b.jpg"></figure><h3>会议</h3><p>日常工作中也有不少开会需求，或者没有参会的话需要要回听会议录音，非常耗时。现在也有很多产品开始提供自动的会议语音转录以及自动会议摘要的功能，例如国内的 <a href="https://link.zhihu.com/?target=https%3A//meeting.tencent.com/support-version-detail/443/index.html">腾讯会议</a> 和国外的 <a href="https://link.zhihu.com/?target=https%3A//fireflies.ai/">fireflies.ai</a>，<a href="https://link.zhihu.com/?target=https%3A//www.vowel.com/">Vowel</a> 等。</p><h3>写代码</h3><p>作为程序员，日常工作中需要做大量 Google，Stack Overflow，GitHub 上的搜索，点击，加上各种 ctrl+c, ctrl+v 工作，一天下来非常劳累。自从有了 ChatGPT，腰不酸了腿不痛了，上楼也有劲了，视力也提升到了 5.0 :)</p><p>上面虽然是玩笑，其实也代表了一种如何找到大模型应用场景的思维方式。理论上来说，我们日常工作中的各种信息获取与场景化加工的内容，例如搜索 Stack Overflow 或 GitHub issues 排查问题，阅读文档学习框架如何使用，阅读代码理解相关逻辑，写测试，写文档，做代码优化，做选型，甚至找学习资料/书籍，准备简历/面试题，生成 dummy 数据等等工作其实都可以用“无所不知”的大语言模型来辅助。</p><p>具体到代码生成方面，大名鼎鼎的 ChatGPT，Copilot 等自然大家都知道了，类似的还有 <a href="https://link.zhihu.com/?target=https%3A//www.tabnine.com/">Tabnine</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/THUDM/CodeGeeX">CodeGeeX</a> 等。也有一些专门领域的生成工具，例如 Warp 中自带的 AI 能力可以生成终端命令，PingCAP 之前做的 <a href="https://link.zhihu.com/?target=https%3A//docs.pingcap.com/tidbcloud/explore-data-with-chat2query">Chat2Query</a>，可以帮助自动生成 SQL，以及像 <a href="https://link.zhihu.com/?target=https%3A//www.seek.ai/">Seek.ai</a>，<a href="https://zhuanlan.zhihu.com/Mason.app">Manson</a> 等更面向业务用户的数据分析工具。</p><p>除了代码生成外，还有专门面向自动化测试生成的 <a href="https://link.zhihu.com/?target=https%3A//www.codium.ai/">Codium</a>，自动文档生成的 <a href="https://link.zhihu.com/?target=https%3A//mintlify.com/">Mintlify</a>，以及各种功能都集成到一起了的 <a href="https://link.zhihu.com/?target=https%3A//docs.bito.co/bito-ai-examples">Bito</a>。程序员要颠覆起自己来真的是毫不留情 。</p><figure><img src="https://pic4.zhimg.com/v2-08be6788cfce6dc585406a0279ba83cb_b.jpg"></figure><p>前阵子做了很多软件工程的研究与思考，当时也测试了一下 ChatGPT 的代码能力，感觉它目前仍然无法做大规模的系统设计，包括重构、控制复杂度这些思想也未掌握，短时间我们的饭碗还可以保住。但转念一想，如果后续大量的代码都是 AI 自动生成并在机器上运行的，可能人都不需要去“读”代码了，那么精心地设计 human readable 的代码和架构是不是也变得不再重要了？例如像 <a href="https://link.zhihu.com/?target=https%3A//www.tooljet.com/">tooljet</a> 这样的产品已经走在自然语言直接生成应用的路上了。作为一款低代码开发工具（类似 Appsmith 和 retool），目前已经可以支持自然语言输入，生成相应组件，实现企业内部的复杂查询业务。而 <a href="https://link.zhihu.com/?target=https%3A//www.autobackend.dev/">auto backend</a> 则可以通过一段简单的描述来直接生成后端 API 与相关文档（虽然我这没跑起来）。未来说一句话直接搞出个可以跑的 App 来还真有可能很快到来。</p><p>除了比较通用的代码编写任务，对于具体技术领域的应用也有很多脑洞可以开。比如这篇 <a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.09911">Can Foundation Models Wrangle Your Data?</a> 和相关文章，利用大语言模型来做数据清洗，看起来思路清奇，但没想到效果格外得好。大家也可以多想想工作中与非结构化数据打交道的种种场景，或许能找到不少帮助我们提效的点子。</p><h3>创作</h3><p>如果你平时需要做大量的 ppt，可以关注一下 <a href="https://link.zhihu.com/?target=https%3A//tome.app/">Tome</a> 这个产品，能够支持输入文字，直接生成 ppt。从视频演示来看效果还挺不错。</p><p>另外在写文章，记笔记时也可以利用上大模型。除了前面提到的 bearly.ai，我平时也开始尝试使用 Notion（Craft 中也有类似功能）中附带的相关 AI 头脑风暴，续写，总结，润色修改等功能。这种直接嵌入到原有工作流中的产品上手速度和顺滑感还是非常不错的。当然其它的知名应用也都可以尝试，尤其是在各种专业场景应用中，如 Grammarly，Jasper，Copy.ai，<a href="https://link.zhihu.com/?target=https%3A//rytr.me/">Rytr</a>，<a href="https://link.zhihu.com/?target=https%3A//jenni.ai/">jenni</a> 等。值得一提的还有 OpenAI 投资的 <a href="https://link.zhihu.com/?target=https%3A//mem.ai/">mem</a> 这家公司，相比 Notion 看起来更加的 AI native，不需要用户来做复杂的笔记归类等，看起来比 logseq 之类的更“智能”，我最近也刚开始尝试这个产品。</p><figure><img src="https://pic4.zhimg.com/v2-1820a649c9aa984f12db0a14e5cde6e3_b.jpg"></figure><p>如果你是专业设计师，除了像 Stable Diffusion，Dall-E 2，Midjourney 等需要大量 prompt 调优的通用软件，也可以找找有没有包装程度更高更场景化的一些产品，如 <a href="https://link.zhihu.com/?target=https%3A//stockimg.ai/">stockimg.ai</a>，<a href="https://link.zhihu.com/?target=https%3A//www.patterned.ai/">PatternedAI</a> 等。</p><p>总体来说大模型与 AIGC 在创作领域的应用目前应该是最为广泛的，相关的好玩产品也很多，这里不多做赘述。而且这些工具可以组合起来使用，使得原先需要一个小专业团队才能搞定的创意工作可能现在一个人就可以了。例如要做一个视频故事，我们可以在 ChatGPT 输入主题描述，生成出故事线。其中具体的画面场景，也可以通过它来生成相关的 prompt，再放到 <a href="https://link.zhihu.com/?target=https%3A//midjourney.com/">Midjourney</a> 中生成相关图片。然后再用 <a href="https://link.zhihu.com/?target=https%3A//runwayml.com/">Runway</a>，<a href="https://link.zhihu.com/?target=https%3A//www.descript.com/">Descript</a> 之类做视频剪辑，用 <a href="https://link.zhihu.com/?target=https%3A//www.resemble.ai/">Resemble.ai</a>，<a href="https://link.zhihu.com/?target=https%3A//beta.elevenlabs.io/">ElevenLabs</a> 做配音，再用上 <a href="https://link.zhihu.com/?target=https%3A//www.aiva.ai/">AIVA</a>，<a href="https://link.zhihu.com/?target=https%3A//www.beatoven.ai/">beatoven.ai</a>，<a href="https://link.zhihu.com/?target=https%3A//soundraw.io/">Sounddraw</a> 等产品生成的音乐作为配乐。一套流程下来又高效，效果也非常不错。甚至还看到了像 <a href="https://link.zhihu.com/?target=https%3A//simplified.com/">Simplified</a>、<a href="https://link.zhihu.com/?target=https%3A//repurpose.io/">Repurpose.io</a> 这类针对社交自媒体场景的一站式产品，把作图，写作，视频剪辑等都包全了。</p><p>从业界研究来看，一方面自然语言指导的生成会越来越精细与可控，如 <a href="https://link.zhihu.com/?target=https%3A//dreambooth.github.io/">DreamBooth</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/lllyasviel/ControlNet">ControlNet</a> 这样的工作（文本领域应该也会有类似的）。也有很多产品开始集成相关能力，例如集成了 Instruct Pix2Pix 的 <a href="https://link.zhihu.com/?target=https%3A//stableboost.ai/">Stable Boost</a>，<a href="https://link.zhihu.com/?target=https%3A//nmkd.itch.io/t2i-gui">NMKD Stable Diffusion</a> 等。另一方面多模态方面的融合能力也在不断增强，或许再过一两年从自然语言生成视频也会很快进入产品化阶段。</p><p>这两年 AIGC 相关的产品工具实在太多了，如果你想了解更多，也可以登录 <a href="https://link.zhihu.com/?target=https%3A//www.futurepedia.io/">FUTUREPEDIA</a> 这个专门收录 AI 工具的网站来探索。</p><h3>Prompt 周边</h3><p>网上也有很多文章里会教你如何使用 ChatGPT，如何写出更好的问题等。个人觉得从长远来看，随着模型能力的增强，prompt 需要的“魔法”含量应该会逐渐下降。不过当前来说还是挺有用的。</p><p>这个 <a href="https://link.zhihu.com/?target=https%3A//sharegpt.com/explore">ShareGPT</a> 网站上给出了很多使用案例，可以结合 <a href="https://link.zhihu.com/?target=https%3A//github.com/f/awesome-chatgpt-prompts">awesome-chatgpt-prompts</a> 以及一些 <a href="https://link.zhihu.com/?target=https%3A//www.youtube.com/watch%3Fv%3DHGDxu3kPErs">相关教程</a>，<a href="https://link.zhihu.com/?target=https%3A//untools.co/thinking-tools-guide">思考框架与工具</a> 等来一起尝试。当前的模型也有很多缺陷问题，这里收集了各种用户发现的 <a href="https://link.zhihu.com/?target=https%3A//docs.google.com/spreadsheets/d/1kDSERnROv5FgHbVN8z_bXH9gak2IXRtoqz0nwhrviCw/">ChatGPT 及其他 LLM 出错问题列表</a> 可供参考，甚至可以考虑用来形成 LLM 的 benchmark。</p><p>前阵子在尝试 Midjourney 的过程中，也发现了类似的网站，可以看到用户上传的作品以及他们用的具体 prompt 是啥。典型的有：</p><ul><li><a href="https://link.zhihu.com/?target=https%3A//lexica.art/">Lexica</a>，支持以图搜图，也能自己生成，用的是自己的模型。</li><li><a href="https://link.zhihu.com/?target=https%3A//prompthero.com/">PromptHero</a>，免费，支持各种平台，作品比较多样化。</li><li><a href="https://link.zhihu.com/?target=https%3A//promptbase.com/">PromptBase</a>，还可以做交易，有意思。</li></ul><figure><img src="https://pic2.zhimg.com/v2-e5aa9894587ec1d1482eee6afd201c61_b.jpg"></figure><p>还有类似 <a href="https://link.zhihu.com/?target=https%3A//replicate.com/pharmapsychotic/clip-interrogator">clip-interrogator</a> 这样的工具，可以通过上传图片来反向逆推 prompt 是什么。我测试了一下对于 Midjourney 来说效果一般，应该跟他们使用的是自建模型有关。</p><h3>LLMOps</h3><p>看了这么多应用，是不是也想上手自己开发一个？当前由于 MaaS 模式的流行，很多看起来复杂的 AI 应用只需要软件工程师就能快速完成，一定程度上也推动了应用发展的繁荣。这里给出两个典型的例子。</p><p>首先是 <a href="https://link.zhihu.com/?target=https%3A//huberman.rile.yt/">Huberman AI</a> 的例子，用户可以直接以自然语言方式在网站上提问，AI 会从 Huberman 的播客节目中找出相关信息来回答，形态上已经很有未来感了（想象一下你可以搜索公司所有的会议录音）。具体的开发过程是，作者通过 OpenAI 的 Whisper 把播客内容都转成了文字，再利用 <code>embedding-ada-002</code> 模型将文本转成词向量，存储到 <a href="https://link.zhihu.com/?target=https%3A//www.pinecone.io/">Pinecone</a> 向量数据库中，最后利用 <code>text-davinci-003</code> 来实现语义级别的搜索和问答。这整体的工作只有 <a href="https://link.zhihu.com/?target=https%3A//every.to/chain-of-thought/i-trained-a-gpt-3-chatbot-on-every-episode-of-my-favorite-podcast">一个开发者在一个周末就完成了</a>，如果要从头开发模型可能连收集个训练数据的时间都不够。</p><p>另一个例子来自 Dagster CEO 的文章，介绍了 <a href="https://link.zhihu.com/?target=https%3A//dagster.io/blog/chatgpt-langchain">如何使用 GPT-3 模型来构建一个企业问答机器人</a>。这篇文章在技术上的细节多了很多，包括在 fine tune 跟 prompt 之间取舍，当前 API 的各种限制以及如何绕过去，需要结合的各类系统组件等，看完就应该会对如何快速开发一个此类应用有很直观的了解了。此类应用场景的想象空间也很大，除了简单的产品文档检索外，博客文章，聊天记录，邮件，录音，录屏等等内容都可以快速使用这类技术构建起一个智能问答机器人来。</p><figure><img src="https://pic2.zhimg.com/v2-9679af58decc06e8c51a37b58d51403d_b.jpg"></figure><p>从前面的例子中也可以发现，两者有不少共通之处，这也是新的 LLMOps 工具开始出现的原因，目前有 <a href="https://link.zhihu.com/?target=https%3A//github.com/hwchase17/langchain">LangChain</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/jerryjliu/gpt_index">gpt_index</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/dust-tt/dust">Dust</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/cognosisai/platform">Cognosis</a> 等。其中以 LangChain 最为知名和火热（这个名字也很符合我们前面讲的，未来的软件系统可能是一系列基于语言转换模型的串联），提供了包括 prompt 管理，文档处理，模型调用，对话记忆管理，Agent 调用，模型评估与对比等等功能，可以大大加速我们开发基于 LLM 应用的效率。当然前面也提到过，其中的某些功能随着未来 API 方的增强或者模型的进化，可能会变得不那么重要，而像串联编排，query cache（省钱），session 压缩（我 yy 的），模型 a/b test、切换（还是省钱），或者一系列 fine tune + 部署优化之类功能可能更有长期价值。就好比早年的数据库，web 框架之类都是非常复杂的，但后面随着技术的发展也都变得非常易用了。</p><p>相比于前面这些工具属性的项目，市面上也开始出现了包装得更为易用的产品公司，典型的如 <a href="https://link.zhihu.com/?target=https%3A//www.brancher.ai/">brancher.ai</a>，以无代码的形式来帮助用户构建基于大模型的 AI 时代产品。</p><h3>ModelHub</h3><p>最后，如果你想要自建或者微调模型，那么 HuggingFace 应该是一个不错的选择。上面有很多对标 GPT-3 的模型如 <a href="https://link.zhihu.com/?target=https%3A//huggingface.co/bigscience/bloom">BLOOM</a>（指令调优版：BLOOMZ），<a href="https://link.zhihu.com/?target=https%3A//huggingface.co/facebook/opt-66b">OPT</a>（指令调优版：OPT-IML），<a href="https://link.zhihu.com/?target=https%3A//huggingface.co/spaces/THUDM/GLM-130B">GLM-130B</a> 等，但目前看总体效果上还是不如闭源的模型如 GPT 系列和 PaLM 等，这里有篇文章 <a href="https://link.zhihu.com/?target=https%3A//jingfengyang.github.io/gpt">分析了背后可能的原因，以及使用场景的建议</a>，非常推荐！另外也可以选择成本更低一些，更针对 fine tune 使用场景的模型如 <a href="https://link.zhihu.com/?target=https%3A//huggingface.co/google/flan-t5-xxl">Flan-T5</a>，<a href="https://link.zhihu.com/?target=https%3A//github.com/huggingface/setfit">setfit</a> 等。</p><figure><img src="https://pic1.zhimg.com/v2-87bc60432ca4b0c92b89631cb1ac9258_b.jpg"></figure><p>从前面的各种分析来看，如果不出现颠覆性的技术变革，未来在数据方面的重要程度会越来越提高，或许在 Data Hub 赛道上，未来也会出现不亚于 HuggingFace 规模的公司。目前看起来开源方面比较有名的相关数据集主要可以参考 EleutherAI 的 <a href="https://link.zhihu.com/?target=https%3A//pile.eleuther.ai/">the-pile</a> 以及 <a href="https://link.zhihu.com/?target=https%3A//commoncrawl.org/the-data/get-started/">Common Crawl</a> 项目。GPT 系列论文里也给了很多关于他们处理数据，提高质量的一些手段，可供参考。Alan Thompson 的 <a href="https://link.zhihu.com/?target=https%3A//lifearchitect.ai/whats-in-my-ai/">这篇文章</a> 里也总结了各大知名模型背后使用的训练数据集，很有价值。</p><figure><img src="https://pic1.zhimg.com/v2-c7411865f7228d074936cb927f42b720_b.jpg"></figure><hr><p>如果你对更多的生产力工具感兴趣，可以参考之前写的这篇：</p><div><a href="https://zhuanlan.zhihu.com/p/366187306">字节：我的生产力工具</a></div></div></body></html>
+<html>
+
+<head></head>
+
+<body>
+    <div>
+        <h1>迈向 ChatGPT 时代 - 生产力篇</h1>
+        <p>本系列的前两篇文章：</p>
+        <div><a href="https://zhuanlan.zhihu.com/p/608075096">字节：迈向 ChatGPT 时代 - 技术篇</a></div>
+        <div><a href="https://zhuanlan.zhihu.com/p/607127757">字节：迈向 ChatGPT 时代 - 商业篇</a></div>
+        <hr>
+        <p>最后一部分，我们来聊聊当前能用到的一些基于大模型的生产力工具，已经逐渐在我的日常工作学习中起到了越来越大的提效作用。如果你也是 AI
+            产品的相关从业者，那么在使用这些工具的过程中，也可以同时去感受和思考它的设计，提效程度，是否解锁了颠覆性的能力，与现有流程的结合程度如何，如何构建起它的商业壁垒等方面的问题。鉴于篇幅已经很长了，我在后面的描述中基本仅关注于它们的功能层面介绍。
+        </p>
+        <h3>学术研究</h3>
+        <p>大语言模型在做语义理解，文本总结，以及多轮交互查询方面有较强的能力，我们可以把模型当做一个非常好的信息提炼与高级语义搜索的助手，帮助我们提升相关学术内容资料的发现获取。我日常找一些论文或挖掘一些相关联的研究工作时，都会在
+            Google 搜索的基础上使用一些额外的增强工具。</p>
+        <p>找相关问题的论文时，我一般会使用以下几个网站：</p>
+        <ul>
+            <li><a href="https://link.zhihu.com/?target=https%3A//elicit.org/">Elicit</a></li>
+            <li><a href="https://link.zhihu.com/?target=https%3A//scite.ai/">Scite</a></li>
+            <li><a href="https://link.zhihu.com/?target=https%3A//consensus.app/">Consensus</a></li>
+        </ul>
+        <p>其中 Scite 要收费，Consensus 总体来说效果一般，所以还是 Elicit 用得最多。比如我可以在他们的网站上搜索一个问题：如何将多模态模型应用到自动驾驶领域？</p>
+        <figure><img src="https://pic4.zhimg.com/v2-327e4c8b4166fa993f7cd35f30e98dff_b.jpg"></figure>
+        <p>可以看到左边提供了自然语言形式的总结，覆盖到了排序最高的 4 篇论文内容。右边的论文列表展示中除了标准的标题，摘要外，还可以展示一些自动提取的信息如实验方法，评测指标，样本量等。</p>
+        <p>点进论文详情里，还可以看到网站帮忙自动总结的一些内容，比较有趣的比如其它文章里引用了这篇论文，提出了一些存在的问题等。我们也可以在下面对话框里再问这篇论文一些问题，系统会给出回答，并在右边相应的原文里做高亮标记对应，可以说是非常友好了。
+        </p>
+        <figure><img src="https://pic3.zhimg.com/v2-f372aa64b174e26c4f19c5386e03d4ee_b.jpg"></figure>
+        <p>免费版的 Scite 效果也挺不错的，甚至论文结果比 Elicit 感觉更全一些。因为我不做科研，所以也没深入尝试付费版。</p>
+        <p>如果有感兴趣的论文，想进一步看下它周围的引用关系，还可以尝试 <a
+                href="https://link.zhihu.com/?target=https%3A//www.connectedpapers.com/">Connected
+                Papers</a>。比如我把一篇多模态应用到自动驾驶领域的文章输入进去，就能得到一张引用关系图。</p>
+        <figure><img src="https://pic4.zhimg.com/v2-9ad9396260e19e25f35acdac859f5c0b_b.jpg"></figure>
+        <p>可以从图中非常直观的看到该领域相关的工作中影响力比较大，引用数比较多的工作有哪些，可以重点关注一下。</p>
+        <p>此外也有专门做论文 summary 的产品如 <a href="https://link.zhihu.com/?target=https%3A//www.paper-digest.com/">Paper
+                Digest</a>，可以帮助加速浏览相关工作。而 <a href="https://link.zhihu.com/?target=https%3A//typeset.io/">SciSpace</a> 和
+            <a href="https://link.zhihu.com/?target=https%3A//www.explainpaper.com/">Explainpaper</a>
+            这类则可以像一位助手那样跟你一起阅读文献，随时标记相关内容向它提问。
+        </p>
+        <figure><img src="https://pic4.zhimg.com/v2-702793bb015bfee10012d9d0b506ea53_b.jpg"></figure>
+        <p>在这些工具的加持下，做研究的效率肯定是大幅进步，未来可能提出好的问题，作出有远见的判断方面的能力会变得越来越重要。</p>
+        <h3>搜索与学习</h3>
+        <p>如果不局限于学术领域，很多人应该也都开始使用类似 ChatGPT（如果嫌注册麻烦，也可以使用诸如 Quora 推出的 <a
+                href="https://link.zhihu.com/?target=https%3A//poe.com/">Poe</a> 来替代）的工具做一些更广泛场景的搜索与学习。从教育角度来看，类似
+            ChatGPT 已经能作为一个非常好的各个专业领域的老师了。我经常向它提问诸如：</p>
+        <ul>
+            <li>帮我创建一个领域的 mind map。</li>
+            <li>告诉我某个领域最值得读的 5 本书是什么。</li>
+            <li>某个领域当前最重要的问题是什么。</li>
+            <li>某个领域最有争议的人物/主题是什么。</li>
+            <li>学习某个特定概念的动机是什么？</li>
+            <li>某个定理/概念有什么应用？</li>
+            <li>帮我列一个面向初学者的 xx 学习计划。</li>
+            <li>针对某个领域，出几道问题来考考我。</li>
+            <li>我已经想到了某些点子，是否可以帮我补充更多。</li>
+            <li>让它扮演某个领域的专家，来帮我完成一些具体任务。</li>
+        </ul>
+        <p>相比搜索引擎，我们可以在一个问题的基础上不断提 follow-up
+            问题，省去了很多想关键词，浏览，大量阅读网页的时间。当然对于提问的技巧方面，目前仍然需要很多学习和思考。由此也可以联想一下未来的正统教育会是什么样的形式，如何能超越 AI 提供的知识点。</p>
+        <p>前面有提到 ChatGPT 上搜东西相比搜索引擎来说，缺乏实际出处的引用方便我们来验证或拓展阅读，这时就可以考虑一些“下一代搜索引擎”产品了，例如我最近用的很多的 <a
+                href="https://link.zhihu.com/?target=https%3A//www.perplexity.ai/">Perplexity</a>。</p>
+        <figure><img src="https://pic4.zhimg.com/v2-889637f9c9c78965697e316474b38567_b.jpg"></figure>
+        <p>可以看到在它上面的搜索结果中，除了像 ChatGPT 一样会给出自然语言形式的回答，它也会把引用的具体网站链接也附带上来，用户可以点击查看原文。还可以进一步提 follow up
+            的问题，做多轮交互。非常像一个已经产品化的 WebGPT/Sparrow。另外类似的产品还有 <a
+                href="https://link.zhihu.com/?target=https%3A//you.com/search%3Fq%3Dwho%2Bare%2Byou%26tbm%3Dyouchat%26cfr%3Dchat">YouChat</a>，面向决策类问题的
+            <a href="https://link.zhihu.com/?target=https%3A//rationale.jinaai.cn/">Rationale</a>，包括 Bing
+            也已经开始提供类似的能力了（UPDATE：非常好用，已经成为我日常的主要搜索工具），接下来的竞争应该会相当激烈 :)
+        </p>
+        <p>也有一些公司做了面向企业内部的搜索整合工具，例如 <a href="https://link.zhihu.com/?target=https%3A//www.hebbia.ai/">hebbia</a> 和 <a
+                href="https://link.zhihu.com/?target=https%3A//www.glean.com/">glean</a>，虽然目前看起来还比较早期（尤其前者），但这个方向和产品形态的确很有未来感。
+        </p>
+        <p>延伸到多模态领域，也出现了类似 <a href="https://link.zhihu.com/?target=https%3A//twelvelabs.io/">Twelve Labs</a> 的产品，提供了相关的
+            API，可以让开发者很容易构建出一个支持自然语言搜索视频片段的应用来。</p>
+        <h3>播客/阅读</h3>
+        <p>21 年开始也通过播客软件听了大量的节目，学到了很多信息，但如何在把相关内容以笔记方式保存下来一直是个痛点，我一般都是直接在微信上给自己发消息来写类似简短笔记。今年通过知乎上的朋友推荐，发现了 <a
+                href="https://link.zhihu.com/?target=https%3A//www.snipd.com/">Snipd</a> 这个 App，听到有收获的部分，可以一键点击“Create
+            Snip”，软件会自动解析语音，然后通过语言模型来生成相关的 summary 保存下来，异常方便！另外它还有很多贴心且智能的功能：</p>
+        <ul>
+            <li>通过你的收听口味，它会推荐一些其它的播客片段给你，可以快速发现一些有意思的节目或者单集。</li>
+            <li>可以通过 AI 自动生成某个节目的 highlights，快速收听一遍看有没有必要全部回放。</li>
+            <li>在听具体单集时，也会有自动归纳生成的 chapters，虽然有时候不那么准，但总体来说还是能帮助我们跳过一些不感兴趣的片段。</li>
+        </ul>
+        <figure><img src="https://pic4.zhimg.com/v2-c93c5f4edcc8a747332472d24580654b_b.jpg"></figure>
+        <p>Snipd 的这些利用大模型能力解锁非结构化数据化数据的信息提取，搜索，推荐等方面的应用，并且非常顺滑地结合进了用户已经每天习惯于使用的播客软件载体中，是一种非常有启发的创新方式。类似想法的产品还有像 <a
+                href="https://link.zhihu.com/?target=https%3A//lazy.so/">Lazy</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//readwise.io/read">Reader</a> 等，支持从 Twitter，网页，YouTube
+            视频，纸质书等各处来“划重点”并收集到一起，很有未来感。</p>
+        <p>另外一个最近用的比较多的是 <a href="https://link.zhihu.com/?target=https%3A//books.google.com/talktobooks/">Talk to
+                Books</a>，背后的思路也很有意思，很多时候我们想要了解一个问题，背后有没有相关书籍已经做过深入且体系性的阐述了。如果有一个大模型已经看过了所有的书籍，提供了自然语言的接口可以让你随意的问问题，岂不是一种非常好的高质量信息摄取方式？不过目前看起来还没有收录中文类的书籍，所以我一般都还是使用英文来做相关提问和学习。如果发现比较好的书籍文献，再上
+            libgen 下载全文，美滋滋。</p>
+        <figure><img src="https://pic3.zhimg.com/v2-692e700df2137388a03daaed2735335e_b.jpg"></figure>
+        <p><a href="https://link.zhihu.com/?target=https%3A//bearly.ai/">Bearly.ai</a>
+            也是一个很有意思的产品，提供了浏览器插件，可以直接帮你生成网页文章的 summary。有意思的是它还支持对 amazon 上的产品分析评论，快速给出优缺点，非常节约时间。类似的产品还有 <a
+                href="https://link.zhihu.com/?target=https%3A//tldrthis.com/">TLDR this</a> 等。</p>
+        <figure><img src="https://pic3.zhimg.com/v2-c838027ec16317ae864fe74490a94a4a_b.jpg"></figure>
+        <h3>会议</h3>
+        <p>日常工作中也有不少开会需求，或者没有参会的话需要要回听会议录音，非常耗时。现在也有很多产品开始提供自动的会议语音转录以及自动会议摘要的功能，例如国内的 <a
+                href="https://link.zhihu.com/?target=https%3A//meeting.tencent.com/support-version-detail/443/index.html">腾讯会议</a>
+            和国外的 <a href="https://link.zhihu.com/?target=https%3A//fireflies.ai/">fireflies.ai</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//www.vowel.com/">Vowel</a> 等。</p>
+        <h3>写代码</h3>
+        <p>作为程序员，日常工作中需要做大量 Google，Stack Overflow，GitHub 上的搜索，点击，加上各种 ctrl+c, ctrl+v 工作，一天下来非常劳累。自从有了
+            ChatGPT，腰不酸了腿不痛了，上楼也有劲了，视力也提升到了 5.0 :)</p>
+        <p>上面虽然是玩笑，其实也代表了一种如何找到大模型应用场景的思维方式。理论上来说，我们日常工作中的各种信息获取与场景化加工的内容，例如搜索 Stack Overflow 或 GitHub issues
+            排查问题，阅读文档学习框架如何使用，阅读代码理解相关逻辑，写测试，写文档，做代码优化，做选型，甚至找学习资料/书籍，准备简历/面试题，生成 dummy 数据等等工作其实都可以用“无所不知”的大语言模型来辅助。</p>
+        <p>具体到代码生成方面，大名鼎鼎的 ChatGPT，Copilot 等自然大家都知道了，类似的还有 <a
+                href="https://link.zhihu.com/?target=https%3A//www.tabnine.com/">Tabnine</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/THUDM/CodeGeeX">CodeGeeX</a>
+            等。也有一些专门领域的生成工具，例如 Warp 中自带的 AI 能力可以生成终端命令，PingCAP 之前做的 <a
+                href="https://link.zhihu.com/?target=https%3A//docs.pingcap.com/tidbcloud/explore-data-with-chat2query">Chat2Query</a>，可以帮助自动生成
+            SQL，以及像 <a href="https://link.zhihu.com/?target=https%3A//www.seek.ai/">Seek.ai</a>，<a
+                href="https://zhuanlan.zhihu.com/Mason.app">Manson</a> 等更面向业务用户的数据分析工具。</p>
+        <p>除了代码生成外，还有专门面向自动化测试生成的 <a href="https://link.zhihu.com/?target=https%3A//www.codium.ai/">Codium</a>，自动文档生成的
+            <a href="https://link.zhihu.com/?target=https%3A//mintlify.com/">Mintlify</a>，以及各种功能都集成到一起了的 <a
+                href="https://link.zhihu.com/?target=https%3A//docs.bito.co/bito-ai-examples">Bito</a>。程序员要颠覆起自己来真的是毫不留情
+            。
+        </p>
+        <figure><img src="https://pic4.zhimg.com/v2-08be6788cfce6dc585406a0279ba83cb_b.jpg"></figure>
+        <p>前阵子做了很多软件工程的研究与思考，当时也测试了一下 ChatGPT
+            的代码能力，感觉它目前仍然无法做大规模的系统设计，包括重构、控制复杂度这些思想也未掌握，短时间我们的饭碗还可以保住。但转念一想，如果后续大量的代码都是 AI
+            自动生成并在机器上运行的，可能人都不需要去“读”代码了，那么精心地设计 human readable 的代码和架构是不是也变得不再重要了？例如像 <a
+                href="https://link.zhihu.com/?target=https%3A//www.tooljet.com/">tooljet</a>
+            这样的产品已经走在自然语言直接生成应用的路上了。作为一款低代码开发工具（类似 Appsmith 和 retool），目前已经可以支持自然语言输入，生成相应组件，实现企业内部的复杂查询业务。而 <a
+                href="https://link.zhihu.com/?target=https%3A//www.autobackend.dev/">auto backend</a>
+            则可以通过一段简单的描述来直接生成后端 API 与相关文档（虽然我这没跑起来）。未来说一句话直接搞出个可以跑的 App 来还真有可能很快到来。</p>
+        <p>除了比较通用的代码编写任务，对于具体技术领域的应用也有很多脑洞可以开。比如这篇 <a
+                href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.09911">Can Foundation Models Wrangle
+                Your Data?</a> 和相关文章，利用大语言模型来做数据清洗，看起来思路清奇，但没想到效果格外得好。大家也可以多想想工作中与非结构化数据打交道的种种场景，或许能找到不少帮助我们提效的点子。</p>
+        <h3>创作</h3>
+        <p>如果你平时需要做大量的 ppt，可以关注一下 <a href="https://link.zhihu.com/?target=https%3A//tome.app/">Tome</a>
+            这个产品，能够支持输入文字，直接生成 ppt。从视频演示来看效果还挺不错。</p>
+        <p>另外在写文章，记笔记时也可以利用上大模型。除了前面提到的 bearly.ai，我平时也开始尝试使用 Notion（Craft 中也有类似功能）中附带的相关 AI
+            头脑风暴，续写，总结，润色修改等功能。这种直接嵌入到原有工作流中的产品上手速度和顺滑感还是非常不错的。当然其它的知名应用也都可以尝试，尤其是在各种专业场景应用中，如
+            Grammarly，Jasper，Copy.ai，<a href="https://link.zhihu.com/?target=https%3A//rytr.me/">Rytr</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//jenni.ai/">jenni</a> 等。值得一提的还有 OpenAI 投资的 <a
+                href="https://link.zhihu.com/?target=https%3A//mem.ai/">mem</a> 这家公司，相比 Notion 看起来更加的 AI
+            native，不需要用户来做复杂的笔记归类等，看起来比 logseq 之类的更“智能”，我最近也刚开始尝试这个产品。</p>
+        <figure><img src="https://pic4.zhimg.com/v2-1820a649c9aa984f12db0a14e5cde6e3_b.jpg"></figure>
+        <p>如果你是专业设计师，除了像 Stable Diffusion，Dall-E 2，Midjourney 等需要大量 prompt 调优的通用软件，也可以找找有没有包装程度更高更场景化的一些产品，如 <a
+                href="https://link.zhihu.com/?target=https%3A//stockimg.ai/">stockimg.ai</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//www.patterned.ai/">PatternedAI</a> 等。</p>
+        <p>总体来说大模型与 AIGC
+            在创作领域的应用目前应该是最为广泛的，相关的好玩产品也很多，这里不多做赘述。而且这些工具可以组合起来使用，使得原先需要一个小专业团队才能搞定的创意工作可能现在一个人就可以了。例如要做一个视频故事，我们可以在
+            ChatGPT 输入主题描述，生成出故事线。其中具体的画面场景，也可以通过它来生成相关的 prompt，再放到 <a
+                href="https://link.zhihu.com/?target=https%3A//midjourney.com/">Midjourney</a> 中生成相关图片。然后再用 <a
+                href="https://link.zhihu.com/?target=https%3A//runwayml.com/">Runway</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//www.descript.com/">Descript</a> 之类做视频剪辑，用 <a
+                href="https://link.zhihu.com/?target=https%3A//www.resemble.ai/">Resemble.ai</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//beta.elevenlabs.io/">ElevenLabs</a> 做配音，再用上 <a
+                href="https://link.zhihu.com/?target=https%3A//www.aiva.ai/">AIVA</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//www.beatoven.ai/">beatoven.ai</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//soundraw.io/">Sounddraw</a>
+            等产品生成的音乐作为配乐。一套流程下来又高效，效果也非常不错。甚至还看到了像 <a
+                href="https://link.zhihu.com/?target=https%3A//simplified.com/">Simplified</a>、<a
+                href="https://link.zhihu.com/?target=https%3A//repurpose.io/">Repurpose.io</a>
+            这类针对社交自媒体场景的一站式产品，把作图，写作，视频剪辑等都包全了。</p>
+        <p>从业界研究来看，一方面自然语言指导的生成会越来越精细与可控，如 <a
+                href="https://link.zhihu.com/?target=https%3A//dreambooth.github.io/">DreamBooth</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/lllyasviel/ControlNet">ControlNet</a>
+            这样的工作（文本领域应该也会有类似的）。也有很多产品开始集成相关能力，例如集成了 Instruct Pix2Pix 的 <a
+                href="https://link.zhihu.com/?target=https%3A//stableboost.ai/">Stable Boost</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//nmkd.itch.io/t2i-gui">NMKD Stable Diffusion</a>
+            等。另一方面多模态方面的融合能力也在不断增强，或许再过一两年从自然语言生成视频也会很快进入产品化阶段。</p>
+        <p>这两年 AIGC 相关的产品工具实在太多了，如果你想了解更多，也可以登录 <a
+                href="https://link.zhihu.com/?target=https%3A//www.futurepedia.io/">FUTUREPEDIA</a> 这个专门收录 AI 工具的网站来探索。
+        </p>
+        <h3>Prompt 周边</h3>
+        <p>网上也有很多文章里会教你如何使用 ChatGPT，如何写出更好的问题等。个人觉得从长远来看，随着模型能力的增强，prompt 需要的“魔法”含量应该会逐渐下降。不过当前来说还是挺有用的。</p>
+        <p>这个 <a href="https://link.zhihu.com/?target=https%3A//sharegpt.com/explore">ShareGPT</a> 网站上给出了很多使用案例，可以结合 <a
+                href="https://link.zhihu.com/?target=https%3A//github.com/f/awesome-chatgpt-prompts">awesome-chatgpt-prompts</a>
+            以及一些 <a href="https://link.zhihu.com/?target=https%3A//www.youtube.com/watch%3Fv%3DHGDxu3kPErs">相关教程</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//untools.co/thinking-tools-guide">思考框架与工具</a>
+            等来一起尝试。当前的模型也有很多缺陷问题，这里收集了各种用户发现的 <a
+                href="https://link.zhihu.com/?target=https%3A//docs.google.com/spreadsheets/d/1kDSERnROv5FgHbVN8z_bXH9gak2IXRtoqz0nwhrviCw/">ChatGPT
+                及其他 LLM 出错问题列表</a> 可供参考，甚至可以考虑用来形成 LLM 的 benchmark。</p>
+        <p>前阵子在尝试 Midjourney 的过程中，也发现了类似的网站，可以看到用户上传的作品以及他们用的具体 prompt 是啥。典型的有：</p>
+        <ul>
+            <li><a href="https://link.zhihu.com/?target=https%3A//lexica.art/">Lexica</a>，支持以图搜图，也能自己生成，用的是自己的模型。</li>
+            <li><a href="https://link.zhihu.com/?target=https%3A//prompthero.com/">PromptHero</a>，免费，支持各种平台，作品比较多样化。
+            </li>
+            <li><a href="https://link.zhihu.com/?target=https%3A//promptbase.com/">PromptBase</a>，还可以做交易，有意思。</li>
+        </ul>
+        <figure><img src="https://pic2.zhimg.com/v2-e5aa9894587ec1d1482eee6afd201c61_b.jpg"></figure>
+        <p>还有类似 <a
+                href="https://link.zhihu.com/?target=https%3A//replicate.com/pharmapsychotic/clip-interrogator">clip-interrogator</a>
+            这样的工具，可以通过上传图片来反向逆推 prompt 是什么。我测试了一下对于 Midjourney 来说效果一般，应该跟他们使用的是自建模型有关。</p>
+        <h3>LLMOps</h3>
+        <p>看了这么多应用，是不是也想上手自己开发一个？当前由于 MaaS 模式的流行，很多看起来复杂的 AI 应用只需要软件工程师就能快速完成，一定程度上也推动了应用发展的繁荣。这里给出两个典型的例子。</p>
+        <p>首先是 <a href="https://link.zhihu.com/?target=https%3A//huberman.rile.yt/">Huberman AI</a>
+            的例子，用户可以直接以自然语言方式在网站上提问，AI 会从 Huberman 的播客节目中找出相关信息来回答，形态上已经很有未来感了（想象一下你可以搜索公司所有的会议录音）。具体的开发过程是，作者通过 OpenAI
+            的 Whisper 把播客内容都转成了文字，再利用 <code>embedding-ada-002</code> 模型将文本转成词向量，存储到 <a
+                href="https://link.zhihu.com/?target=https%3A//www.pinecone.io/">Pinecone</a> 向量数据库中，最后利用
+            <code>text-davinci-003</code> 来实现语义级别的搜索和问答。这整体的工作只有 <a
+                href="https://link.zhihu.com/?target=https%3A//every.to/chain-of-thought/i-trained-a-gpt-3-chatbot-on-every-episode-of-my-favorite-podcast">一个开发者在一个周末就完成了</a>，如果要从头开发模型可能连收集个训练数据的时间都不够。
+        </p>
+        <p>另一个例子来自 Dagster CEO 的文章，介绍了 <a
+                href="https://link.zhihu.com/?target=https%3A//dagster.io/blog/chatgpt-langchain">如何使用 GPT-3
+                模型来构建一个企业问答机器人</a>。这篇文章在技术上的细节多了很多，包括在 fine tune 跟 prompt 之间取舍，当前 API
+            的各种限制以及如何绕过去，需要结合的各类系统组件等，看完就应该会对如何快速开发一个此类应用有很直观的了解了。此类应用场景的想象空间也很大，除了简单的产品文档检索外，博客文章，聊天记录，邮件，录音，录屏等等内容都可以快速使用这类技术构建起一个智能问答机器人来。
+        </p>
+        <figure><img src="https://pic2.zhimg.com/v2-9679af58decc06e8c51a37b58d51403d_b.jpg"></figure>
+        <p>从前面的例子中也可以发现，两者有不少共通之处，这也是新的 LLMOps 工具开始出现的原因，目前有 <a
+                href="https://link.zhihu.com/?target=https%3A//github.com/hwchase17/langchain">LangChain</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/jerryjliu/gpt_index">gpt_index</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/dust-tt/dust">Dust</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/cognosisai/platform">Cognosis</a> 等。其中以
+            LangChain 最为知名和火热（这个名字也很符合我们前面讲的，未来的软件系统可能是一系列基于语言转换模型的串联），提供了包括 prompt 管理，文档处理，模型调用，对话记忆管理，Agent
+            调用，模型评估与对比等等功能，可以大大加速我们开发基于 LLM 应用的效率。当然前面也提到过，其中的某些功能随着未来 API 方的增强或者模型的进化，可能会变得不那么重要，而像串联编排，query
+            cache（省钱），session 压缩（我 yy 的），模型 a/b test、切换（还是省钱），或者一系列 fine tune + 部署优化之类功能可能更有长期价值。就好比早年的数据库，web
+            框架之类都是非常复杂的，但后面随着技术的发展也都变得非常易用了。</p>
+        <p>相比于前面这些工具属性的项目，市面上也开始出现了包装得更为易用的产品公司，典型的如 <a
+                href="https://link.zhihu.com/?target=https%3A//www.brancher.ai/">brancher.ai</a>，以无代码的形式来帮助用户构建基于大模型的 AI
+            时代产品。</p>
+        <h3>ModelHub</h3>
+        <p>最后，如果你想要自建或者微调模型，那么 HuggingFace 应该是一个不错的选择。上面有很多对标 GPT-3 的模型如 <a
+                href="https://link.zhihu.com/?target=https%3A//huggingface.co/bigscience/bloom">BLOOM</a>（指令调优版：BLOOMZ），<a
+                href="https://link.zhihu.com/?target=https%3A//huggingface.co/facebook/opt-66b">OPT</a>（指令调优版：OPT-IML），<a
+                href="https://link.zhihu.com/?target=https%3A//huggingface.co/spaces/THUDM/GLM-130B">GLM-130B</a>
+            等，但目前看总体效果上还是不如闭源的模型如 GPT 系列和 PaLM 等，这里有篇文章 <a
+                href="https://link.zhihu.com/?target=https%3A//jingfengyang.github.io/gpt">分析了背后可能的原因，以及使用场景的建议</a>，非常推荐！另外也可以选择成本更低一些，更针对
+            fine tune 使用场景的模型如 <a
+                href="https://link.zhihu.com/?target=https%3A//huggingface.co/google/flan-t5-xxl">Flan-T5</a>，<a
+                href="https://link.zhihu.com/?target=https%3A//github.com/huggingface/setfit">setfit</a> 等。</p>
+        <figure><img src="https://pic1.zhimg.com/v2-87bc60432ca4b0c92b89631cb1ac9258_b.jpg"></figure>
+        <p>从前面的各种分析来看，如果不出现颠覆性的技术变革，未来在数据方面的重要程度会越来越提高，或许在 Data Hub 赛道上，未来也会出现不亚于 HuggingFace
+            规模的公司。目前看起来开源方面比较有名的相关数据集主要可以参考 EleutherAI 的 <a
+                href="https://link.zhihu.com/?target=https%3A//pile.eleuther.ai/">the-pile</a> 以及 <a
+                href="https://link.zhihu.com/?target=https%3A//commoncrawl.org/the-data/get-started/">Common Crawl</a>
+            项目。GPT 系列论文里也给了很多关于他们处理数据，提高质量的一些手段，可供参考。Alan Thompson 的 <a
+                href="https://link.zhihu.com/?target=https%3A//lifearchitect.ai/whats-in-my-ai/">这篇文章</a>
+            里也总结了各大知名模型背后使用的训练数据集，很有价值。</p>
+        <figure><img src="https://pic1.zhimg.com/v2-c7411865f7228d074936cb927f42b720_b.jpg"></figure>
+        <hr>
+        <p>如果你对更多的生产力工具感兴趣，可以参考之前写的这篇：</p>
+        <div><a href="https://zhuanlan.zhihu.com/p/366187306">字节：我的生产力工具</a></div>
+    </div>
+</body>
+
+</html>

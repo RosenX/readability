@@ -20,7 +20,6 @@ class Readability extends BaseExtractor {
         CleanUnusefulTagProcessor(),
         FigurePrettyProcessor(),
         ImgSrcReplaceProcessor(),
-        TransformATagProcessor(),
 
         RemoveUnusefulAttributeProcessor(),
         // prettify
@@ -28,8 +27,8 @@ class Readability extends BaseExtractor {
         ReplaceDivWithPTagProcessor(),
         ReplaceUnnecessaryProcessor(),
         ReplaceOPTagProcessor(),
-        RemoveSuspiciousTagProcessor(),
 
+        RemoveSuspiciousTagProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),

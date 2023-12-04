@@ -130,22 +130,6 @@ class RemoveUnnecessaryNestedTagProcessor implements Processor {
   }
 }
 
-class TransformATagProcessor implements Processor {
-  @override
-  String get name => 'transform_a_tag';
-
-  @override
-  void process(Document doc) {
-    // if <a> has no child, but text is empty, try to find 'data-text' in attr
-    // case for zhihu article
-    doc.querySelectorAll('a').forEach((e) {
-      if (e.text.isEmpty) {
-        e.text = e.attributes['data-text'] ?? '';
-      }
-    });
-  }
-}
-
 class FigurePrettyProcessor implements Processor {
   @override
   String get name => 'figure_pretty';
@@ -360,11 +344,16 @@ class RemoveInvalidATagProcessor implements Processor {
       if (e.text.trim().isEmpty && e.children.isEmpty) {
         e.remove();
       }
-      if (e.attributes['href'] == null) {
-        e.remove();
-      } else if (!e.attributes['href']!.startsWith('http')) {
-        // if href not a url, remove it
-        e.remove();
+      if (e.attributes['href'] == null ||
+          !e.attributes['href']!.startsWith('http')) {
+        if (e.children.isEmpty) {
+          e.remove();
+        } else {
+          // replace a tag with div
+          Element div = Element.tag('div');
+          div.innerHtml = e.innerHtml;
+          e.replaceWith(div);
+        }
       }
     });
   }
