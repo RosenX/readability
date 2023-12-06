@@ -1,30 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:html/dom.dart';
-
 import 'test_case.dart';
 
-void compareDom(List<Element> output, List<Element> expect) {
-  if (output.length != expect.length) {
-    for (var i = 0; i < output.length; i++) {
-      var outputElement = output[i];
-      print(
-          'tag: ${outputElement.localName}, attr: ${outputElement.attributes}');
-    }
-    print('-------------------');
-    for (var i = 0; i < expect.length; i++) {
-      var expectElement = expect[i];
-      print(
-          'tag: ${expectElement.localName}, attr: ${expectElement.attributes}');
-    }
-    return;
-  }
-}
-
-void main() async {
-  var outputFolder = 'cases_output';
-  var expectFolder = 'cases_expect';
+void main(List<String> args) async {
   var jsonFile = File('cases_need_check.json');
   String jsonString = await jsonFile.readAsString();
 
@@ -32,19 +10,37 @@ void main() async {
     return TestCase.fromJson(e);
   }).toList();
 
-  for (var testCase in testCases) {
-    if (testCase.isNew) {
-      continue;
+  if (testCases.isEmpty) return;
+
+  if (args.isEmpty) {
+    if (testCases.first.isNew) {
+      print(testCases.first.output);
+    } else {
+      final result = await Process.run('diff', [
+        testCases.first.output,
+        testCases.first.expect,
+      ]);
+      print(result.stdout);
+      print("Check diff: ${testCases.first.output}, ${testCases.first.expect}");
     }
-    var outputFilePath = '$outputFolder/${testCase.filename}';
-    var expectFilePath = '$expectFolder/${testCase.filename}';
-
-    var outputHtml = File(outputFilePath).readAsStringSync();
-    var expectedHtml = File(expectFilePath).readAsStringSync();
-
-    var outputDoc = Document.html(outputHtml);
-    var expectedDoc = Document.html(expectedHtml);
-
-    compareDom(outputDoc.children, expectedDoc.children);
+  } else if (args.first == 'pass') {
+    // move the first output file to expect file
+    moveFile(testCases.first.output, testCases.first.expect);
+    testCases.removeAt(0);
+    saveTestCases(testCases);
+  } else if (args.first == 'pass-all') {
+    // move all output file to expect file
+    for (var testCase in testCases) {
+      moveFile(testCase.output, testCase.expect);
+    }
+    testCases = [];
+    saveTestCases(testCases);
   }
+}
+
+void moveFile(String from, String to) {
+  var output = File(from);
+  var expect = File(to);
+  expect.writeAsStringSync(output.readAsStringSync());
+  output.deleteSync();
 }
