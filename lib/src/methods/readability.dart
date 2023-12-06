@@ -3,43 +3,39 @@ import 'dart:math';
 
 import 'package:html/dom.dart';
 import 'package:readability/src/base/extractor.dart';
+import 'package:readability/src/base/index.dart';
 import 'package:readability/src/base/processor.dart';
 
 class Readability extends BaseExtractor {
   final int minTextLength;
+  final String? title;
 
   Readability({
     this.minTextLength = 25,
+    this.title,
     super.isDebug = false,
     super.onlyClean = false,
   });
 
   @override
   List<Processor> get preprocessors => [
-        // clean & transform
         CleanUnusefulTagProcessor(),
         RemoveSuspiciousTagProcessor(),
         FigurePrettyProcessor(),
         ImgSrcReplaceProcessor(),
-
-        RemoveUnusefulAttributeProcessor(),
-        // prettify
-        ReplaceMarkTagProcessor(),
-        ReplaceDivWithPTagProcessor(),
-        ReplaceUnnecessaryProcessor(),
-        ReplaceOPTagProcessor(),
-
+        ReplaceSectionTagProcessor(),
+        ExposeTextProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
-        RemoveUnnecessaryNestedTagProcessor(),
-        RemoveUnnecessaryBlankLine(),
-        RemoveEmptyTagProcessor(),
-        RemoveUnnecessaryBlankLine(),
-        RemoveInvalidFigureTagProcessor(),
-
+        ReplaceUnnecessaryProcessor(),
+        ReplaceOPTagProcessor(),
         ReplaceStrongWithSpanProcessor(),
+        RemoveInvalidFigureTagProcessor(),
+        ReplaceDivWithPTagProcessor(),
+        FormatHtmlRecurrsivelyProcessor(),
         RemoveLastBrProcessor(),
+        RemoveUnusefulAttributeProcessor(),
       ];
 
   @override
@@ -64,6 +60,9 @@ class Readability extends BaseExtractor {
     'ul',
   ];
 
+  final rootTag = ['body', 'div', 'section'];
+  final titleTag = ['h1', 'h2'];
+
   String cleanText(String text) {
     // Many spaces make the following regexes run forever
     text = text.replaceAll(RegExp(r"\s{255,}"), ' ' * 255);
@@ -77,12 +76,36 @@ class Readability extends BaseExtractor {
   Document extractContent(Document doc) {
     Map<Element, double> candidates = _scoreParagraphs(doc);
 
-    Element topCandidate = _selectBestCandidate(candidates);
+    final topCandidate = _selectBestCandidate(candidates);
 
     // convert Element to Document
     Document html = Document.html(topCandidate.outerHtml);
     // html.append(topCandidate);
     return html;
+  }
+
+  Map<Element, double> _extraScore(
+    Document doc,
+    Map<Element, double> candidates,
+  ) {
+    if (title == null) return candidates;
+    final hTags = doc.querySelectorAll('h1,h2');
+    for (var tag in hTags) {
+      final parentTag = tag.parent;
+      final grandParentTag = parentTag?.parent;
+      if (parentTag == null) continue;
+
+      double similarity = titleSimilarityScore(title: title!, hText: tag.text);
+      if (isDebug) {
+        print('title: $title, hText: ${tag.text}, score: $similarity');
+      }
+      final score = similarity * 50;
+      candidates[parentTag] = candidates[parentTag]! + score;
+      if (grandParentTag != null && candidates.containsKey(grandParentTag)) {
+        candidates[grandParentTag] = candidates[grandParentTag]! + score * 0.5;
+      }
+    }
+    return candidates;
   }
 
   /// score nodes in html
@@ -92,16 +115,14 @@ class Readability extends BaseExtractor {
     var allTextTag = doc.querySelectorAll(scoreTag.join(','));
     for (var tag in allTextTag) {
       var parentTag = tag.parent;
-      if (parentTag == null) {
-        continue;
-      }
+      if (parentTag == null) continue;
+
       var grandParentTag = parentTag.parent;
 
       String innerText = cleanText(tag.text);
       int innerTextLen = innerText.length;
 
-      // If this paragraph is less than 25 characters, don't even count it.
-      if (innerTextLen < minTextLength) {
+      if (innerTextLen < minTextLength && !titleTag.contains(tag.localName)) {
         continue;
       }
 
@@ -141,16 +162,28 @@ class Readability extends BaseExtractor {
 
   // choose best candidate
   Element _selectBestCandidate(Map<Element, double> candidates) {
-    // todo add impossible element
-    if (isDebug) {
-      // output score of each tag
-      candidates.forEach((key, value) {
-        this.log("step2_score_$value", key.outerHtml);
-      });
+    double maxScore = 0;
+    Element topCandidate = candidates.keys.first;
+    for (var candidate in candidates.keys) {
+      if (!rootTag.contains(candidate.localName)) {
+        continue;
+      }
+      var score = candidates[candidate]!;
+      if (score > maxScore) {
+        maxScore = score;
+        topCandidate = candidate;
+      }
+      if (isDebug) {
+        this.log("step2_score_$score", candidate.outerHtml);
+      }
     }
-    return candidates.entries
-        .reduce(
-            (entry1, entry2) => entry1.value > entry2.value ? entry1 : entry2)
-        .key;
+    print(topCandidate.outerHtml);
+    print(maxScore);
+    return topCandidate;
+  }
+
+  double titleSimilarityScore({required String title, required String hText}) {
+    int distance = editDistance(title, hText);
+    return max(1 - distance / max(title.length, hText.length), 0);
   }
 }

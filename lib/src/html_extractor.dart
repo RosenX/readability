@@ -57,9 +57,11 @@ class HtmlExtractor {
 
     switch (method) {
       case Method.readability:
-        _mainContent.content =
-            Readability(isDebug: isDebug, onlyClean: onlyClean)
-                .extract(_htmlDoc);
+        _mainContent.content = Readability(
+          isDebug: isDebug,
+          onlyClean: onlyClean,
+          title: _mainContent.title,
+        ).extract(_htmlDoc);
         break;
       default:
         throw Exception('not support method');

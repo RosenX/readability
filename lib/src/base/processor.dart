@@ -42,17 +42,13 @@ class ReplaceUnnecessaryProcessor implements Processor {
     replaceBigHToDiv(doc, 'h4');
     replaceBigHToDiv(doc, 'h5');
     replaceBigHToDiv(doc, 'h6');
-
-    // replaceHToP(doc, 'h4');
-    // replaceHToP(doc, 'h5');
-    // replaceHToP(doc, 'h6');
   }
 
   void replaceBigHToDiv(Document doc, String tagName) {
     doc.querySelectorAll(tagName).forEach((e) {
       if (e.children.length > 1 || e.text.length > 100) {
         Element div = Element.tag('div');
-        div.innerHtml = e.innerHtml;
+        div.nodes.addAll(e.nodes);
         e.replaceWith(div);
       }
     });
@@ -61,7 +57,7 @@ class ReplaceUnnecessaryProcessor implements Processor {
   void replaceHToP(Document doc, String tagName) {
     doc.querySelectorAll(tagName).forEach((e) {
       Element p = Element.tag('p');
-      p.innerHtml = e.innerHtml;
+      p.nodes.addAll(e.nodes);
       e.replaceWith(p);
     });
   }
@@ -98,7 +94,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
       }
       if (!isBlock) {
         Element p = Element.tag('p');
-        p.innerHtml = div.innerHtml;
+        p.nodes.addAll(div.nodes);
         div.replaceWith(p);
       }
     }
@@ -106,21 +102,21 @@ class ReplaceDivWithPTagProcessor implements Processor {
 }
 
 /// remove nested tag only has one child
-class RemoveUnnecessaryNestedTagProcessor implements Processor {
+class RemoveNestedTagProcessor implements Processor {
   @override
-  String get name => 'remove_unnecessary_nested_tag';
+  String get name => 'remove_nested_tag';
 
   @override
   void process(Document doc) {
     for (var child in doc.children) {
-      _replace(child);
+      remove(child);
     }
   }
 
   // if tag has one child and the child is the same tag, remove the tag
-  void _replace(Element elem) {
+  void remove(Element elem) {
     for (var child in elem.children) {
-      _replace(child);
+      remove(child);
     }
     if (elem.children.length == 1 &&
         elem.children.first.localName == elem.localName &&
@@ -142,6 +138,7 @@ class FigurePrettyProcessor implements Processor {
       if (noscript != null) {
         // create a new figure Element, and put the img in noscript to it
         Element newFigure = Element.tag('figure');
+        // newFigure.nodes.addAll(noscript.nodes);
         newFigure.innerHtml = _replaceLtGt(noscript.innerHtml);
         figure.replaceWith(newFigure);
       }
@@ -226,22 +223,10 @@ class RemoveAInHProcessor implements Processor {
     /// query h1 tag, if there is a <a> tag in h1, remove the <a> tag
     var h1 = doc.querySelector('h1');
     if (h1 != null) {
-      h1.querySelector('a')?.remove();
+      h1.querySelectorAll('a').forEach((element) {
+        element.remove();
+      });
     }
-  }
-}
-
-class ReplaceMarkTagProcessor implements Processor {
-  @override
-  String get name => 'replace_mark_tag';
-
-  @override
-  void process(Document doc) {
-    doc.querySelectorAll('mark').forEach((e) {
-      Element span = Element.tag('span');
-      span.innerHtml = e.innerHtml;
-      e.replaceWith(span);
-    });
   }
 }
 
@@ -257,7 +242,7 @@ class ReplaceStrongWithSpanProcessor implements Processor {
     doc.querySelectorAll('strong').forEach((e) {
       if (e.text.length > maxStrongTextLength) {
         Element span = Element.tag('span');
-        span.innerHtml = e.innerHtml;
+        span.nodes.addAll(e.nodes);
         e.replaceWith(span);
       }
     });
@@ -317,20 +302,128 @@ class RemoveUnnecessaryBlankLine implements Processor {
   @override
   void process(Document doc) {
     for (var child in doc.children) {
-      _remove(child);
+      remove(child);
     }
   }
 
   /// if tag is empty, remove it
-  void _remove(Element elem) {
+  void remove(Element elem) {
     for (var child in elem.children) {
-      _remove(child);
+      remove(child);
     }
     if (elem.children.length == 1 &&
         elem.text.trim().isEmpty &&
         elem.children.first.localName == 'br') {
       elem.remove();
     }
+  }
+}
+
+class FormatHtmlRecurrsivelyProcessor implements Processor {
+  @override
+  String get name => 'format_html_recurrsively';
+
+  final tags = [
+    'pre',
+    'td',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'li',
+    'ul',
+    'strong',
+    'span',
+    'div',
+    'p',
+    'section',
+    'span',
+    'blockquote',
+    'i',
+  ];
+
+  @override
+  void process(Document doc) {
+    bool needFormat = true;
+    while (needFormat) {
+      needFormat = format(doc);
+    }
+  }
+
+  bool format(Document doc) {
+    bool change = false;
+    change = change | removeLonelyBr(doc);
+    change = change | removeEmptyTag(doc);
+    change = change | removeNestedTag(doc);
+    return change;
+  }
+
+  bool removeLonelyBr(Document doc) {
+    bool change = false;
+    for (var child in doc.children) {
+      change = change | _removeLonelyBr(child);
+    }
+    return change;
+  }
+
+  bool _removeLonelyBr(Element elem) {
+    bool change = false;
+    for (var child in elem.children) {
+      change = change | _removeLonelyBr(child);
+    }
+    if (elem.children.length == 1 &&
+        elem.text.trim().isEmpty &&
+        elem.children.first.localName == 'br') {
+      elem.remove();
+      change = true;
+    }
+    return change;
+  }
+
+  bool removeEmptyTag(Document doc) {
+    bool change = false;
+    for (var child in doc.children) {
+      change = change | _removeEmptyTag(child);
+    }
+    return change;
+  }
+
+  bool _removeEmptyTag(Element elem) {
+    bool change = false;
+    for (var child in elem.children) {
+      change = change | _removeEmptyTag(child);
+    }
+    if (tags.contains(elem.localName) &&
+        elem.text.trim().isEmpty &&
+        elem.children.isEmpty) {
+      elem.remove();
+      change = true;
+    }
+    return change;
+  }
+
+  bool removeNestedTag(Document doc) {
+    bool change = false;
+    for (var child in doc.children) {
+      change = change | _removeNestedTag(child);
+    }
+    return change;
+  }
+
+  bool _removeNestedTag(Element elem) {
+    bool change = false;
+    for (var child in elem.children) {
+      change = change | _removeNestedTag(child);
+    }
+    if (elem.children.length == 1 &&
+        elem.children.first.localName == elem.localName &&
+        elem.text.trim().length == elem.children.first.text.trim().length) {
+      elem.replaceWith(elem.children.first);
+      change = true;
+    }
+    return change;
   }
 }
 
@@ -343,6 +436,7 @@ class RemoveInvalidATagProcessor implements Processor {
     doc.querySelectorAll('a').forEach((e) {
       if (e.text.trim().isEmpty && e.children.isEmpty) {
         e.remove();
+        return;
       }
       if (e.attributes['href'] == null ||
           !e.attributes['href']!.startsWith('http')) {
@@ -350,9 +444,9 @@ class RemoveInvalidATagProcessor implements Processor {
           e.remove();
         } else {
           // replace a tag with div
-          Element div = Element.tag('div');
-          div.innerHtml = e.innerHtml;
-          e.replaceWith(div);
+          // Element div = Element.tag('div');
+          // div.nodes.addAll(e.nodes);
+          // e.replaceWith(div);
         }
       }
     });
@@ -377,6 +471,7 @@ class RemoveInvalidImgTagProcessor implements Processor {
   }
 }
 
+/// TODO: why
 /// remove invalid figure tag
 class RemoveInvalidFigureTagProcessor implements Processor {
   @override
@@ -398,7 +493,7 @@ class RemoveInvalidFigureTagProcessor implements Processor {
 /// remove tag with suspicious class name like comment, comment-text, comment-content
 class RemoveSuspiciousTagProcessor implements Processor {
   final suspiciousClassRegx = RegExp(
-    r'comment|footer|recommend',
+    r'comment|footer|recommend|discuss',
     caseSensitive: false,
   );
 
@@ -452,6 +547,51 @@ class RemoveLastBrProcessor implements Processor {
   }
 }
 
+/// expose text in tags
+class ExposeTextProcessor implements Processor {
+  @override
+  String get name => 'expose_text';
+
+  final exposeTag = ['span', 'mark'];
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      expose(child);
+    }
+  }
+
+  void expose(Element elem) {
+    for (var child in elem.children) {
+      expose(child);
+    }
+    if (exposeTag.contains(elem.localName)) {
+      Element? parentTag = elem.parent;
+      if (parentTag == null) return;
+      for (var node in parentTag.nodes) {
+        if (node == elem) {
+          node.replaceWith(Text(node.text));
+        }
+      }
+    }
+  }
+}
+
+/// replace section tag with div
+class ReplaceSectionTagProcessor implements Processor {
+  @override
+  String get name => 'replace_section_tag';
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('section').forEach((e) {
+      Element div = Element.tag('div');
+      div.nodes.addAll(e.nodes);
+      e.replaceWith(div);
+    });
+  }
+}
+
 /// replace <o:p> with p
 class ReplaceOPTagProcessor implements Processor {
   @override
@@ -470,7 +610,7 @@ class ReplaceOPTagProcessor implements Processor {
     }
     if (elem.localName == 'o:p') {
       Element p = Element.tag('p');
-      p.innerHtml = elem.innerHtml;
+      p.nodes.addAll(elem.nodes);
       elem.replaceWith(p);
     }
   }

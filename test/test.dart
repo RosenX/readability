@@ -95,8 +95,7 @@ void main() async {
 
   runTestOutput(caseDir, outputDir);
   // fromat output html
-  var result = await Process.run('npx', 'prettier -w $outputDir'.split(' '));
-  print(result.stdout);
+  await Process.run('npx', 'prettier -w $outputDir'.split(' '));
 
   final caseNeedCheck = runTest(outputDir, expectDir);
   saveTestCases(caseNeedCheck);

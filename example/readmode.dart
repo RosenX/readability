@@ -17,5 +17,4 @@ void main(List<String> args) async {
 
   var outputFile = File('clean.html');
   outputFile.writeAsString(result?.html ?? '');
-  print(result?.contentLength);
 }
