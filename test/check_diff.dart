@@ -21,7 +21,8 @@ void main(List<String> args) async {
         testCases.first.expect,
       ]);
       print(result.stdout);
-      print("Check diff: ${testCases.first.output}, ${testCases.first.expect}");
+      print(
+          "Check diff: '${testCases.first.output}', '${testCases.first.expect}'");
     }
   } else if (args.first == 'pass') {
     // move the first output file to expect file
