@@ -397,7 +397,10 @@ class RemoveInvalidFigureTagProcessor implements Processor {
 
 /// remove tag with suspicious class name like comment, comment-text, comment-content
 class RemoveSuspiciousTagProcessor implements Processor {
-  final suspiciousClassRegx = RegExp(r'comment');
+  final suspiciousClassRegx = RegExp(
+    r'comment|footer|recommend',
+    caseSensitive: false,
+  );
 
   @override
   String get name => 'remove_suspicious_tag';
