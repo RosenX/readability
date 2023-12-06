@@ -8,6 +8,7 @@ pubspec.lock
 .DS_Store
 example/*.html
 example/log
+example/cases
 test/cases/*
 test/cases_expect/*
 test/cases_output/*

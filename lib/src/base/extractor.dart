@@ -21,7 +21,7 @@ class BaseExtractor with Logger implements Extractor {
       var p = preprocessors[i];
       p.process(doc);
       if (isDebug) {
-        log("preprocess_${i}_${p.name}", doc.outerHtml);
+        log("step1_preprocess_${i}_${p.name}", doc.outerHtml);
       }
     }
   }
@@ -31,7 +31,7 @@ class BaseExtractor with Logger implements Extractor {
       var p = postprocessors[i];
       p.process(doc);
       if (isDebug) {
-        log("postprocess_${i}_${p.name}", doc.outerHtml);
+        log("step3_postprocess_${i}_${p.name}", doc.outerHtml);
       }
     }
   }
@@ -46,7 +46,7 @@ class BaseExtractor with Logger implements Extractor {
     if (!onlyClean) {
       doc = extractContent(doc);
       if (isDebug) {
-        log("extract", doc.outerHtml);
+        log("step2_extract", doc.outerHtml);
       }
     }
     postprocess(doc);

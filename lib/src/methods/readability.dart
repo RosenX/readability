@@ -18,6 +18,7 @@ class Readability extends BaseExtractor {
   List<Processor> get preprocessors => [
         // clean & transform
         CleanUnusefulTagProcessor(),
+        RemoveSuspiciousTagProcessor(),
         FigurePrettyProcessor(),
         ImgSrcReplaceProcessor(),
 
@@ -28,7 +29,6 @@ class Readability extends BaseExtractor {
         ReplaceUnnecessaryProcessor(),
         ReplaceOPTagProcessor(),
 
-        RemoveSuspiciousTagProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
@@ -145,7 +145,7 @@ class Readability extends BaseExtractor {
     if (isDebug) {
       // output score of each tag
       candidates.forEach((key, value) {
-        this.log("element_score_$value", key.outerHtml);
+        this.log("step2_score_$value", key.outerHtml);
       });
     }
     return candidates.entries
