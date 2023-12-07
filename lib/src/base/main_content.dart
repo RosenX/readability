@@ -55,7 +55,15 @@ class MainContent {
 
   void extractCover() {
     List<Element> imgs = content.querySelectorAll('img');
-    imgs.removeWhere((img) => isSmallImage(img));
+    imgs.removeWhere((img) {
+      if (img.attributes['src'] == null ||
+          img.attributes['src']!.isEmpty ||
+          !img.attributes['src']!.startsWith('http')) {
+        return true;
+      }
+      if (isSmallImage(img)) return true;
+      return false;
+    });
     if (imgs.isNotEmpty) {
       cover = imgs.first.attributes['src'];
     }
