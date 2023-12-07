@@ -20,10 +20,11 @@ class Readability extends BaseExtractor {
   @override
   List<Processor> get preprocessors => [
         CleanUnusefulTagProcessor(),
+        RemoveUnusefulNodeProcessor(),
         RemoveSuspiciousTagProcessor(),
         FigurePrettyProcessor(),
         ImgSrcReplaceProcessor(),
-        ReplaceSectionTagProcessor(),
+        ReplaceSectionWithDivProcessor(),
         ExposeTextProcessor(),
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
@@ -34,6 +35,7 @@ class Readability extends BaseExtractor {
         RemoveInvalidFigureTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
+        ExposeTagInDiv(),
         RemoveLastBrProcessor(),
         RemoveUnusefulAttributeProcessor(),
       ];
@@ -177,8 +179,6 @@ class Readability extends BaseExtractor {
         this.log("step2_score_$score", candidate.outerHtml);
       }
     }
-    print(topCandidate.outerHtml);
-    print(maxScore);
     return topCandidate;
   }
 

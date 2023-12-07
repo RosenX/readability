@@ -354,24 +354,18 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
 
   bool format(Document doc) {
     bool change = false;
-    change = change | removeLonelyBr(doc);
-    change = change | removeEmptyTag(doc);
-    change = change | removeNestedTag(doc);
-    return change;
-  }
-
-  bool removeLonelyBr(Document doc) {
-    bool change = false;
     for (var child in doc.children) {
-      change = change | _removeLonelyBr(child);
+      change = change | removeLonelyBr(child);
+      change = change | removeEmptyTag(child);
+      change = change | removeNestedTag(child);
     }
     return change;
   }
 
-  bool _removeLonelyBr(Element elem) {
+  bool removeLonelyBr(Element elem) {
     bool change = false;
     for (var child in elem.children) {
-      change = change | _removeLonelyBr(child);
+      change = change | removeLonelyBr(child);
     }
     if (elem.children.length == 1 &&
         elem.text.trim().isEmpty &&
@@ -382,18 +376,10 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
     return change;
   }
 
-  bool removeEmptyTag(Document doc) {
-    bool change = false;
-    for (var child in doc.children) {
-      change = change | _removeEmptyTag(child);
-    }
-    return change;
-  }
-
-  bool _removeEmptyTag(Element elem) {
+  bool removeEmptyTag(Element elem) {
     bool change = false;
     for (var child in elem.children) {
-      change = change | _removeEmptyTag(child);
+      change = change | removeEmptyTag(child);
     }
     if (tags.contains(elem.localName) &&
         elem.text.trim().isEmpty &&
@@ -404,18 +390,10 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
     return change;
   }
 
-  bool removeNestedTag(Document doc) {
-    bool change = false;
-    for (var child in doc.children) {
-      change = change | _removeNestedTag(child);
-    }
-    return change;
-  }
-
-  bool _removeNestedTag(Element elem) {
+  bool removeNestedTag(Element elem) {
     bool change = false;
     for (var child in elem.children) {
-      change = change | _removeNestedTag(child);
+      change = change | removeNestedTag(child);
     }
     if (elem.children.length == 1 &&
         elem.children.first.localName == elem.localName &&
@@ -424,6 +402,92 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
       change = true;
     }
     return change;
+  }
+}
+
+class ExposeTagInDiv implements Processor {
+  @override
+  String get name => 'expose_tag';
+
+  final tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      expose(child);
+    }
+  }
+
+  void expose(Element elem) {
+    for (var child in elem.children) {
+      expose(child);
+    }
+    if (elem.localName != 'div') return;
+    if (elem.children.length != 1 || elem.nodes.length != 1) return;
+    if (!tags.contains(elem.children.first.localName)) return;
+    elem.replaceWith(elem.children.first);
+  }
+}
+
+class ExposeDiv implements Processor {
+  @override
+  String get name => 'expose_div';
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      expose(child);
+    }
+  }
+
+  void expose(Element elem) {
+    for (var child in elem.children) {
+      expose(child);
+    }
+    if (elem.localName != 'div') return;
+    final parent = elem.parent;
+    if (parent == null) return;
+    // some are text node
+    if (elem.children.length != elem.nodes.length) return;
+    bool isAllDiv =
+        elem.children.every((element) => element.localName == 'div');
+    if (!isAllDiv) return;
+    int index = parent.nodes.indexOf(elem);
+    parent.nodes.replaceRange(index, index + 1, elem.nodes);
+  }
+}
+
+class RemoveUnusefulNodeProcessor implements Processor {
+  @override
+  String get name => 'remove_empty_text_node';
+
+  @override
+  void process(Document doc) {
+    for (var node in doc.nodes) {
+      remove(node);
+    }
+  }
+
+  void remove(Node node) {
+    for (var node in node.nodes) {
+      remove(node);
+    }
+    List<Node> newSubNodes = [];
+    for (var node in node.nodes) {
+      if (node.nodeType == Node.COMMENT_NODE) {
+        continue;
+      }
+      if (node.nodeType != Node.TEXT_NODE) {
+        newSubNodes.add(node);
+        continue;
+      }
+      if (node.text == null || node.text!.trim().isEmpty) {
+        continue;
+      }
+      newSubNodes.add(node);
+    }
+    node.nodes.clear();
+    node.nodes.addAll(newSubNodes);
   }
 }
 
@@ -442,11 +506,6 @@ class RemoveInvalidATagProcessor implements Processor {
           !e.attributes['href']!.startsWith('http')) {
         if (e.children.isEmpty) {
           e.remove();
-        } else {
-          // replace a tag with div
-          // Element div = Element.tag('div');
-          // div.nodes.addAll(e.nodes);
-          // e.replaceWith(div);
         }
       }
     });
@@ -552,7 +611,7 @@ class ExposeTextProcessor implements Processor {
   @override
   String get name => 'expose_text';
 
-  final exposeTag = ['span', 'mark'];
+  final tag = ['span', 'mark'];
 
   @override
   void process(Document doc) {
@@ -565,20 +624,20 @@ class ExposeTextProcessor implements Processor {
     for (var child in elem.children) {
       expose(child);
     }
-    if (exposeTag.contains(elem.localName)) {
-      Element? parentTag = elem.parent;
-      if (parentTag == null) return;
-      for (var node in parentTag.nodes) {
-        if (node == elem) {
-          node.replaceWith(Text(node.text));
-        }
+    if (!tag.contains(elem.localName)) return;
+    if (elem.children.isNotEmpty) return;
+    Element? parentTag = elem.parent;
+    if (parentTag == null) return;
+    for (var node in parentTag.nodes) {
+      if (node == elem) {
+        node.replaceWith(Text(node.text));
       }
     }
   }
 }
 
 /// replace section tag with div
-class ReplaceSectionTagProcessor implements Processor {
+class ReplaceSectionWithDivProcessor implements Processor {
   @override
   String get name => 'replace_section_tag';
 
