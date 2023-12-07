@@ -41,6 +41,9 @@ void main(List<String> args) async {
 void moveFile(String from, String to) {
   var output = File(from);
   var expect = File(to);
+  if (!expect.existsSync()) {
+    expect.createSync(recursive: true);
+  }
   expect.writeAsStringSync(output.readAsStringSync());
   output.deleteSync();
 }
