@@ -1,11 +1,13 @@
 import 'package:html/dom.dart';
 import 'package:readability/readability.dart';
+import 'package:readability/src/base/index.dart';
 
 enum MainContentType { article, video }
 
 class MainContent {
   String? title;
   final String? url;
+  String? cover;
   late String author;
   late Document content;
   final MainContentType type;
@@ -42,8 +44,33 @@ class MainContent {
           content.body!.children.insert(0, Element.tag('h1')..text = title);
         }
       }
-      return HtmlExtractResult(content.outerHtml, content.body!.text.length);
+      return HtmlExtractResult(
+        content.outerHtml,
+        content.body!.text.length,
+        cover,
+      );
     }
     return null;
+  }
+
+  void extractCover() {
+    List<Element> imgs = content.querySelectorAll('img');
+    imgs.removeWhere((img) => isSmallImage(img));
+    if (imgs.isNotEmpty) {
+      cover = imgs.first.attributes['src'];
+    }
+  }
+
+  bool isSmallImage(Element img) {
+    // image width and height have been put into style when extract content
+    if (img.attributes['style'] == null) return false;
+    final styleMap = styleToMap(img.attributes['style']!);
+    if (styleMap['width'] != null) {
+      if (isSmallSize(styleMap['width']!.trim(), 50)) return true;
+    }
+    if (styleMap['height'] != null) {
+      if (isSmallSize(styleMap['height']!.trim(), 50)) return true;
+    }
+    return false;
   }
 }

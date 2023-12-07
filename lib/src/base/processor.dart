@@ -1,4 +1,5 @@
 import 'package:html/dom.dart';
+import 'package:readability/src/base/index.dart';
 
 abstract class Processor {
   String get name;
@@ -170,8 +171,9 @@ class ImgSrcReplaceProcessor implements Processor {
 
 class RemoveUnusefulAttributeProcessor implements Processor {
   final attrKeepTag = ['audio', 'video', 'iframe'];
-  final keepAttr = ['href', 'src', 'referrerpolicy', 'style'];
-  final keepStyle = ['width', 'height'];
+  final keepAttr = ['href', 'src', 'referrerpolicy'];
+
+  List<String> get imageKeepAttr => [...keepAttr, 'style'];
 
   @override
   String get name => 'remove_unuseful_attribute';
@@ -185,32 +187,55 @@ class RemoveUnusefulAttributeProcessor implements Processor {
 
   /// remove all attribute of element except for the attribute in keepAttr
   void _removeUnUsefulAttribue(Element elem) {
+    // if tag is in attrKeepTag, do not remove any attribute
     if (attrKeepTag.contains(elem.localName)) {
       return;
     }
-    elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
-    // remove all style except for keepStyle
-    if (elem.localName == 'img' && elem.attributes['style'] != null) {
-      var style = elem.attributes['style']!;
-      var styleList = style.split(';');
-      var newStyleList = styleList.where((e) {
-        var kv = e.split(':');
-        if (kv.length != 2 || kv[1].trim().endsWith('%')) {
-          return false;
-        }
-        return keepStyle.contains(kv[0].trim());
-      });
-      if (newStyleList.isEmpty) {
-        elem.attributes.remove('style');
-      } else {
-        elem.attributes['style'] = newStyleList.join(';');
-      }
+    // remove all attribute except for keepAttr
+    if (elem.localName == 'img') {
+      elem.attributes.removeWhere((key, value) => !imageKeepAttr.contains(key));
     } else {
-      elem.attributes.remove('style');
+      elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
     }
+
     for (var child in elem.children) {
       _removeUnUsefulAttribue(child);
     }
+  }
+}
+
+class ImageStyleProcessor implements Processor {
+  @override
+  String get name => 'image_style';
+
+  List<String> keepAttr = ['width', 'height'];
+
+  @override
+  void process(Document doc) {
+    doc.querySelectorAll('img').forEach((e) {
+      Map<String, String> style = e.attributes['style'] == null
+          ? {}
+          : styleToMap(e.attributes['style']!);
+      if (e.attributes['width'] != null) {
+        style['width'] = e.attributes['width']!;
+      }
+      if (e.attributes['height'] != null) {
+        style['height'] = e.attributes['height']!;
+      }
+      // remove important
+      if (style['width'] != null) {
+        style['width'] = style['width']!.split(' ')[0];
+      }
+      if (style['height'] != null) {
+        style['height'] = style['height']!.split(' ')[0];
+      }
+      style.removeWhere((key, value) => !keepAttr.contains(key));
+      if (style.isNotEmpty) {
+        e.attributes['style'] = styleToString(style);
+      } else {
+        e.attributes.remove('style');
+      }
+    });
   }
 }
 
@@ -552,7 +577,7 @@ class RemoveInvalidFigureTagProcessor implements Processor {
 /// remove tag with suspicious class name like comment, comment-text, comment-content
 class RemoveSuspiciousTagProcessor implements Processor {
   final suspiciousClassRegx = RegExp(
-    r'comment|footer|recommend|discuss',
+    r'comment|footer|recommend|discuss|sidebar',
     caseSensitive: false,
   );
 
@@ -565,13 +590,34 @@ class RemoveSuspiciousTagProcessor implements Processor {
       if (suspiciousClassRegx.hasMatch(e.className)) {
         e.remove();
       }
-    });
-    // query all p, is p has no child, and text length is greater than 500, remove it
-    doc.querySelectorAll('p').forEach((e) {
-      if (e.children.isEmpty && e.text.length > 1000) {
+      if (suspiciousClassRegx.hasMatch(e.id)) {
         e.remove();
       }
     });
+  }
+}
+
+/// remove hidden tag
+class RemoveHiddenTagProcessor implements Processor {
+  @override
+  String get name => 'remove_hidden_tag';
+
+  @override
+  void process(Document doc) {
+    for (var child in doc.children) {
+      remove(child);
+    }
+  }
+
+  void remove(Element elem) {
+    for (var child in elem.children) {
+      remove(child);
+    }
+    if (elem.attributes['style'] == null) return;
+    var style = styleToMap(elem.attributes['style']!);
+    if (style['display'] == 'none' || style['visibility'] == 'hidden') {
+      elem.remove();
+    }
   }
 }
 

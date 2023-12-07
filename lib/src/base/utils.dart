@@ -20,3 +20,38 @@ int editDistance(String str1, String str2) {
   }
   return dp[n][m];
 }
+
+Map<String, String> styleToMap(String style) {
+  Map<String, String> result = {};
+  List<String> styles = style.split(';');
+  for (var style in styles) {
+    if (style.trim().isEmpty) continue;
+    List<String> kv = style.split(':');
+    if (kv.length != 2) continue;
+    result[kv[0].trim()] = kv[1].trim();
+  }
+  return result;
+}
+
+String styleToString(Map<String, String> style) {
+  String result = '';
+  for (var key in style.keys) {
+    result += '$key: ${style[key]};';
+  }
+  return result;
+}
+
+bool isSmallSize(String sizeStr, double threshold) {
+  double? size = double.tryParse(sizeStr);
+  if (size != null) return size < threshold;
+
+  if (sizeStr.endsWith('px')) {
+    sizeStr = sizeStr.substring(0, sizeStr.length - 2);
+    size = double.tryParse(sizeStr.trim());
+    return size == null ? false : size < threshold;
+  } else if (sizeStr.endsWith('em') || sizeStr.endsWith('rem')) {
+    return true;
+  } else {
+    return false;
+  }
+}

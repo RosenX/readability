@@ -22,6 +22,7 @@ class Readability extends BaseExtractor {
         CleanUnusefulTagProcessor(),
         RemoveUnusefulNodeProcessor(),
         RemoveSuspiciousTagProcessor(),
+        RemoveHiddenTagProcessor(),
         FigurePrettyProcessor(),
         ImgSrcReplaceProcessor(),
         ReplaceSectionWithDivProcessor(),
@@ -37,6 +38,7 @@ class Readability extends BaseExtractor {
         FormatHtmlRecurrsivelyProcessor(),
         ExposeTagInDiv(),
         RemoveLastBrProcessor(),
+        ImageStyleProcessor(),
         RemoveUnusefulAttributeProcessor(),
       ];
 

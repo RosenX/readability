@@ -8,8 +8,9 @@ export 'src/html_extractor.dart';
 class HtmlExtractResult {
   String html;
   int contentLength;
+  String? cover;
 
-  HtmlExtractResult(this.html, this.contentLength);
+  HtmlExtractResult(this.html, this.contentLength, this.cover);
 }
 
 

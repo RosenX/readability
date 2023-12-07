@@ -35,6 +35,8 @@ void main(List<String> args) async {
     }
     testCases = [];
     saveTestCases(testCases);
+  } else {
+    print('Invalid args, options are [none|pass|pass-all]: ${args.first}');
   }
 }
 

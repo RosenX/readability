@@ -66,6 +66,7 @@ class HtmlExtractor {
       default:
         throw Exception('not support method');
     }
+    _mainContent.extractCover();
     return _mainContent.pureHtml();
   }
 
