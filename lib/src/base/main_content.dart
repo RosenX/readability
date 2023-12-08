@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:html/dom.dart';
 import 'package:readability/readability.dart';
 import 'package:readability/src/base/index.dart';
