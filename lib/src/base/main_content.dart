@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:html/dom.dart';
 import 'package:readability/readability.dart';
 import 'package:readability/src/base/index.dart';
@@ -64,6 +66,8 @@ class MainContent {
       return false;
     });
 
+    if (imgs.isEmpty) return;
+
     Map<Element, (double, int)> imageSize = {};
 
     for (int i = 0; i < imgs.length; i++) {
@@ -79,9 +83,7 @@ class MainContent {
       return bSize.compareTo(aSize);
     });
 
-    if (imgs.isNotEmpty) {
-      cover = imgs.first.attributes['src'];
-    }
+    cover = imgs.first.attributes['src'];
   }
 
   double imageArea(Element img) {
