@@ -61,24 +61,44 @@ class MainContent {
           !img.attributes['src']!.startsWith('http')) {
         return true;
       }
-      if (isSmallImage(img)) return true;
       return false;
     });
+
+    Map<Element, (double, int)> imageSize = {};
+
+    for (int i = 0; i < imgs.length; i++) {
+      imageSize[imgs[i]] = (imageArea(imgs[i]), i);
+    }
+
+    imgs.sort((a, b) {
+      final aSize = imageSize[a]!.$1;
+      final bSize = imageSize[b]!.$1;
+      if (aSize == bSize) {
+        return imageSize[a]!.$2.compareTo(imageSize[b]!.$2);
+      }
+      return bSize.compareTo(aSize);
+    });
+
     if (imgs.isNotEmpty) {
       cover = imgs.first.attributes['src'];
     }
   }
 
-  bool isSmallImage(Element img) {
+  double imageArea(Element img) {
     // image width and height have been put into style when extract content
-    if (img.attributes['style'] == null) return false;
+    final double defaultHeight = 800;
+    final double defaultWidth = 800;
+    final double defaultArea = defaultHeight * defaultWidth;
+    if (img.attributes['style'] == null) return defaultArea;
     final styleMap = styleToMap(img.attributes['style']!);
+    double? width, height;
     if (styleMap['width'] != null) {
-      if (isSmallSize(styleMap['width']!.trim(), 50)) return true;
+      width = parseCssSize(styleMap['width']!, relativeBase: 25);
     }
     if (styleMap['height'] != null) {
-      if (isSmallSize(styleMap['height']!.trim(), 50)) return true;
+      height = parseCssSize(styleMap['height']!, relativeBase: 25);
     }
-    return false;
+    double area = (width ?? defaultWidth) * (height ?? defaultHeight);
+    return area > defaultArea ? defaultArea : area;
   }
 }

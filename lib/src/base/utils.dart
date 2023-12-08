@@ -41,17 +41,27 @@ String styleToString(Map<String, String> style) {
   return result;
 }
 
-bool isSmallSize(String sizeStr, double threshold) {
+double? parseCssSize(String? sizeStr, {required double relativeBase}) {
+  if (sizeStr == null) return null;
+
   double? size = double.tryParse(sizeStr);
-  if (size != null) return size < threshold;
+  if (size != null) return size;
 
   if (sizeStr.endsWith('px')) {
     sizeStr = sizeStr.substring(0, sizeStr.length - 2);
-    size = double.tryParse(sizeStr.trim());
-    return size == null ? false : size < threshold;
-  } else if (sizeStr.endsWith('em') || sizeStr.endsWith('rem')) {
-    return true;
+    return double.tryParse(sizeStr);
+  } else if (sizeStr.endsWith('rem')) {
+    // rem must before em, because rem ends with em
+    sizeStr = sizeStr.substring(0, sizeStr.length - 3);
+    double? rem = double.tryParse(sizeStr);
+    if (rem == null) return null;
+    return relativeBase;
+  } else if (sizeStr.endsWith('em')) {
+    sizeStr = sizeStr.substring(0, sizeStr.length - 2);
+    double? em = double.tryParse(sizeStr);
+    if (em == null) return null;
+    return relativeBase;
   } else {
-    return false;
+    return null;
   }
 }
