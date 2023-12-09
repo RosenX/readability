@@ -76,6 +76,12 @@ class ReplaceDivWithPTagProcessor implements Processor {
     'pre',
     'table',
     'ul',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
   ];
 
   @override
@@ -83,21 +89,22 @@ class ReplaceDivWithPTagProcessor implements Processor {
 
   @override
   void process(Document doc) {
-    // querySelectorAll return a pre-order traversal of dom tree
-    var allDiv = doc.querySelectorAll('div').reversed;
-    for (var div in allDiv) {
-      var isBlock = false;
-      for (var tag in blockTag) {
-        if (div.querySelector(tag) != null) {
-          isBlock = true;
-          break;
-        }
-      }
-      if (!isBlock) {
-        Element p = Element.tag('p');
-        p.nodes.addAll(div.nodes);
-        div.replaceWith(p);
-      }
+    for (final child in doc.children) {
+      replace(child);
+    }
+  }
+
+  void replace(Element elem) {
+    for (var child in elem.children) {
+      replace(child);
+    }
+    if (elem.localName != 'div') return;
+    bool hasBlock =
+        elem.children.any((element) => blockTag.contains(element.localName));
+    if (!hasBlock) {
+      Element p = Element.tag('p');
+      p.nodes.addAll(elem.nodes);
+      elem.replaceWith(p);
     }
   }
 }
@@ -294,6 +301,7 @@ class RemoveEmptyTagProcessor implements Processor {
     'span',
     'blockquote',
     'i',
+    'em'
   ];
 
   @override

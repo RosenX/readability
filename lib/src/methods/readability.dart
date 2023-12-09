@@ -81,10 +81,7 @@ class Readability extends BaseExtractor {
     Map<Element, double> candidates = _scoreParagraphs(doc);
 
     final topCandidate = _selectBestCandidate(candidates);
-
-    // convert Element to Document
     Document html = Document.html(topCandidate.outerHtml);
-    // html.append(topCandidate);
     return html;
   }
 
