@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:html/dom.dart';
 import 'package:readability/src/base/index.dart';
 
@@ -11,7 +9,6 @@ class NodeData {
   int _pCount = 0;
   int _punctuation = 0;
   int _effectiveText = 0;
-  int _imgCount = 0;
   bool isLinkUsed = false;
 
   NodeData();
@@ -24,12 +21,10 @@ class NodeData {
     _pCount += other._pCount;
     _punctuation += other._punctuation;
     _effectiveText += other._effectiveText;
-    _imgCount += other._imgCount;
   }
 
-  double get effectiveTextDensity => _effectiveText / (_tagCount - _aCount + 1);
-  double get pDensity => log(_pCount + 1);
-  double get punctuationDensity => log(_punctuation + 1);
+  double get effectiveTextDensity => _effectiveText / (_pCount + 1);
+  double get punctuationDensity => _punctuation * 1.0;
 }
 
 class BlockDensity extends BaseExtractor {
@@ -74,6 +69,7 @@ class BlockDensity extends BaseExtractor {
       ];
 
   final ignoreTag = ['pre', 'code'];
+  final blockTag = ['div', 'p'];
 
   double computeScore(NodeData stat, List<NodeData> stats) {
     double score = 0;
@@ -91,15 +87,11 @@ class BlockDensity extends BaseExtractor {
       score += 2;
     }
 
-    double pDensityMean = getMean(stats.map((e) => e.pDensity).toList());
-    double pDensitySd =
-        getSd(stats.map((e) => e.pDensity).toList(), pDensityMean);
-
-    if (pDensitySd > 0) {
-      score += (stat.pDensity - pDensityMean) / pDensitySd;
-    } else {
-      score += 1;
-    }
+    // if (pDensitySd > 0) {
+    //   score += (stat.pDensity - pDensityMean) / pDensitySd;
+    // } else {
+    //   score += 1;
+    // }
 
     double punctuationDensityMean =
         getMean(stats.map((e) => e.punctuationDensity).toList());
@@ -156,10 +148,10 @@ class BlockDensity extends BaseExtractor {
       // text in leaf node is text_node
       if (node.nodeType == Node.TEXT_NODE && node.text != null) {
         final cleanedText = cleanText(node.text!);
-        textNotInA += cleanedText.length;
-        punctuationCount += statPunctuation(cleanedText, punctuation);
         if (cleanedText.length > minLengthOfEffectiveText) {
           effectiveText++;
+          textNotInA += cleanedText.length;
+          punctuationCount += statPunctuation(cleanedText, punctuation);
         }
       }
     }
@@ -171,14 +163,12 @@ class BlockDensity extends BaseExtractor {
     if (elem.localName == 'p') {
       stat._pCount++;
     }
-    if (elem.localName == 'img') {
-      stat._imgCount++;
-    }
     if (elem.localName == 'a') {
       stat._aCount++;
       stat._textInALength = stat._textInALength + stat._textNotInALength;
       stat._textNotInALength = 0;
       stat._effectiveText = 0;
+      stat._punctuation = 0;
     }
     stats[elem] = stat;
   }
