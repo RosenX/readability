@@ -4,6 +4,15 @@ import 'package:readability/readability.dart';
 
 import 'test_case.dart';
 
+String rename(String filename) {
+  filename = filename.replaceAll(' ', '_');
+  filename = filename.replaceAll(',', '_');
+  filename = filename.replaceAll('/', '_');
+  filename = filename.replaceAll('|', '_');
+  filename = filename.replaceAll('-', '_');
+  return filename;
+}
+
 void runTestOutputFile(String caseFolder, String outputFolder, Method method) {
   final caseDir = Directory(caseFolder);
   if (!Directory(outputFolder).existsSync()) {
@@ -12,14 +21,14 @@ void runTestOutputFile(String caseFolder, String outputFolder, Method method) {
   final List<FileSystemEntity> entities = caseDir.listSync().toList();
   final Iterable<File> files = entities.whereType<File>();
   for (final file in files) {
-    final outputName = '$outputFolder/${file.path.split('/').last}';
+    final outputName = rename(file.path.split('/').last);
 
     final htmlFile = File(file.path);
     final content = htmlFile.readAsStringSync();
     try {
       var extractor = HtmlExtractor(rawHtml: content, method: method);
       var result = extractor.parse();
-      var outputFile = File(outputName);
+      var outputFile = File('$outputFolder/$outputName');
       outputFile.writeAsStringSync(result?.html ?? '');
     } catch (e) {
       continue;
