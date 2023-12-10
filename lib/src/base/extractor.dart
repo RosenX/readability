@@ -14,6 +14,22 @@ class BaseExtractor with Logger implements Extractor {
   bool isDebug;
   bool onlyClean;
 
+  final rootTag = ['body', 'div'];
+  final punctuation = [
+    ',',
+    '.',
+    '!',
+    '?',
+    ';',
+    ':',
+    '，',
+    '。',
+    '！',
+    '？',
+    '；',
+    '：',
+  ];
+
   BaseExtractor({this.isDebug = false, this.onlyClean = false});
 
   void preprocess(Document doc) {
@@ -21,7 +37,7 @@ class BaseExtractor with Logger implements Extractor {
       var p = preprocessors[i];
       p.process(doc);
       if (isDebug) {
-        log("step1_preprocess_${i}_${p.name}", doc.outerHtml);
+        logger("step1_preprocess_${i}_${p.name}", doc.outerHtml);
       }
     }
   }
@@ -31,7 +47,7 @@ class BaseExtractor with Logger implements Extractor {
       var p = postprocessors[i];
       p.process(doc);
       if (isDebug) {
-        log("step3_postprocess_${i}_${p.name}", doc.outerHtml);
+        logger("step3_postprocess_${i}_${p.name}", doc.outerHtml);
       }
     }
   }
@@ -46,7 +62,7 @@ class BaseExtractor with Logger implements Extractor {
     if (!onlyClean) {
       doc = extractContent(doc);
       if (isDebug) {
-        log("step2_extract", doc.outerHtml);
+        logger("step2_extract", doc.outerHtml);
       }
     }
     postprocess(doc);

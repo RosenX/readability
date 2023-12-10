@@ -1,1 +1,452 @@
-[]
+[
+  {
+    "output": "cases_output/知乎/迈向 ChatGPT 时代 - 技术篇.html",
+    "expect": "cases_expect/知乎/迈向 ChatGPT 时代 - 技术篇.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/吴恩达来信：LLMs的美好未来.html",
+    "expect": "cases_expect/知乎/吴恩达来信：LLMs的美好未来.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/吴恩达来信： 以合法和公平的方式向前发展.html",
+    "expect": "cases_expect/知乎/吴恩达来信： 以合法和公平的方式向前发展.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/[必读] LLM 应用开发全栈指南.html",
+    "expect": "cases_expect/知乎/[必读] LLM 应用开发全栈指南.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/吴恩达来信：LandingLens震撼发布，免费羊毛等你来薅！.html",
+    "expect": "cases_expect/知乎/吴恩达来信：LandingLens震撼发布，免费羊毛等你来薅！.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/读《数据智能的历史机遇与现实困境》有感.html",
+    "expect": "cases_expect/知乎/读《数据智能的历史机遇与现实困境》有感.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/重新思考软件测试.html",
+    "expect": "cases_expect/知乎/重新思考软件测试.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/700亿参数Llama_2训练加速195%，训练_微调_推理全流程方案开源.html",
+    "expect": "cases_expect/知乎/700亿参数Llama_2训练加速195%，训练_微调_推理全流程方案开源.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/迈向 ChatGPT 时代 - 生产力篇.html",
+    "expect": "cases_expect/知乎/迈向 ChatGPT 时代 - 生产力篇.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/2022 年读书学习总结.html",
+    "expect": "cases_expect/知乎/2022 年读书学习总结.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/迈向 ChatGPT 时代 - 商业篇.html",
+    "expect": "cases_expect/知乎/迈向 ChatGPT 时代 - 商业篇.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/AutoGPT与LLM Agent解析.html",
+    "expect": "cases_expect/知乎/AutoGPT与LLM Agent解析.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/机器学习模型质量评估.html",
+    "expect": "cases_expect/知乎/机器学习模型质量评估.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/LLM 全栈开发指南补遗.html",
+    "expect": "cases_expect/知乎/LLM 全栈开发指南补遗.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/直接压缩一切！OpenAI首席科学家Ilya Sutskever这么看无监督学习.html",
+    "expect": "cases_expect/知乎/直接压缩一切！OpenAI首席科学家Ilya Sutskever这么看无监督学习.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/知乎/硅谷五巨头工程师年薪曝光，谷歌登顶134万！但37%美国人对AI工具持悲观态度.html",
+    "expect": "cases_expect/知乎/硅谷五巨头工程师年薪曝光，谷歌登顶134万！但37%美国人对AI工具持悲观态度.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-12  Rust到汇编：了解 Rust 的内部工作原理.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-12  Rust到汇编：了解 Rust 的内部工作原理.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/判别Fn、FnMut、FnOnce的标准.html",
+    "expect": "cases_expect/Rust语言中文社区/判别Fn、FnMut、FnOnce的标准.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/招聘rust开发工程师.html",
+    "expect": "cases_expect/Rust语言中文社区/招聘rust开发工程师.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-13 .html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-13 .html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/Rust的爬坑之旅.html",
+    "expect": "cases_expect/Rust语言中文社区/Rust的爬坑之旅.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/Robust 2.0：支持Android R8的升级版热修复框架.html",
+    "expect": "cases_expect/Rust语言中文社区/Robust 2.0：支持Android R8的升级版热修复框架.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/长期招聘Rust开发工程师！.html",
+    "expect": "cases_expect/Rust语言中文社区/长期招聘Rust开发工程师！.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-15.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-15.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/如何快速切换一个变量的指向？.html",
+    "expect": "cases_expect/Rust语言中文社区/如何快速切换一个变量的指向？.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-09 配置语言 Nickel 1.0 发布.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-09 配置语言 Nickel 1.0 发布.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/获取主机IP地址.html",
+    "expect": "cases_expect/Rust语言中文社区/获取主机IP地址.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-08 freeCodeCamp 发布面向初学者的 Rust 课程.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-08 freeCodeCamp 发布面向初学者的 Rust 课程.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/招聘Rust数据库开发人员【武汉急招】.html",
+    "expect": "cases_expect/Rust语言中文社区/招聘Rust数据库开发人员【武汉急招】.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-10.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-10.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/在 Rust 中使用内联汇编.html",
+    "expect": "cases_expect/Rust语言中文社区/在 Rust 中使用内联汇编.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/国家智能网联汽车创新中心Rust工程师招聘（车载操作系统）.html",
+    "expect": "cases_expect/Rust语言中文社区/国家智能网联汽车创新中心Rust工程师招聘（车载操作系统）.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/flac_music 0.2.3 新版本发布.html",
+    "expect": "cases_expect/Rust语言中文社区/flac_music 0.2.3 新版本发布.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-11.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-11.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/tokio的单元测试相关.html",
+    "expect": "cases_expect/Rust语言中文社区/tokio的单元测试相关.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/OpenAI Hub现已推出！更安全、更灵活的OpenAI API代理.html",
+    "expect": "cases_expect/Rust语言中文社区/OpenAI Hub现已推出！更安全、更灵活的OpenAI API代理.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/新手初学Rust Tokio异步流，求推荐学习资料.html",
+    "expect": "cases_expect/Rust语言中文社区/新手初学Rust Tokio异步流，求推荐学习资料.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/【Rust日报】2023-06-14 prometheus 官方 rust_client 使用示例.html",
+    "expect": "cases_expect/Rust语言中文社区/【Rust日报】2023-06-14 prometheus 官方 rust_client 使用示例.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/Rust语言中文社区/这里为什么不用写成生命周期？.html",
+    "expect": "cases_expect/Rust语言中文社区/这里为什么不用写成生命周期？.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/少数派/一日一技___群晖+Walkman，如何让游泳时听的歌总有新鲜感？.html",
+    "expect": "cases_expect/少数派/一日一技___群晖+Walkman，如何让游泳时听的歌总有新鲜感？.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/换日线Crossing/解析《拿破崙》服裝密碼：叱吒歐洲時尚的「權力夫婦」，如何靠衣著牽動山河？.html",
+    "expect": "cases_expect/换日线Crossing/解析《拿破崙》服裝密碼：叱吒歐洲時尚的「權力夫婦」，如何靠衣著牽動山河？.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/【路径规划】基于信息素驱动的机器人群动态巡逻附matlab代码.html",
+    "expect": "cases_expect/智源社区/【路径规划】基于信息素驱动的机器人群动态巡逻附matlab代码.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/昇腾AI联合智源FlagOpen(飞智)，共促大模型生态创新.html",
+    "expect": "cases_expect/智源社区/昇腾AI联合智源FlagOpen(飞智)，共促大模型生态创新.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/欧姆和他两条几乎夭折的定律丨陈关荣.html",
+    "expect": "cases_expect/智源社区/欧姆和他两条几乎夭折的定律丨陈关荣.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/国产数据库自研技术详解.html",
+    "expect": "cases_expect/智源社区/国产数据库自研技术详解.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/马毅团队｜白盒深度网络.html",
+    "expect": "cases_expect/智源社区/马毅团队｜白盒深度网络.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/国内第一家，大模型半年营收2千万！.html",
+    "expect": "cases_expect/智源社区/国内第一家，大模型半年营收2千万！.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/颜水成加入昆仑万维，任天工智能联席CEO、2050全球研究院院长.html",
+    "expect": "cases_expect/智源社区/颜水成加入昆仑万维，任天工智能联席CEO、2050全球研究院院长.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/加州理工：BCI分析多年四肢瘫痪患者的神经信号表征和健康人一致.html",
+    "expect": "cases_expect/智源社区/加州理工：BCI分析多年四肢瘫痪患者的神经信号表征和健康人一致.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/上海交通大学苏奇课题组博士后招聘：复杂网络、演化博弈、群体决策等方向.html",
+    "expect": "cases_expect/智源社区/上海交通大学苏奇课题组博士后招聘：复杂网络、演化博弈、群体决策等方向.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/你焦虑吗？可以试试循环叹息法.html",
+    "expect": "cases_expect/智源社区/你焦虑吗？可以试试循环叹息法.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/SeqGPT:_开箱即用的开放域自然语言理解大模型.html",
+    "expect": "cases_expect/智源社区/SeqGPT:_开箱即用的开放域自然语言理解大模型.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/盘点一个Pandas处理Excel数据的实战案例.html",
+    "expect": "cases_expect/智源社区/盘点一个Pandas处理Excel数据的实战案例.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/基于ES向量检索的以文搜图实践.html",
+    "expect": "cases_expect/智源社区/基于ES向量检索的以文搜图实践.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/智源：70万预算从头开发千亿参数大模型，挑战成功.html",
+    "expect": "cases_expect/智源社区/智源：70万预算从头开发千亿参数大模型，挑战成功.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/基本物理常量的新思考.html",
+    "expect": "cases_expect/智源社区/基本物理常量的新思考.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/智源社区/基于嗅觉优化算法SAO求解单目标优化问题附matlab代码.html",
+    "expect": "cases_expect/智源社区/基于嗅觉优化算法SAO求解单目标优化问题附matlab代码.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/CVPR 2023 | 美团技术团队精选论文解读.html",
+    "expect": "cases_expect/美团技术团队/CVPR 2023 | 美团技术团队精选论文解读.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/人机语音交互场景中的低延迟流式语音识别技术.html",
+    "expect": "cases_expect/美团技术团队/人机语音交互场景中的低延迟流式语音识别技术.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/超大规模数据库集群保稳系列之二：数据库攻防演练建设实践.html",
+    "expect": "cases_expect/美团技术团队/超大规模数据库集群保稳系列之二：数据库攻防演练建设实践.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/ICDE 2023 | 多场景多任务学习在美团到店餐饮推荐的实践.html",
+    "expect": "cases_expect/美团技术团队/ICDE 2023 | 多场景多任务学习在美团到店餐饮推荐的实践.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/超大规模数据库集群保稳系列之三：美团数据库容灾体系建设实践.html",
+    "expect": "cases_expect/美团技术团队/超大规模数据库集群保稳系列之三：美团数据库容灾体系建设实践.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/SOTA！目标检测开源框架YOLOv6 3.0版本来啦.html",
+    "expect": "cases_expect/美团技术团队/SOTA！目标检测开源框架YOLOv6 3.0版本来啦.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/超大规模数据库集群保稳系列之一：高可用系统.html",
+    "expect": "cases_expect/美团技术团队/超大规模数据库集群保稳系列之一：高可用系统.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/一次「找回」TraceId的问题分析与过程思考.html",
+    "expect": "cases_expect/美团技术团队/一次「找回」TraceId的问题分析与过程思考.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/MRCP在美团语音交互中的实践和应用.html",
+    "expect": "cases_expect/美团技术团队/MRCP在美团语音交互中的实践和应用.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/美团技术团队/基于AI+数据驱动的慢查询索引推荐.html",
+    "expect": "cases_expect/美团技术团队/基于AI+数据驱动的慢查询索引推荐.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/电鸭/html_电鸭社区的文章__全部_短期安卓开发.html",
+    "expect": "cases_expect/电鸭/html_电鸭社区的文章__全部_短期安卓开发.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/电鸭/html_电鸭社区的文章__全部_项目需要一位有经验的设计师！外包纹样描线稿制作！.html",
+    "expect": "cases_expect/电鸭/html_电鸭社区的文章__全部_项目需要一位有经验的设计师！外包纹样描线稿制作！.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/电鸭/html_电鸭社区的文章__全部_[海外远程]_硅谷AIGC创业公司招募Fullstack工程师_(高速成长中)_🚀.html",
+    "expect": "cases_expect/电鸭/html_电鸭社区的文章__全部_[海外远程]_硅谷AIGC创业公司招募Fullstack工程师_(高速成长中)_🚀.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Introducing ChatGPT and Whisper APIs.html",
+    "expect": "cases_expect/OpenAI/Introducing ChatGPT and Whisper APIs.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Planning for AGI and beyond.html",
+    "expect": "cases_expect/OpenAI/Planning for AGI and beyond.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Announcing OpenAI’s Bug Bounty Program.html",
+    "expect": "cases_expect/OpenAI/Announcing OpenAI’s Bug Bounty Program.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/OpenAI and Microsoft extend partnership.html",
+    "expect": "cases_expect/OpenAI/OpenAI and Microsoft extend partnership.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Introducing ChatGPT Plus.html",
+    "expect": "cases_expect/OpenAI/Introducing ChatGPT Plus.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/OpenAI cybersecurity grant program.html",
+    "expect": "cases_expect/OpenAI/OpenAI cybersecurity grant program.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Function calling and other API updates.html",
+    "expect": "cases_expect/OpenAI/Function calling and other API updates.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Our approach to AI safety.html",
+    "expect": "cases_expect/OpenAI/Our approach to AI safety.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/How should AI systems behave, and who should decide?.html",
+    "expect": "cases_expect/OpenAI/How should AI systems behave, and who should decide?.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Democratic Inputs to AI.html",
+    "expect": "cases_expect/OpenAI/Democratic Inputs to AI.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Introducing the ChatGPT app for iOS.html",
+    "expect": "cases_expect/OpenAI/Introducing the ChatGPT app for iOS.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/ChatGPT plugins.html",
+    "expect": "cases_expect/OpenAI/ChatGPT plugins.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/The power of continuous learning.html",
+    "expect": "cases_expect/OpenAI/The power of continuous learning.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/New AI classifier for indicating AI-written text.html",
+    "expect": "cases_expect/OpenAI/New AI classifier for indicating AI-written text.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Introducing ChatGPT.html",
+    "expect": "cases_expect/OpenAI/Introducing ChatGPT.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/March 20 ChatGPT outage: Here’s what happened.html",
+    "expect": "cases_expect/OpenAI/March 20 ChatGPT outage: Here’s what happened.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Discovering the minutiae of backend systems.html",
+    "expect": "cases_expect/OpenAI/Discovering the minutiae of backend systems.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/New and improved embedding model.html",
+    "expect": "cases_expect/OpenAI/New and improved embedding model.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/Governance of superintelligence.html",
+    "expect": "cases_expect/OpenAI/Governance of superintelligence.html",
+    "isNew": false
+  },
+  {
+    "output": "cases_output/OpenAI/New ways to manage your data in ChatGPT.html",
+    "expect": "cases_expect/OpenAI/New ways to manage your data in ChatGPT.html",
+    "isNew": false
+  }
+]

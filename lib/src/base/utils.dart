@@ -65,3 +65,41 @@ double? parseCssSize(String? sizeStr, {required double relativeBase}) {
     return null;
   }
 }
+
+String cleanText(String text) {
+  // Many spaces make the following regexes run forever
+  text = text.replaceAll(RegExp(r"\s{255,}"), ' ' * 255);
+  text = text.replaceAll(RegExp(r"\s*\n\s*"), '\n');
+  text = text.replaceAll(RegExp(r"\n{2,}"), '\n');
+  // replace continues space with one space
+  text = text.replaceAll(RegExp(r"\t|[ \t]{2,}"), ' ');
+  return text.trim();
+}
+
+int statPunctuation(String text, List<String> punctuation) {
+  int count = 0;
+  for (final c in text.split('')) {
+    if (punctuation.contains(c)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+double getMean(List<double> list) {
+  if (list.isEmpty) return 0;
+  double sum = 0;
+  for (final item in list) {
+    sum += item;
+  }
+  return sum / list.length;
+}
+
+double getSd(List<double> list, double mean) {
+  if (list.isEmpty) return 0;
+  double sum = 0;
+  for (final item in list) {
+    sum += (item - mean) * (item - mean);
+  }
+  return sqrt(sum / list.length);
+}

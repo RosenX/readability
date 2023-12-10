@@ -6,7 +6,7 @@ abstract class Processor {
   void process(Document doc);
 }
 
-class CleanUnusefulTagProcessor implements Processor {
+class RemoveUnusefulTagProcessor implements Processor {
   final unUsefulTag = [
     'script',
     'form',
@@ -82,6 +82,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
     'h4',
     'h5',
     'h6',
+    'iframe',
   ];
 
   @override

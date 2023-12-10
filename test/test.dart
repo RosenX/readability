@@ -4,7 +4,7 @@ import 'package:readability/readability.dart';
 
 import 'test_case.dart';
 
-void runTestOutputFile(String caseFolder, String outputFolder) {
+void runTestOutputFile(String caseFolder, String outputFolder, Method method) {
   final caseDir = Directory(caseFolder);
   if (!Directory(outputFolder).existsSync()) {
     Directory(outputFolder).createSync(recursive: true);
@@ -17,8 +17,7 @@ void runTestOutputFile(String caseFolder, String outputFolder) {
     final htmlFile = File(file.path);
     final content = htmlFile.readAsStringSync();
     try {
-      var extractor =
-          HtmlExtractor(rawHtml: content, method: Method.readability);
+      var extractor = HtmlExtractor(rawHtml: content, method: method);
       var result = extractor.parse();
       var outputFile = File(outputName);
       outputFile.writeAsStringSync(result?.html ?? '');
@@ -28,13 +27,13 @@ void runTestOutputFile(String caseFolder, String outputFolder) {
   }
 }
 
-void runTestOutput(String caseFolder, String outputFolder) {
+void runTestOutput(String caseFolder, String outputFolder, Method method) {
   final caseDir = Directory(caseFolder);
   final List<FileSystemEntity> entities = caseDir.listSync().toList();
   final Iterable<Directory> subDirs = entities.whereType<Directory>();
   for (final subDir in subDirs) {
     final dirName = subDir.path.split('/').last;
-    runTestOutputFile('$caseFolder/$dirName', '$outputFolder/$dirName');
+    runTestOutputFile('$caseFolder/$dirName', '$outputFolder/$dirName', method);
   }
 }
 
@@ -88,12 +87,25 @@ List<TestCase> runTestFile(String outputFolder, String expectFolder) {
   return testCases;
 }
 
-void main() async {
+void main(List<String> args) async {
   final caseDir = 'cases';
   final expectDir = 'cases_expect';
   final outputDir = 'cases_output';
 
-  runTestOutput(caseDir, outputDir);
+  Method method;
+  switch (args[0]) {
+    case 'readabilidy':
+      method = Method.readability;
+      break;
+    case 'blockDensity':
+      method = Method.blockDensity;
+      break;
+    default:
+      method = Method.readability;
+      break;
+  }
+
+  runTestOutput(caseDir, outputDir, method);
   // fromat output html
   await Process.run('npx', 'prettier -w $outputDir'.split(' '));
 

@@ -2,9 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:html/dom.dart';
-import 'package:readability/src/base/extractor.dart';
 import 'package:readability/src/base/index.dart';
-import 'package:readability/src/base/processor.dart';
 
 class Readability extends BaseExtractor {
   final int minTextLength;
@@ -19,7 +17,7 @@ class Readability extends BaseExtractor {
 
   @override
   List<Processor> get preprocessors => [
-        CleanUnusefulTagProcessor(),
+        RemoveUnusefulTagProcessor(),
         RemoveUnusefulNodeProcessor(),
         RemoveSuspiciousTagProcessor(),
         RemoveHiddenTagProcessor(),
@@ -64,17 +62,7 @@ class Readability extends BaseExtractor {
     'ul',
   ];
 
-  final rootTag = ['body', 'div', 'section'];
   final titleTag = ['h1', 'h2'];
-
-  String cleanText(String text) {
-    // Many spaces make the following regexes run forever
-    text = text.replaceAll(RegExp(r"\s{255,}"), ' ' * 255);
-    text = text.replaceAll(RegExp(r"\s*\n\s*"), '\n');
-    text = text.replaceAll(RegExp(r"\n{2,}"), '\n');
-    text = text.replaceAll(RegExp(r"\t|[ \t]{2,}"), ' ');
-    return text.trim();
-  }
 
   @override
   Document extractContent(Document doc) {
@@ -189,7 +177,7 @@ class Readability extends BaseExtractor {
         topCandidate = candidate;
       }
       if (isDebug) {
-        this.log("step2_score_$score", candidate.outerHtml);
+        logger("step2_score_$score", candidate.outerHtml);
       }
     }
     return topCandidate;
