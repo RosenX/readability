@@ -9,6 +9,7 @@ pubspec.lock
 example/*.html
 example/log
 example/cases
+example/cases_output
 test/cases/*
 test/cases_expect/*
 test/cases_output/*

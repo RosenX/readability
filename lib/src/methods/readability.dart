@@ -36,7 +36,8 @@ class Readability extends BaseExtractor {
         RemoveInvalidFigureTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
-        ExposeTagInDiv(),
+        ExposeLonelyTagInDiv(),
+        ExposeDivInDiv(),
         RemoveLastBrProcessor(),
         ImageStyleProcessor(),
         RemoveUnusefulAttributeProcessor(),
@@ -49,7 +50,6 @@ class Readability extends BaseExtractor {
 
   final scoreTag = [
     'p',
-    'pre',
     'td',
     'img',
     'video',
@@ -81,32 +81,47 @@ class Readability extends BaseExtractor {
     Map<Element, double> candidates = _scoreParagraphs(doc);
 
     final topCandidate = _selectBestCandidate(candidates);
+    // Element? titleElement = finalTitleElement(doc);
+    // Element result = titleElement == null
+    //     ? topCandidate
+    //     : findCommonAncestor(topCandidate, titleElement);
     Document html = Document.html(topCandidate.outerHtml);
     return html;
   }
 
-  Map<Element, double> _extraScore(
-    Document doc,
-    Map<Element, double> candidates,
-  ) {
-    if (title == null) return candidates;
-    final hTags = doc.querySelectorAll('h1,h2');
-    for (var tag in hTags) {
-      final parentTag = tag.parent;
-      final grandParentTag = parentTag?.parent;
-      if (parentTag == null) continue;
+  /// find common ancestor of two elements
+  Element findCommonAncestor(Element candidate, Element title) {
+    if (candidate == title) return candidate;
+    List<Element> titleAncestors = [];
+    while (title.parent != null) {
+      titleAncestors.add(title);
+      title = title.parent!;
+    }
+    while (candidate.parent != null) {
+      if (titleAncestors.contains(candidate)) {
+        return candidate;
+      }
+      candidate = candidate.parent!;
+    }
+    return candidate;
+  }
 
+  Element? finalTitleElement(Document doc) {
+    if (title == null) return null;
+    final hTags = doc.querySelectorAll('h1,h2');
+    Element? bestTag;
+    double bestScore = 0;
+    for (var tag in hTags) {
       double similarity = titleSimilarityScore(title: title!, hText: tag.text);
       if (isDebug) {
         print('title: $title, hText: ${tag.text}, score: $similarity');
       }
-      final score = similarity * 50;
-      candidates[parentTag] = candidates[parentTag]! + score;
-      if (grandParentTag != null && candidates.containsKey(grandParentTag)) {
-        candidates[grandParentTag] = candidates[grandParentTag]! + score * 0.5;
+      if (similarity > bestScore) {
+        bestScore = similarity;
+        bestTag = tag;
       }
     }
-    return candidates;
+    return bestTag;
   }
 
   /// score nodes in html
@@ -117,7 +132,6 @@ class Readability extends BaseExtractor {
     for (var tag in allTextTag) {
       var parentTag = tag.parent;
       if (parentTag == null) continue;
-
       var grandParentTag = parentTag.parent;
 
       String innerText = cleanText(tag.text);
@@ -182,7 +196,8 @@ class Readability extends BaseExtractor {
   }
 
   double titleSimilarityScore({required String title, required String hText}) {
+    if (title.isEmpty) return 0;
     int distance = editDistance(title, hText);
-    return max(1 - distance / max(title.length, hText.length), 0);
+    return max(1 - distance / title.length, 0);
   }
 }

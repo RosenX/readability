@@ -438,7 +438,7 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   }
 }
 
-class ExposeTagInDiv implements Processor {
+class ExposeLonelyTagInDiv implements Processor {
   @override
   String get name => 'expose_tag';
 
@@ -462,7 +462,7 @@ class ExposeTagInDiv implements Processor {
   }
 }
 
-class ExposeDiv implements Processor {
+class ExposeDivInDiv implements Processor {
   @override
   String get name => 'expose_div';
 
