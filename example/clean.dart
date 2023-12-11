@@ -9,7 +9,7 @@ void main(List<String> args) async {
   var content = await htmlFile.readAsString();
 
   var extractor = HtmlExtractor(
-    rawHtml: content,
+    html: content,
     method: Method.readabilityV2,
     isDebug: true,
     title: "aaaa",

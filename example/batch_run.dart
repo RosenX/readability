@@ -16,7 +16,7 @@ void runFile(String caseFolder, String outputFolder, {bool isClean = false}) {
     final content = htmlFile.readAsStringSync();
     try {
       var extractor = HtmlExtractor(
-        rawHtml: content,
+        html: content,
         method: Method.readabilityV2,
         onlyClean: isClean,
       );

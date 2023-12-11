@@ -1,9 +1,10 @@
 import 'package:html/dom.dart';
 import 'package:readability/src/base/index.dart';
+import 'package:readability/src/base/types.dart';
 
 abstract class Processor {
   String get name;
-  void process(Element doc);
+  void process(Element doc, {Meta? meta});
 }
 
 class RemoveUnusefulTagProcessor implements Processor {
@@ -24,25 +25,28 @@ class RemoveUnusefulTagProcessor implements Processor {
   String get name => 'clean_unuseful_tag';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     for (var tag in unUsefulTag) {
       doc.querySelectorAll(tag).forEach((e) => e.remove());
     }
   }
 }
 
-class ReplaceBigHWithDivProcessor implements Processor {
+class HTransformProcessor implements Processor {
   @override
-  String get name => 'replace_big_h_with_div';
+  String get name => 'h_transform';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     replaceBigHToDiv(doc, 'h1');
     replaceBigHToDiv(doc, 'h2');
     replaceBigHToDiv(doc, 'h3');
     replaceBigHToDiv(doc, 'h4');
     replaceBigHToDiv(doc, 'h5');
     replaceBigHToDiv(doc, 'h6');
+    replaceHToP(doc, 'h4');
+    replaceHToP(doc, 'h5');
+    replaceHToP(doc, 'h6');
   }
 
   // TODO: 100 is proper?
@@ -53,6 +57,16 @@ class ReplaceBigHWithDivProcessor implements Processor {
         div.nodes.addAll(e.nodes);
         e.replaceWith(div);
       }
+    });
+  }
+
+  void replaceHToP(Element elem, String tagName) {
+    elem.querySelectorAll(tagName).forEach((e) {
+      Element strong = Element.tag('strong');
+      strong.nodes.addAll(e.nodes);
+      Element p = Element.tag('p');
+      p.nodes.add(strong);
+      e.replaceWith(p);
     });
   }
 }
@@ -81,7 +95,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
   String get name => 'replace_div_with_p_tag';
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -101,7 +115,7 @@ class FigureTransfomProcessor implements Processor {
   String get name => 'figure_transform';
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     var figures = elem.querySelectorAll('figure');
     for (var figure in figures) {
       var noscript = figure.querySelector('noscript');
@@ -128,7 +142,7 @@ class ImgSrcReplaceProcessor implements Processor {
   String get name => 'img_src_replace';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('img').forEach((elem) {
       String? dataSrc = elem.attributes['data-src'];
       if (dataSrc != null && dataSrc.startsWith('http')) {
@@ -149,7 +163,7 @@ class RemoveUnusefulAttributeProcessor implements Processor {
 
   /// remove all attribute of element except for the attribute in keepAttr
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -173,7 +187,7 @@ class ImageStyleProcessor implements Processor {
   List<String> keepAttr = ['width', 'height'];
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('img').forEach((e) {
       Map<String, String> style = e.attributes['style'] == null
           ? {}
@@ -207,7 +221,7 @@ class RemoveAInHProcessor implements Processor {
   String get name => 'remove_a_in_h';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     /// query h1 tag, if there is a <a> tag in h1, remove the <a> tag
     var h1 = doc.querySelector('h1');
     if (h1 != null) {
@@ -225,7 +239,7 @@ class ReplaceBigStrongWithSpanProcessor implements Processor {
   final maxStrongTextLength = 50;
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     // if the length of text in strong tag is more than 30, replace it with span
     doc.querySelectorAll('strong').forEach((e) {
       if (e.text.length > maxStrongTextLength) {
@@ -265,7 +279,7 @@ class RemoveEmptyTagProcessor implements Processor {
 
   /// if tag in textTag and its text is empty, remove it
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -283,7 +297,7 @@ class RemoveUnnecessaryBlankLine implements Processor {
 
   /// if tag is empty, remove it
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -321,7 +335,7 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   ];
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     bool needFormat = true;
     while (needFormat) {
       bool change = false;
@@ -383,7 +397,7 @@ class ExposeLonelyTagInDiv implements Processor {
   final tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -399,7 +413,7 @@ class ExposeDivInDiv implements Processor {
   String get name => 'expose_div';
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -421,7 +435,7 @@ class RemoveUnusefulNodeProcessor implements Processor {
   String get name => 'remove_empty_text_node';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     for (var node in doc.nodes) {
       remove(node);
     }
@@ -455,7 +469,7 @@ class RemoveInvalidATagProcessor implements Processor {
   String get name => 'remove_empty_a_tag';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('a').forEach((e) {
       if (e.text.trim().isEmpty && e.children.isEmpty) {
         e.remove();
@@ -474,7 +488,7 @@ class RemoveInvalidImgTagProcessor implements Processor {
   String get name => 'remove_empty_img_tag';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('img').forEach((e) {
       if (e.attributes['src'] == null) {
         e.remove();
@@ -493,7 +507,7 @@ class ReplaceInvalidFigureWithDivProcessor implements Processor {
   String get name => 'replace_invalid_figure_with_div';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     // if div num in figure is bigger than img num+1, remove figure
     doc.querySelectorAll('figure').forEach((figure) {
       var imgNum = figure.querySelectorAll('img').length;
@@ -518,7 +532,7 @@ class RemoveSuspiciousTagProcessor implements Processor {
   String get name => 'remove_suspicious_tag';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('div').forEach((e) {
       if (suspiciousClassRegx.hasMatch(e.className)) {
         e.remove();
@@ -536,7 +550,7 @@ class RemoveHiddenTagProcessor implements Processor {
   String get name => 'remove_hidden_tag';
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -555,7 +569,7 @@ class RemoveLastBrProcessor implements Processor {
   final blockTag = ['p', 'div'];
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -580,7 +594,7 @@ class ExposeTextProcessor implements Processor {
   final tag = ['span', 'mark'];
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -602,7 +616,7 @@ class ReplaceSectionWithDivProcessor implements Processor {
   String get name => 'replace_section_tag';
 
   @override
-  void process(Element doc) {
+  void process(Element doc, {Meta? meta}) {
     doc.querySelectorAll('section').forEach((e) {
       Element div = Element.tag('div');
       div.nodes.addAll(e.nodes);
@@ -617,7 +631,7 @@ class ReplaceOPTagProcessor implements Processor {
   String get name => 'replace_o_p_tag';
 
   @override
-  void process(Element elem) {
+  void process(Element elem, {Meta? meta}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -625,6 +639,161 @@ class ReplaceOPTagProcessor implements Processor {
       Element p = Element.tag('p');
       p.nodes.addAll(elem.nodes);
       elem.replaceWith(p);
+    }
+  }
+}
+
+class RemoveTitleProcessor implements Processor {
+  @override
+  String get name => 'remove_title_processor';
+
+  final distanceThreshold = 10;
+  final distanceRatioThreshold = 0.5;
+
+  @override
+  void process(Element element, {Meta? meta}) {
+    if (meta == null || meta.title == null) return;
+    Element? titleElements = element.querySelector('h1, h2');
+    if (titleElements == null) return;
+    Element? parent = titleElements.parent;
+    String titleText = titleElements.text.trim();
+    String title = meta.title!.trim();
+    if (titleText == title || titleText.contains(title)) {
+      titleElements.remove();
+      if (parent != null) removeEmptyTag(parent);
+      return;
+    }
+    int distance = editDistance(title, titleText);
+    if (distance < distanceThreshold &&
+        distance / title.length < distanceRatioThreshold) {
+      titleElements.remove();
+      if (parent != null) removeEmptyTag(parent);
+    }
+  }
+
+  void removeEmptyTag(Element elem) {
+    Element? parent = elem.parent;
+    while (elem.nodes.isEmpty) {
+      elem.remove();
+      if (parent == null) break;
+      elem = parent;
+      parent = elem.parent;
+    }
+  }
+}
+
+class ParseCoverProcessor implements Processor {
+  @override
+  String get name => "parse_cover";
+
+  final sizeThreshold = 50;
+
+  @override
+  void process(Element elem, {Meta? meta}) {
+    if (meta == null) return;
+    List<Element> imgs = elem.querySelectorAll('img');
+    imgs.removeWhere((img) {
+      if (img.attributes['src'] == null ||
+          img.attributes['src']!.isEmpty ||
+          !img.attributes['src']!.startsWith('http')) {
+        return true;
+      }
+      return false;
+    });
+
+    if (imgs.isEmpty) return;
+
+    Map<Element, (double, int)> imageSize = {};
+
+    for (int i = 0; i < imgs.length; i++) {
+      imageSize[imgs[i]] = (imageArea(imgs[i]), i);
+    }
+
+    // remove small image
+    imgs.removeWhere((img) => imageSize[img]!.$1 == 0);
+
+    imgs.sort((a, b) {
+      final aSize = imageSize[a]!.$1;
+      final bSize = imageSize[b]!.$1;
+      if (aSize == bSize) {
+        return imageSize[a]!.$2.compareTo(imageSize[b]!.$2);
+      }
+      return bSize.compareTo(aSize);
+    });
+    if (imgs.isNotEmpty) {
+      meta.cover = imgs.first.attributes['src'];
+    }
+  }
+
+  double imageArea(Element img) {
+    // image width and height have been put into style when extract content
+    final double defaultHeight = 800;
+    final double defaultWidth = 800;
+    final double defaultArea = defaultHeight * defaultWidth;
+    if (img.attributes['style'] == null) return defaultArea;
+    final styleMap = styleToMap(img.attributes['style']!);
+    double? width, height;
+    if (styleMap['width'] != null) {
+      width = parseCssSize(styleMap['width']!, relativeBase: 25);
+    }
+    if (styleMap['height'] != null) {
+      height = parseCssSize(styleMap['height']!, relativeBase: 25);
+    }
+    if (width != null && width < sizeThreshold) return 0;
+    if (height != null && height < sizeThreshold) return 0;
+    double area = (width ?? defaultWidth) * (height ?? defaultHeight);
+    return area > defaultArea ? defaultArea : area;
+  }
+}
+
+class TitleNormalizeProcessor implements Processor {
+  @override
+  String get name => "title_normalize";
+
+  @override
+  void process(Element elem, {Meta? meta}) {
+    List<Element> h1s = elem.querySelectorAll('h1');
+    List<Element> h2s = elem.querySelectorAll('h2');
+    List<Element> h3s = elem.querySelectorAll('h3');
+
+    int maxtitle;
+    if (h1s.isNotEmpty) {
+      maxtitle = 1;
+    } else if (h2s.isNotEmpty) {
+      maxtitle = 2;
+    } else if (h3s.isNotEmpty) {
+      maxtitle = 3;
+    } else {
+      maxtitle = -1;
+    }
+
+    if (maxtitle == 2) {
+      replaceH2WithH1(h2s);
+      replaceH3WithH2(h3s);
+    }
+  }
+
+  void replaceH2WithH1(List<Element> h2s) {
+    for (var h2 in h2s) {
+      Element h1 = Element.tag('h1');
+      h1.nodes.addAll(h2.nodes);
+      h2.replaceWith(h1);
+    }
+  }
+
+  void replaceH3WithH1(List<Element> h3s) {
+    for (var h3 in h3s) {
+      Element h1 = Element.tag('h1');
+      h1.nodes.addAll(h3.nodes);
+      h3.replaceWith(h1);
+    }
+  }
+
+  void replaceH3WithH2(List<Element> h3s) {
+    for (var h3 in h3s) {
+      Element h2 = Element.tag('h2');
+      h2.nodes.addAll(h3.nodes);
+      h3.replaceWith(h2);
     }
   }
 }

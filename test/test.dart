@@ -26,7 +26,7 @@ void runTestOutputFile(String caseFolder, String outputFolder, Method method) {
     final htmlFile = File(file.path);
     final content = htmlFile.readAsStringSync();
     try {
-      var extractor = HtmlExtractor(rawHtml: content, method: method);
+      var extractor = HtmlExtractor(html: content, method: method);
       var result = extractor.parse();
       var outputFile = File('$outputFolder/$outputName');
       outputFile.writeAsStringSync(result?.html ?? '');

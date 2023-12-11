@@ -15,17 +15,18 @@ class ScoreData {
   }
 }
 
-class BlockDensity extends BaseExtractor {
+class ReadabilityV2 extends BaseExtractor {
   final String? title;
   final minLengthOfEffectiveText = 20;
   final minLengthOfValidText = 5;
   final brotherMergeScoreRatio = 0.3;
   final updateScoreRatio = 0.5;
 
-  BlockDensity({
+  ReadabilityV2({
     this.title,
     super.isDebug = false,
     super.onlyClean = false,
+    required super.meta,
   });
 
   @override
@@ -37,7 +38,7 @@ class BlockDensity extends BaseExtractor {
         FigureTransfomProcessor(),
         ImgSrcReplaceProcessor(),
         ReplaceSectionWithDivProcessor(),
-        ReplaceBigHWithDivProcessor(),
+        HTransformProcessor(),
         ReplaceOPTagProcessor(),
         ReplaceBigStrongWithSpanProcessor(),
         ExposeTextProcessor(),
@@ -56,6 +57,9 @@ class BlockDensity extends BaseExtractor {
         RemoveAInHProcessor(),
         RemoveLastBrProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
+        RemoveTitleProcessor(),
+        ParseCoverProcessor(),
+        TitleNormalizeProcessor(),
       ];
 
   final scoreTag = ['p', 'td', 'pre'];

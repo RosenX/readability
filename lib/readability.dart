@@ -4,15 +4,4 @@
 library readability;
 
 export 'src/html_extractor.dart';
-
-class HtmlExtractResult {
-  String html;
-  int contentLength;
-  String? cover;
-
-  HtmlExtractResult(this.html, this.contentLength, this.cover);
-}
-
-
-
-// TODO: Export any libraries intended for clients of this package.
+export 'src/base/types.dart';

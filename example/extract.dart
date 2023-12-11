@@ -26,7 +26,7 @@ void main(List<String> args) async {
   final content = await htmlFile.readAsString();
 
   var extractor = HtmlExtractor(
-    rawHtml: content,
+    html: content,
     method: method,
     isDebug: true,
   );

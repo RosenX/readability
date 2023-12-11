@@ -6,11 +6,10 @@ import 'package:readability/src/base/index.dart';
 
 class Readability extends BaseExtractor {
   final int minTextLength;
-  final String? title;
 
   Readability({
     this.minTextLength = 25,
-    this.title,
+    required super.meta,
     super.isDebug = false,
     super.onlyClean = false,
   });
@@ -27,7 +26,7 @@ class Readability extends BaseExtractor {
         ExposeTextProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
-        ReplaceBigHWithDivProcessor(),
+        HTransformProcessor(),
         ReplaceOPTagProcessor(),
         ReplaceBigStrongWithSpanProcessor(),
         ReplaceInvalidFigureWithDivProcessor(),
@@ -62,39 +61,39 @@ class Readability extends BaseExtractor {
   }
 
   /// find common ancestor of two elements
-  Element findCommonAncestor(Element candidate, Element title) {
-    if (candidate == title) return candidate;
-    List<Element> titleAncestors = [];
-    while (title.parent != null) {
-      titleAncestors.add(title);
-      title = title.parent!;
-    }
-    while (candidate.parent != null) {
-      if (titleAncestors.contains(candidate)) {
-        return candidate;
-      }
-      candidate = candidate.parent!;
-    }
-    return candidate;
-  }
+  // Element findCommonAncestor(Element candidate, Element title) {
+  //   if (candidate == title) return candidate;
+  //   List<Element> titleAncestors = [];
+  //   while (title.parent != null) {
+  //     titleAncestors.add(title);
+  //     title = title.parent!;
+  //   }
+  //   while (candidate.parent != null) {
+  //     if (titleAncestors.contains(candidate)) {
+  //       return candidate;
+  //     }
+  //     candidate = candidate.parent!;
+  //   }
+  //   return candidate;
+  // }
 
-  Element? finalTitleElement(Document doc) {
-    if (title == null) return null;
-    final hTags = doc.querySelectorAll('h1,h2');
-    Element? bestTag;
-    double bestScore = 0;
-    for (var tag in hTags) {
-      double similarity = titleSimilarityScore(title: title!, hText: tag.text);
-      if (isDebug) {
-        print('title: $title, hText: ${tag.text}, score: $similarity');
-      }
-      if (similarity > bestScore) {
-        bestScore = similarity;
-        bestTag = tag;
-      }
-    }
-    return bestTag;
-  }
+  // Element? finalTitleElement(Document doc) {
+  //   if (title == null) return null;
+  //   final hTags = doc.querySelectorAll('h1,h2');
+  //   Element? bestTag;
+  //   double bestScore = 0;
+  //   for (var tag in hTags) {
+  //     double similarity = titleSimilarityScore(title: title!, hText: tag.text);
+  //     if (isDebug) {
+  //       print('title: $title, hText: ${tag.text}, score: $similarity');
+  //     }
+  //     if (similarity > bestScore) {
+  //       bestScore = similarity;
+  //       bestTag = tag;
+  //     }
+  //   }
+  //   return bestTag;
+  // }
 
   /// score nodes in html
   Map<Element, double> _scoreParagraphs(Element doc) {
