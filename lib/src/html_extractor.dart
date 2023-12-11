@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:html/dom.dart';
 
 import 'package:readability/src/base/main_content.dart';
-import 'package:readability/src/methods/block_density.dart';
+import 'package:readability/src/methods/readability_v2.dart';
 import 'package:readability/src/methods/meta_parser.dart';
 import 'package:readability/src/methods/readability.dart';
 import 'package:readability/readability.dart';

@@ -34,32 +34,31 @@ class BlockDensity extends BaseExtractor {
         RemoveUnusefulNodeProcessor(),
         RemoveSuspiciousTagProcessor(),
         RemoveHiddenTagProcessor(),
-        FigurePrettyProcessor(),
+        FigureTransfomProcessor(),
         ImgSrcReplaceProcessor(),
         ReplaceSectionWithDivProcessor(),
-        ExposeTextProcessor(),
-        RemoveAInHProcessor(),
-        RemoveInvalidATagProcessor(),
-        RemoveInvalidImgTagProcessor(),
         ReplaceBigHWithDivProcessor(),
         ReplaceOPTagProcessor(),
         ReplaceBigStrongWithSpanProcessor(),
-        RemoveMisusedFigureTagProcessor(),
+        ExposeTextProcessor(),
         ReplaceDivWithPTagProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
         ExposeLonelyTagInDiv(),
         ExposeDivInDiv(),
-        RemoveLastBrProcessor(),
         ImageStyleProcessor(),
         RemoveUnusefulAttributeProcessor(),
       ];
 
   @override
   List<Processor> get postprocessors => [
-        RemoveEmptyTagProcessor(),
+        RemoveInvalidATagProcessor(),
+        RemoveInvalidImgTagProcessor(),
+        RemoveAInHProcessor(),
+        RemoveLastBrProcessor(),
+        FormatHtmlRecurrsivelyProcessor(),
       ];
 
-  final scoreTag = ['p', 'td', 'ul', 'pre', 'ol'];
+  final scoreTag = ['p', 'td', 'pre'];
   final titleTag = ['h1', 'h2'];
   final ignoreTag = ['a', 'img'];
   final blockTag = ['div', 'body'];

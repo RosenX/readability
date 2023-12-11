@@ -96,32 +96,13 @@ class ReplaceDivWithPTagProcessor implements Processor {
   }
 }
 
-/// remove nested tag only has one child
-class RemoveNestedTagProcessor implements Processor {
+class FigureTransfomProcessor implements Processor {
   @override
-  String get name => 'remove_nested_tag';
+  String get name => 'figure_transform';
 
-  // if tag has one child and the child is the same tag, remove the tag
   @override
   void process(Element elem) {
-    for (var child in elem.children) {
-      process(child);
-    }
-    if (elem.children.length == 1 &&
-        elem.children.first.localName == elem.localName &&
-        elem.text.trim().length == elem.children.first.text.trim().length) {
-      elem.replaceWith(elem.children.first);
-    }
-  }
-}
-
-class FigurePrettyProcessor implements Processor {
-  @override
-  String get name => 'figure_pretty';
-
-  @override
-  void process(Element doc) {
-    var figures = doc.querySelectorAll('figure');
+    var figures = elem.querySelectorAll('figure');
     for (var figure in figures) {
       var noscript = figure.querySelector('noscript');
       if (noscript != null) {
@@ -146,13 +127,12 @@ class ImgSrcReplaceProcessor implements Processor {
   @override
   String get name => 'img_src_replace';
 
-  // TODO: add no need replace
   @override
   void process(Element doc) {
-    doc.querySelectorAll('img').forEach((e) {
-      String? dataSrc = e.attributes['data-src'];
+    doc.querySelectorAll('img').forEach((elem) {
+      String? dataSrc = elem.attributes['data-src'];
       if (dataSrc != null && dataSrc.startsWith('http')) {
-        e.attributes['src'] = dataSrc;
+        elem.attributes['src'] = dataSrc;
       }
     });
   }
@@ -221,7 +201,7 @@ class ImageStyleProcessor implements Processor {
   }
 }
 
-// TODO: if really need?
+// if really need? yes, to pretty html
 class RemoveAInHProcessor implements Processor {
   @override
   String get name => 'remove_a_in_h';
@@ -238,7 +218,6 @@ class RemoveAInHProcessor implements Processor {
   }
 }
 
-// TODO: 需要暴露text in span吗？
 class ReplaceBigStrongWithSpanProcessor implements Processor {
   @override
   String get name => 'replace_big_strong_with_span';
@@ -396,7 +375,7 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   }
 }
 
-// TODO: if need?
+// if need? yes, to flatten text in deep nest
 class ExposeLonelyTagInDiv implements Processor {
   @override
   String get name => 'expose_tag';
@@ -471,7 +450,6 @@ class RemoveUnusefulNodeProcessor implements Processor {
   }
 }
 
-// TODO: where to place
 class RemoveInvalidATagProcessor implements Processor {
   @override
   String get name => 'remove_empty_a_tag';
@@ -485,15 +463,11 @@ class RemoveInvalidATagProcessor implements Processor {
       }
       if (e.attributes['href'] == null ||
           !e.attributes['href']!.startsWith('http')) {
-        if (e.children.isEmpty) {
-          e.remove();
-        }
+        e.remove();
       }
     });
   }
 }
-
-// TODO: where to place
 
 class RemoveInvalidImgTagProcessor implements Processor {
   @override
@@ -513,20 +487,21 @@ class RemoveInvalidImgTagProcessor implements Processor {
   }
 }
 
-/// TODO: why
-/// remove invalid figure tag
-class RemoveMisusedFigureTagProcessor implements Processor {
+/// remove invalid figure tag, which has no img tag
+class ReplaceInvalidFigureWithDivProcessor implements Processor {
   @override
-  String get name => 'remove_misused_figure_tag';
+  String get name => 'replace_invalid_figure_with_div';
 
   @override
   void process(Element doc) {
     // if div num in figure is bigger than img num+1, remove figure
-    doc.querySelectorAll('figure').forEach((e) {
-      var divNum = e.querySelectorAll('div').length;
-      var imgNum = e.querySelectorAll('img').length;
-      if (divNum > imgNum + 1) {
-        e.remove();
+    doc.querySelectorAll('figure').forEach((figure) {
+      var imgNum = figure.querySelectorAll('img').length;
+      if (imgNum == 0) {
+        // replace figure with div
+        Element div = Element.tag('div');
+        div.nodes.addAll(figure.nodes);
+        figure.replaceWith(div);
       }
     });
   }
@@ -573,8 +548,6 @@ class RemoveHiddenTagProcessor implements Processor {
   }
 }
 
-//TODO: where to place
-/// remove last br in block tag
 class RemoveLastBrProcessor implements Processor {
   @override
   String get name => 'remove_last_br';
@@ -599,8 +572,7 @@ class RemoveLastBrProcessor implements Processor {
   }
 }
 
-// TODO: if need?
-/// expose text in tags
+// if need? yes, to clean html
 class ExposeTextProcessor implements Processor {
   @override
   String get name => 'expose_text';
