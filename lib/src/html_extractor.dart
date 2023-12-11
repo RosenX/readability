@@ -47,7 +47,7 @@ class HtmlExtractor {
   }
 
   HtmlExtractResult? parse() {
-    _htmlDoc = parser.parse(rawHtml);
+    _htmlDoc = Document.html(rawHtml);
 
     if (!canParse()) {
       return null;

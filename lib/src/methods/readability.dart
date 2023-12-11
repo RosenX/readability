@@ -46,14 +46,7 @@ class Readability extends BaseExtractor {
         RemoveEmptyTagProcessor(),
       ];
 
-  final scoreTag = [
-    'p',
-    'td',
-    'h1',
-    'h2',
-    'h3',
-    'ul',
-  ];
+  final scoreTag = ['p', 'td', 'h1', 'h2', 'h3', 'ul', 'pre'];
 
   final titleTag = ['h1', 'h2'];
 

@@ -17,7 +17,7 @@ void runFile(String caseFolder, String outputFolder, {bool isClean = false}) {
     try {
       var extractor = HtmlExtractor(
         rawHtml: content,
-        method: Method.readability,
+        method: Method.blockDensity,
         onlyClean: isClean,
       );
       var result = extractor.parse();

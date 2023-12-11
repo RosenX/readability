@@ -66,7 +66,6 @@ class ReplaceUnnecessaryProcessor implements Processor {
 
 class ReplaceDivWithPTagProcessor implements Processor {
   final blockTag = [
-    'a',
     'blockquote',
     'dl',
     'div',

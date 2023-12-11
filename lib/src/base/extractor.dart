@@ -15,20 +15,6 @@ class BaseExtractor with Logger implements Extractor {
   bool onlyClean;
 
   final rootTag = ['body', 'div'];
-  final punctuation = [
-    ',',
-    '.',
-    '!',
-    '?',
-    ';',
-    ':',
-    '，',
-    '。',
-    '！',
-    '？',
-    '；',
-    '：',
-  ];
 
   BaseExtractor({this.isDebug = false, this.onlyClean = false});
 
