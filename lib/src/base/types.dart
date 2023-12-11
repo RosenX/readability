@@ -5,6 +5,7 @@ class HtmlExtractResult {
   HtmlExtractResult(this.html, this.meta);
 
   String? get cover => meta.cover;
+  int get length => html.length;
 }
 
 class Meta {
