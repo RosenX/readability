@@ -49,16 +49,9 @@ class Readability extends BaseExtractor {
   final scoreTag = [
     'p',
     'td',
-    'img',
-    'video',
-    'pre',
-    'td',
     'h1',
     'h2',
     'h3',
-    'h4',
-    'h5',
-    'h6',
     'ul',
   ];
 
@@ -139,7 +132,7 @@ class Readability extends BaseExtractor {
 
       double score = 1;
 
-      score += min(innerTextLen, 3);
+      score += min(innerTextLen / 100, 3);
 
       score += innerText.split(RegExp(r'[，,]')).length;
 
