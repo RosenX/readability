@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:html/dom.dart';
 
-import 'package:html/parser.dart' as parser;
 import 'package:readability/src/base/main_content.dart';
 import 'package:readability/src/methods/block_density.dart';
 import 'package:readability/src/methods/meta_parser.dart';
@@ -11,7 +10,7 @@ import 'package:readability/readability.dart';
 
 enum Method {
   readability,
-  blockDensity,
+  readabilityV2,
 }
 
 class HtmlExtractor {
@@ -49,6 +48,8 @@ class HtmlExtractor {
   HtmlExtractResult? parse() {
     _htmlDoc = Document.html(rawHtml);
 
+    if (_htmlDoc.body == null) return null;
+
     if (!canParse()) {
       return null;
     }
@@ -65,14 +66,14 @@ class HtmlExtractor {
           isDebug: isDebug,
           onlyClean: onlyClean,
           title: _mainContent.title,
-        ).extract(_htmlDoc);
+        ).extract(_htmlDoc.body!);
         break;
-      case Method.blockDensity:
+      case Method.readabilityV2:
         _mainContent.content = BlockDensity(
           isDebug: isDebug,
           onlyClean: onlyClean,
           title: _mainContent.title,
-        ).extract(_htmlDoc);
+        ).extract(_htmlDoc.body!);
       default:
         throw Exception('not support method');
     }

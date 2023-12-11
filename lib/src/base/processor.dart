@@ -3,7 +3,7 @@ import 'package:readability/src/base/index.dart';
 
 abstract class Processor {
   String get name;
-  void process(Document doc);
+  void process(Element doc);
 }
 
 class RemoveUnusefulTagProcessor implements Processor {
@@ -24,19 +24,19 @@ class RemoveUnusefulTagProcessor implements Processor {
   String get name => 'clean_unuseful_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     for (var tag in unUsefulTag) {
       doc.querySelectorAll(tag).forEach((e) => e.remove());
     }
   }
 }
 
-class ReplaceUnnecessaryProcessor implements Processor {
+class ReplaceBigHWithDivProcessor implements Processor {
   @override
-  String get name => 'replace_unnecessary_h';
+  String get name => 'replace_big_h_with_div';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     replaceBigHToDiv(doc, 'h1');
     replaceBigHToDiv(doc, 'h2');
     replaceBigHToDiv(doc, 'h3');
@@ -45,21 +45,14 @@ class ReplaceUnnecessaryProcessor implements Processor {
     replaceBigHToDiv(doc, 'h6');
   }
 
-  void replaceBigHToDiv(Document doc, String tagName) {
+  // TODO: 100 is proper?
+  void replaceBigHToDiv(Element doc, String tagName) {
     doc.querySelectorAll(tagName).forEach((e) {
       if (e.children.length > 1 || e.text.length > 100) {
         Element div = Element.tag('div');
         div.nodes.addAll(e.nodes);
         e.replaceWith(div);
       }
-    });
-  }
-
-  void replaceHToP(Document doc, String tagName) {
-    doc.querySelectorAll(tagName).forEach((e) {
-      Element p = Element.tag('p');
-      p.nodes.addAll(e.nodes);
-      e.replaceWith(p);
     });
   }
 }
@@ -88,15 +81,9 @@ class ReplaceDivWithPTagProcessor implements Processor {
   String get name => 'replace_div_with_p_tag';
 
   @override
-  void process(Document doc) {
-    for (final child in doc.children) {
-      replace(child);
-    }
-  }
-
-  void replace(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      replace(child);
+      process(child);
     }
     if (elem.localName != 'div') return;
     bool hasBlock =
@@ -114,17 +101,11 @@ class RemoveNestedTagProcessor implements Processor {
   @override
   String get name => 'remove_nested_tag';
 
-  @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      remove(child);
-    }
-  }
-
   // if tag has one child and the child is the same tag, remove the tag
-  void remove(Element elem) {
+  @override
+  void process(Element elem) {
     for (var child in elem.children) {
-      remove(child);
+      process(child);
     }
     if (elem.children.length == 1 &&
         elem.children.first.localName == elem.localName &&
@@ -139,7 +120,7 @@ class FigurePrettyProcessor implements Processor {
   String get name => 'figure_pretty';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     var figures = doc.querySelectorAll('figure');
     for (var figure in figures) {
       var noscript = figure.querySelector('noscript');
@@ -165,8 +146,9 @@ class ImgSrcReplaceProcessor implements Processor {
   @override
   String get name => 'img_src_replace';
 
+  // TODO: add no need replace
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('img').forEach((e) {
       String? dataSrc = e.attributes['data-src'];
       if (dataSrc != null && dataSrc.startsWith('http')) {
@@ -185,15 +167,12 @@ class RemoveUnusefulAttributeProcessor implements Processor {
   @override
   String get name => 'remove_unuseful_attribute';
 
-  @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      _removeUnUsefulAttribue(child);
-    }
-  }
-
   /// remove all attribute of element except for the attribute in keepAttr
-  void _removeUnUsefulAttribue(Element elem) {
+  @override
+  void process(Element elem) {
+    for (var child in elem.children) {
+      process(child);
+    }
     // if tag is in attrKeepTag, do not remove any attribute
     if (attrKeepTag.contains(elem.localName)) {
       return;
@@ -203,10 +182,6 @@ class RemoveUnusefulAttributeProcessor implements Processor {
       elem.attributes.removeWhere((key, value) => !imageKeepAttr.contains(key));
     } else {
       elem.attributes.removeWhere((key, value) => !keepAttr.contains(key));
-    }
-
-    for (var child in elem.children) {
-      _removeUnUsefulAttribue(child);
     }
   }
 }
@@ -218,7 +193,7 @@ class ImageStyleProcessor implements Processor {
   List<String> keepAttr = ['width', 'height'];
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('img').forEach((e) {
       Map<String, String> style = e.attributes['style'] == null
           ? {}
@@ -246,12 +221,13 @@ class ImageStyleProcessor implements Processor {
   }
 }
 
+// TODO: if really need?
 class RemoveAInHProcessor implements Processor {
   @override
   String get name => 'remove_a_in_h';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     /// query h1 tag, if there is a <a> tag in h1, remove the <a> tag
     var h1 = doc.querySelector('h1');
     if (h1 != null) {
@@ -262,14 +238,15 @@ class RemoveAInHProcessor implements Processor {
   }
 }
 
-class ReplaceStrongWithSpanProcessor implements Processor {
+// TODO: 需要暴露text in span吗？
+class ReplaceBigStrongWithSpanProcessor implements Processor {
   @override
-  String get name => 'replace_strong_with_span';
+  String get name => 'replace_big_strong_with_span';
 
   final maxStrongTextLength = 50;
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     // if the length of text in strong tag is more than 30, replace it with span
     doc.querySelectorAll('strong').forEach((e) {
       if (e.text.length > maxStrongTextLength) {
@@ -307,18 +284,11 @@ class RemoveEmptyTagProcessor implements Processor {
   @override
   String get name => 'remove_empty_tag';
 
-  @override
-  void process(Document doc) {
-    // because text tag is nested in p or div tag, so we need to remove text tag first
-    for (var child in doc.children) {
-      remove(child);
-    }
-  }
-
   /// if tag in textTag and its text is empty, remove it
-  void remove(Element elem) {
+  @override
+  void process(Element elem) {
     for (var child in elem.children) {
-      remove(child);
+      process(child);
     }
     if (tags.contains(elem.localName) &&
         elem.text.trim().isEmpty &&
@@ -332,17 +302,11 @@ class RemoveUnnecessaryBlankLine implements Processor {
   @override
   String get name => 'remove_unnecessary_blank_line';
 
-  @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      remove(child);
-    }
-  }
-
   /// if tag is empty, remove it
-  void remove(Element elem) {
+  @override
+  void process(Element elem) {
     for (var child in elem.children) {
-      remove(child);
+      process(child);
     }
     if (elem.children.length == 1 &&
         elem.text.trim().isEmpty &&
@@ -378,21 +342,15 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   ];
 
   @override
-  void process(Document doc) {
+  void process(Element elem) {
     bool needFormat = true;
     while (needFormat) {
-      needFormat = format(doc);
+      bool change = false;
+      change = change | removeLonelyBr(elem);
+      change = change | removeEmptyTag(elem);
+      change = change | removeNestedTag(elem);
+      needFormat = change;
     }
-  }
-
-  bool format(Document doc) {
-    bool change = false;
-    for (var child in doc.children) {
-      change = change | removeLonelyBr(child);
-      change = change | removeEmptyTag(child);
-      change = change | removeNestedTag(child);
-    }
-    return change;
   }
 
   bool removeLonelyBr(Element elem) {
@@ -438,6 +396,7 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   }
 }
 
+// TODO: if need?
 class ExposeLonelyTagInDiv implements Processor {
   @override
   String get name => 'expose_tag';
@@ -445,15 +404,9 @@ class ExposeLonelyTagInDiv implements Processor {
   final tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      expose(child);
-    }
-  }
-
-  void expose(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      expose(child);
+      process(child);
     }
     if (elem.localName != 'div') return;
     if (elem.children.length != 1 || elem.nodes.length != 1) return;
@@ -467,15 +420,9 @@ class ExposeDivInDiv implements Processor {
   String get name => 'expose_div';
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      expose(child);
-    }
-  }
-
-  void expose(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      expose(child);
+      process(child);
     }
     if (elem.localName != 'div') return;
     final parent = elem.parent;
@@ -495,7 +442,7 @@ class RemoveUnusefulNodeProcessor implements Processor {
   String get name => 'remove_empty_text_node';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     for (var node in doc.nodes) {
       remove(node);
     }
@@ -524,12 +471,13 @@ class RemoveUnusefulNodeProcessor implements Processor {
   }
 }
 
+// TODO: where to place
 class RemoveInvalidATagProcessor implements Processor {
   @override
   String get name => 'remove_empty_a_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('a').forEach((e) {
       if (e.text.trim().isEmpty && e.children.isEmpty) {
         e.remove();
@@ -545,12 +493,14 @@ class RemoveInvalidATagProcessor implements Processor {
   }
 }
 
+// TODO: where to place
+
 class RemoveInvalidImgTagProcessor implements Processor {
   @override
   String get name => 'remove_empty_img_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('img').forEach((e) {
       if (e.attributes['src'] == null) {
         e.remove();
@@ -565,12 +515,12 @@ class RemoveInvalidImgTagProcessor implements Processor {
 
 /// TODO: why
 /// remove invalid figure tag
-class RemoveInvalidFigureTagProcessor implements Processor {
+class RemoveMisusedFigureTagProcessor implements Processor {
   @override
-  String get name => 'remove_invalid_figure_tag';
+  String get name => 'remove_misused_figure_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     // if div num in figure is bigger than img num+1, remove figure
     doc.querySelectorAll('figure').forEach((e) {
       var divNum = e.querySelectorAll('div').length;
@@ -593,7 +543,7 @@ class RemoveSuspiciousTagProcessor implements Processor {
   String get name => 'remove_suspicious_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('div').forEach((e) {
       if (suspiciousClassRegx.hasMatch(e.className)) {
         e.remove();
@@ -611,15 +561,9 @@ class RemoveHiddenTagProcessor implements Processor {
   String get name => 'remove_hidden_tag';
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      remove(child);
-    }
-  }
-
-  void remove(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      remove(child);
+      process(child);
     }
     if (elem.attributes['style'] == null) return;
     var style = styleToMap(elem.attributes['style']!);
@@ -629,23 +573,18 @@ class RemoveHiddenTagProcessor implements Processor {
   }
 }
 
+//TODO: where to place
 /// remove last br in block tag
 class RemoveLastBrProcessor implements Processor {
   @override
   String get name => 'remove_last_br';
 
-  final blockTag = ['p', 'div', 'section'];
+  final blockTag = ['p', 'div'];
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      remove(child);
-    }
-  }
-
-  void remove(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      remove(child);
+      process(child);
     }
     if (blockTag.contains(elem.localName)) {
       if (elem.children.isEmpty) {
@@ -660,6 +599,7 @@ class RemoveLastBrProcessor implements Processor {
   }
 }
 
+// TODO: if need?
 /// expose text in tags
 class ExposeTextProcessor implements Processor {
   @override
@@ -668,15 +608,9 @@ class ExposeTextProcessor implements Processor {
   final tag = ['span', 'mark'];
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      expose(child);
-    }
-  }
-
-  void expose(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      expose(child);
+      process(child);
     }
     if (!tag.contains(elem.localName)) return;
     if (elem.children.isNotEmpty) return;
@@ -696,7 +630,7 @@ class ReplaceSectionWithDivProcessor implements Processor {
   String get name => 'replace_section_tag';
 
   @override
-  void process(Document doc) {
+  void process(Element doc) {
     doc.querySelectorAll('section').forEach((e) {
       Element div = Element.tag('div');
       div.nodes.addAll(e.nodes);
@@ -711,15 +645,9 @@ class ReplaceOPTagProcessor implements Processor {
   String get name => 'replace_o_p_tag';
 
   @override
-  void process(Document doc) {
-    for (var child in doc.children) {
-      replace(child);
-    }
-  }
-
-  void replace(Element elem) {
+  void process(Element elem) {
     for (var child in elem.children) {
-      replace(child);
+      process(child);
     }
     if (elem.localName == 'o:p') {
       Element p = Element.tag('p');
@@ -728,26 +656,3 @@ class ReplaceOPTagProcessor implements Processor {
     }
   }
 }
-
-/// change video to iframe
-// class ReplaceVideoWithIframeProcessor implements Processor {
-//   @override
-//   String get name => 'replace_video_with_iframe';
-
-//   @override
-//   void process(Document doc) {
-//     doc.querySelectorAll('video').forEach((e) {
-//       Element iframe = Element.tag('iframe');
-//       for (var child in e.children) {
-//         if (child.localName == 'source' && child.attributes['src'] != null) {
-//           iframe.attributes['src'] = child.attributes['src']!;
-//           break;
-//         }
-//       }
-//       iframe.attributes['allowfullscreen'] = 'true';
-//       if (iframe.attributes['src'] != null) {
-//         e.replaceWith(iframe);
-//       }
-//     });
-//   }
-// }

@@ -4,7 +4,7 @@ import 'logger.dart';
 import 'processor.dart';
 
 abstract class Extractor {
-  Document extract(Document doc);
+  Element extract(Element doc);
 }
 
 class BaseExtractor with Logger implements Extractor {
@@ -18,7 +18,7 @@ class BaseExtractor with Logger implements Extractor {
 
   BaseExtractor({this.isDebug = false, this.onlyClean = false});
 
-  void preprocess(Document doc) {
+  void preprocess(Element doc) {
     for (var i = 0; i < preprocessors.length; i++) {
       var p = preprocessors[i];
       p.process(doc);
@@ -28,7 +28,7 @@ class BaseExtractor with Logger implements Extractor {
     }
   }
 
-  void postprocess(Document doc) {
+  void postprocess(Element doc) {
     for (var i = 0; i < postprocessors.length; i++) {
       var p = postprocessors[i];
       p.process(doc);
@@ -38,12 +38,12 @@ class BaseExtractor with Logger implements Extractor {
     }
   }
 
-  Document extractContent(Document doc) {
+  Element extractContent(Element doc) {
     return doc;
   }
 
   @override
-  Document extract(Document doc) {
+  Element extract(Element doc) {
     preprocess(doc);
     if (!onlyClean) {
       doc = extractContent(doc);

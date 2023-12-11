@@ -10,14 +10,14 @@ void main(List<String> args) async {
   }
   Method method;
   switch (args[0]) {
-    case 'readabilidy':
+    case 'v1':
       method = Method.readability;
       break;
-    case 'blockDensity':
-      method = Method.blockDensity;
+    case 'v2':
+      method = Method.readabilityV2;
       break;
     default:
-      method = Method.readability;
+      method = Method.readabilityV2;
       break;
   }
   final inputFile = args[1];

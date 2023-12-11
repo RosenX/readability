@@ -10,7 +10,7 @@ void main(List<String> args) async {
 
   var extractor = HtmlExtractor(
     rawHtml: content,
-    method: Method.readability,
+    method: Method.readabilityV2,
     isDebug: true,
     title: "aaaa",
     onlyClean: true,

@@ -41,10 +41,10 @@ class BlockDensity extends BaseExtractor {
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
-        ReplaceUnnecessaryProcessor(),
+        ReplaceBigHWithDivProcessor(),
         ReplaceOPTagProcessor(),
-        ReplaceStrongWithSpanProcessor(),
-        RemoveInvalidFigureTagProcessor(),
+        ReplaceBigStrongWithSpanProcessor(),
+        RemoveMisusedFigureTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
         ExposeLonelyTagInDiv(),
@@ -65,7 +65,7 @@ class BlockDensity extends BaseExtractor {
   final blockTag = ['div', 'body'];
 
   @override
-  Document extractContent(Document doc) {
+  Element extractContent(Element doc) {
     Map<Element, ScoreData> scoreData = {};
     for (var child in doc.children) {
       computeStatData(scoreData, child);
@@ -87,7 +87,7 @@ class BlockDensity extends BaseExtractor {
     if (bestElem == null) return doc;
     Element result =
         mergeBrothers(scoreData, bestElem, brotherMergeScoreRatio * bestScore);
-    return Document.html(result.outerHtml);
+    return result;
   }
 
   Element mergeBrothers(

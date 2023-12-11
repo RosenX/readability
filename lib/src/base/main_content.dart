@@ -9,7 +9,7 @@ class MainContent {
   final String? url;
   String? cover;
   late String author;
-  late Document content;
+  late Element content;
   final MainContentType type;
 
   bool get hasTitle => title != null && title!.isNotEmpty;
@@ -21,36 +21,27 @@ class MainContent {
   });
 
   HtmlExtractResult? pureHtml() {
-    if (content.body != null) {
-      if (content.body!.children.isEmpty) {
-        if (hasTitle) {
-          content.body!.children.insert(0, Element.tag('h1')..text = title);
-        }
-      } else {
-        // final h1 = content.body!.querySelector('h1');
-        // if (h1 == null && hasTitle) {
-        //   content.body!.children.insert(0, Element.tag('h1')..text = title);
-        // } else if (h1 != null && hasTitle && h1.text.trim() != title) {
-        //   content.body!.children.insert(0, Element.tag('h1')..text = title);
-        // }
-        final first = content.body!.children.first;
-        if (first.localName == 'div') {
-          if (first.children.isNotEmpty &&
-              first.children.first.localName != 'h1' &&
-              hasTitle) {
-            first.children.insert(0, Element.tag('h1')..text = title);
-          }
-        } else if (first.localName != 'h1' && hasTitle) {
-          content.body!.children.insert(0, Element.tag('h1')..text = title);
-        }
+    if (content.children.isEmpty) {
+      if (hasTitle) {
+        content.children.insert(0, Element.tag('h1')..text = title);
       }
-      return HtmlExtractResult(
-        content.outerHtml,
-        content.body!.text.length,
-        cover,
-      );
+    } else {
+      final first = content..children.first;
+      if (first.localName == 'div') {
+        if (first.children.isNotEmpty &&
+            first.children.first.localName != 'h1' &&
+            hasTitle) {
+          first.children.insert(0, Element.tag('h1')..text = title);
+        }
+      } else if (first.localName != 'h1' && hasTitle) {
+        content.children.insert(0, Element.tag('h1')..text = title);
+      }
     }
-    return null;
+    return HtmlExtractResult(
+      content.outerHtml,
+      content.text.length,
+      cover,
+    );
   }
 
   void extractCover() {

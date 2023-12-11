@@ -28,10 +28,10 @@ class Readability extends BaseExtractor {
         RemoveAInHProcessor(),
         RemoveInvalidATagProcessor(),
         RemoveInvalidImgTagProcessor(),
-        ReplaceUnnecessaryProcessor(),
+        ReplaceBigHWithDivProcessor(),
         ReplaceOPTagProcessor(),
-        ReplaceStrongWithSpanProcessor(),
-        RemoveInvalidFigureTagProcessor(),
+        ReplaceBigStrongWithSpanProcessor(),
+        RemoveMisusedFigureTagProcessor(),
         ReplaceDivWithPTagProcessor(),
         FormatHtmlRecurrsivelyProcessor(),
         ExposeLonelyTagInDiv(),
@@ -51,7 +51,7 @@ class Readability extends BaseExtractor {
   final titleTag = ['h1', 'h2'];
 
   @override
-  Document extractContent(Document doc) {
+  Element extractContent(Element doc) {
     Map<Element, double> candidates = _scoreParagraphs(doc);
 
     final topCandidate = _selectBestCandidate(candidates);
@@ -59,8 +59,7 @@ class Readability extends BaseExtractor {
     // Element result = titleElement == null
     //     ? topCandidate
     //     : findCommonAncestor(topCandidate, titleElement);
-    Document html = Document.html(topCandidate.outerHtml);
-    return html;
+    return topCandidate;
   }
 
   /// find common ancestor of two elements
@@ -99,7 +98,7 @@ class Readability extends BaseExtractor {
   }
 
   /// score nodes in html
-  Map<Element, double> _scoreParagraphs(Document doc) {
+  Map<Element, double> _scoreParagraphs(Element doc) {
     Map<Element, double> candidates = HashMap();
     // all element of in textTag
     var allTextTag = doc.querySelectorAll(scoreTag.join(','));
