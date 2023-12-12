@@ -22,7 +22,7 @@ class HtmlExtractor {
     required this.html,
     this.url,
     this.title,
-    this.method = Method.readability,
+    this.method = Method.readabilityV2,
     this.onlyClean = false,
     this.isDebug = false,
   }) {
