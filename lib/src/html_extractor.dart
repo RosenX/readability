@@ -78,6 +78,8 @@ class HtmlExtractor {
     var metaParser = MetaParser(isDebug: isDebug);
     if (title == null) {
       metaData.title = metaParser.parseTitle(htmlDoc);
+    } else {
+      metaData.title = title;
     }
     metaData.author = metaParser.parseAuthor(htmlDoc);
     return metaData;

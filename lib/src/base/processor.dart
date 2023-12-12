@@ -4,7 +4,7 @@ import 'package:readability/src/base/types.dart';
 
 abstract class Processor {
   String get name;
-  void process(Element doc, {Meta? meta});
+  void process(Element doc, {Meta? meta, isDebug = false});
 }
 
 class RemoveUnusefulTagProcessor implements Processor {
@@ -25,7 +25,7 @@ class RemoveUnusefulTagProcessor implements Processor {
   String get name => 'clean_unuseful_tag';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     for (var tag in unUsefulTag) {
       doc.querySelectorAll(tag).forEach((e) => e.remove());
     }
@@ -37,7 +37,7 @@ class HTransformProcessor implements Processor {
   String get name => 'h_transform';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     replaceBigHToDiv(doc, 'h1');
     replaceBigHToDiv(doc, 'h2');
     replaceBigHToDiv(doc, 'h3');
@@ -95,7 +95,7 @@ class ReplaceDivWithPTagProcessor implements Processor {
   String get name => 'replace_div_with_p_tag';
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -115,7 +115,7 @@ class FigureTransfomProcessor implements Processor {
   String get name => 'figure_transform';
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     var figures = elem.querySelectorAll('figure');
     for (var figure in figures) {
       var noscript = figure.querySelector('noscript');
@@ -142,7 +142,7 @@ class ImgSrcReplaceProcessor implements Processor {
   String get name => 'img_src_replace';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('img').forEach((elem) {
       String? dataSrc = elem.attributes['data-src'];
       if (dataSrc != null && dataSrc.startsWith('http')) {
@@ -163,7 +163,7 @@ class RemoveUnusefulAttributeProcessor implements Processor {
 
   /// remove all attribute of element except for the attribute in keepAttr
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -187,7 +187,7 @@ class ImageStyleProcessor implements Processor {
   List<String> keepAttr = ['width', 'height'];
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('img').forEach((e) {
       Map<String, String> style = e.attributes['style'] == null
           ? {}
@@ -221,7 +221,7 @@ class RemoveAInHProcessor implements Processor {
   String get name => 'remove_a_in_h';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     /// query h1 tag, if there is a <a> tag in h1, remove the <a> tag
     var h1 = doc.querySelector('h1');
     if (h1 != null) {
@@ -239,7 +239,7 @@ class ReplaceBigStrongWithSpanProcessor implements Processor {
   final maxStrongTextLength = 50;
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     // if the length of text in strong tag is more than 30, replace it with span
     doc.querySelectorAll('strong').forEach((e) {
       if (e.text.length > maxStrongTextLength) {
@@ -279,7 +279,7 @@ class RemoveEmptyTagProcessor implements Processor {
 
   /// if tag in textTag and its text is empty, remove it
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -297,7 +297,7 @@ class RemoveUnnecessaryBlankLine implements Processor {
 
   /// if tag is empty, remove it
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -335,7 +335,7 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
   ];
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     bool needFormat = true;
     while (needFormat) {
       bool change = false;
@@ -397,7 +397,7 @@ class ExposeLonelyTagInDiv implements Processor {
   final tags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -413,7 +413,7 @@ class ExposeDivInDiv implements Processor {
   String get name => 'expose_div';
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -435,7 +435,7 @@ class RemoveUnusefulNodeProcessor implements Processor {
   String get name => 'remove_empty_text_node';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     for (var node in doc.nodes) {
       remove(node);
     }
@@ -469,7 +469,7 @@ class RemoveInvalidATagProcessor implements Processor {
   String get name => 'remove_empty_a_tag';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('a').forEach((e) {
       if (e.text.trim().isEmpty && e.children.isEmpty) {
         e.remove();
@@ -488,7 +488,7 @@ class RemoveInvalidImgTagProcessor implements Processor {
   String get name => 'remove_empty_img_tag';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('img').forEach((e) {
       if (e.attributes['src'] == null) {
         e.remove();
@@ -507,7 +507,7 @@ class ReplaceInvalidFigureWithDivProcessor implements Processor {
   String get name => 'replace_invalid_figure_with_div';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     // if div num in figure is bigger than img num+1, remove figure
     doc.querySelectorAll('figure').forEach((figure) {
       var imgNum = figure.querySelectorAll('img').length;
@@ -532,7 +532,7 @@ class RemoveSuspiciousTagProcessor implements Processor {
   String get name => 'remove_suspicious_tag';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('div').forEach((e) {
       if (suspiciousClassRegx.hasMatch(e.className)) {
         e.remove();
@@ -550,7 +550,7 @@ class RemoveHiddenTagProcessor implements Processor {
   String get name => 'remove_hidden_tag';
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -569,7 +569,7 @@ class RemoveLastBrProcessor implements Processor {
   final blockTag = ['p', 'div'];
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -594,7 +594,7 @@ class ExposeTextProcessor implements Processor {
   final tag = ['span', 'mark'];
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -616,7 +616,7 @@ class ReplaceSectionWithDivProcessor implements Processor {
   String get name => 'replace_section_tag';
 
   @override
-  void process(Element doc, {Meta? meta}) {
+  void process(Element doc, {Meta? meta, isDebug = false}) {
     doc.querySelectorAll('section').forEach((e) {
       Element div = Element.tag('div');
       div.nodes.addAll(e.nodes);
@@ -631,7 +631,7 @@ class ReplaceOPTagProcessor implements Processor {
   String get name => 'replace_o_p_tag';
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     for (var child in elem.children) {
       process(child);
     }
@@ -651,7 +651,7 @@ class RemoveTitleProcessor implements Processor {
   final distanceRatioThreshold = 0.5;
 
   @override
-  void process(Element element, {Meta? meta}) {
+  void process(Element element, {Meta? meta, isDebug = false}) {
     if (meta == null || meta.title == null) return;
     Element? titleElements = element.querySelector('h1, h2');
     if (titleElements == null) return;
@@ -660,12 +660,21 @@ class RemoveTitleProcessor implements Processor {
     String title = meta.title!.trim();
     if (titleText == title || titleText.contains(title)) {
       titleElements.remove();
+      if (isDebug) {
+        print("[$name] title removed because contains");
+      }
       if (parent != null) removeEmptyTag(parent);
       return;
     }
     int distance = editDistance(title, titleText);
+    if (isDebug) {
+      print("[$name] title distance: $distance, title length: ${title.length}");
+    }
     if (distance < distanceThreshold &&
         distance / title.length < distanceRatioThreshold) {
+      if (isDebug) {
+        print("[$name] title removed because distance");
+      }
       titleElements.remove();
       if (parent != null) removeEmptyTag(parent);
     }
@@ -689,7 +698,7 @@ class ParseCoverProcessor implements Processor {
   final sizeThreshold = 50;
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     if (meta == null) return;
     List<Element> imgs = elem.querySelectorAll('img');
     imgs.removeWhere((img) {
@@ -751,7 +760,7 @@ class TitleNormalizeProcessor implements Processor {
   String get name => "title_normalize";
 
   @override
-  void process(Element elem, {Meta? meta}) {
+  void process(Element elem, {Meta? meta, isDebug = false}) {
     List<Element> h1s = elem.querySelectorAll('h1');
     List<Element> h2s = elem.querySelectorAll('h2');
     List<Element> h3s = elem.querySelectorAll('h3');

@@ -151,9 +151,6 @@ class ReadabilityV2 extends BaseExtractor {
       scoreData.score +=
           min(scoreData.textLength / 100, 3) + scoreData.sentanceCount;
     }
-    if (isDebug) {
-      print("$elem, ${scoreData.score}");
-    }
     scoreDatas[elem] = scoreData;
   }
 }

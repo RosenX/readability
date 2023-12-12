@@ -29,6 +29,7 @@ void main(List<String> args) async {
     html: content,
     method: method,
     isDebug: true,
+    title: "HelloGitHub 第 92 期",
   );
   var result = extractor.parse();
 
