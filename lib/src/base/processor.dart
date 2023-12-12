@@ -434,6 +434,8 @@ class RemoveUnusefulNodeProcessor implements Processor {
   @override
   String get name => 'remove_empty_text_node';
 
+  final ignoreTag = ['code', 'pre'];
+
   @override
   void process(Element doc, {Meta? meta, isDebug = false}) {
     for (var node in doc.nodes) {
@@ -443,6 +445,10 @@ class RemoveUnusefulNodeProcessor implements Processor {
 
   void remove(Node node) {
     for (var node in node.nodes) {
+      if (node.nodeType == Node.ELEMENT_NODE &&
+          ignoreTag.contains((node as Element).localName)) {
+        continue;
+      }
       remove(node);
     }
     List<Node> newSubNodes = [];
