@@ -25,6 +25,30 @@ class MetaParser {
     return title;
   }
 
+  bool parseHasVideo(Document htmlDoc) {
+    bool hasVideo = htmlDoc.querySelector('video') != null;
+    if (isDebug) {
+      print('hasVideo: $hasVideo');
+    }
+    return hasVideo;
+  }
+
+  bool parseHasIframe(Document htmlDoc) {
+    bool hasIframe = htmlDoc.querySelector('iframe') != null;
+    if (isDebug) {
+      print('hasIframe: $hasIframe');
+    }
+    return hasIframe;
+  }
+
+  bool parseHasAudio(Document htmlDoc) {
+    bool hasAudio = htmlDoc.querySelector('audio') != null;
+    if (isDebug) {
+      print('hasAudio: $hasAudio');
+    }
+    return hasAudio;
+  }
+
   String parseAuthor(Document htmlDoc) {
     String author =
         htmlDoc.querySelector('meta[name="author"]')?.attributes['content'] ??

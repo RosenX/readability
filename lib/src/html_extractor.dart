@@ -82,6 +82,9 @@ class HtmlExtractor {
       metaData.title = title;
     }
     metaData.author = metaParser.parseAuthor(htmlDoc);
+    metaData.hasVideo = metaParser.parseHasVideo(htmlDoc);
+    metaData.hasIframe = metaParser.parseHasIframe(htmlDoc);
+    metaData.hasAudio = metaParser.parseHasAudio(htmlDoc);
     return metaData;
   }
 }
