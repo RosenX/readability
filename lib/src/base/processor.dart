@@ -314,7 +314,6 @@ class FormatHtmlRecurrsivelyProcessor implements Processor {
 
   final tags = [
     'pre',
-    'td',
     'h1',
     'h2',
     'h3',
