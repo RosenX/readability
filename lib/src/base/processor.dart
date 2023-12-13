@@ -254,7 +254,6 @@ class ReplaceBigStrongWithSpanProcessor implements Processor {
 class RemoveEmptyTagProcessor implements Processor {
   final tags = [
     'pre',
-    'td',
     'h1',
     'h2',
     'h3',
