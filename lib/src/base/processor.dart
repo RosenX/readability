@@ -560,7 +560,8 @@ class RemoveHiddenTagProcessor implements Processor {
     }
     if (elem.attributes['style'] == null) return;
     var style = styleToMap(elem.attributes['style']!);
-    if (style['display'] == 'none' || style['visibility'] == 'hidden') {
+    // remove visibility to avoid wechat miss
+    if (style['display'] == 'none') {
       elem.remove();
     }
   }
